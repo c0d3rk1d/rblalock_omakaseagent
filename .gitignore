@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# OS / editor junk
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary test projects (our dogfooding harnesses)
+omakase-dogfood-*
+/tmp/omakase-*
+
+# Local harness test installs (when developer is testing the installer in this repo root)
+.cursor/
+.claude/
+.agents/
+
+# Environment / secrets
+.env
+.env.local
+*.pem
+*.key
+
+# Build artifacts that are intentionally committed (dist/) are NOT ignored.
+# .omakaseagent/ is sacred project memory — also NOT ignored.

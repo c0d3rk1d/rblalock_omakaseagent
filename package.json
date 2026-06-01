@@ -1,0 +1,37 @@
+{
+  "name": "omakase",
+  "version": "0.1.0",
+  "description": "Omakase — the chef's standard. Portable senior-craftsmanship skill (markdown-first) + npx omakase skills install for Cursor/Claude/Agents. Enforces 12 Rules + Critique Rubric. Zero slop.",
+  "license": "MIT",
+  "author": "Omakase",
+  "bin": {
+    "omakase": "bin/omakase.js"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "skills:install": "node bin/omakase.js skills install",
+    "prepare": "npm run build"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "OMAKASE-PRINCIPLES.md",
+    "OMAKASE-RULES.md",
+    "OMAKASE-CRITIQUE.md",
+    "README.md"
+  ],
+  "keywords": [
+    "omakase",
+    "agent",
+    "skill",
+    "claude",
+    "cursor",
+    "ai",
+    "craftsmanship",
+    "code-quality",
+    "anti-slop"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
