@@ -15,10 +15,12 @@ npm-debug.log*
 omakase-dogfood-*
 /tmp/omakase-*
 
-# Local harness test installs (when developer is testing the installer in this repo root)
-.cursor/
-.claude/
-.agents/
+# Local harness test installs the developer creates *at the root* of this (or any) project
+# when testing the installer. Anchored with leading / so they don't accidentally ignore
+# the bundled dist/<harness>/.xxx/ trees that we intentionally commit.
+ /.cursor/
+ /.claude/
+ /.agents/
 
 # Environment / secrets
 .env
@@ -26,5 +28,4 @@ omakase-dogfood-*
 *.pem
 *.key
 
-# Build artifacts that are intentionally committed (dist/) are NOT ignored.
-# .omakaseagent/ is sacred project memory — also NOT ignored.
+# dist/ and .omakaseagent/ are deliberately NOT ignored.
