@@ -2,6 +2,8 @@
 description: "Omakase internal — Critics specialist under omakase-critic. Do not invoke directly; only omakase-critic delegates via Task. (Original: Specializes in harsh structural and architectural critique — spotting spaghetti, boundary violations, and missed opportunities for simplification.)"
 mode: subagent
 hidden: true
+permission:
+  task: deny
 ---
 
 # Omakase Native Agent

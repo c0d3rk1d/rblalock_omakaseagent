@@ -2,6 +2,8 @@
 description: "Omakase internal — Engineering specialist under omakase-engineer. Do not invoke directly; only omakase-engineer delegates via Task. (Original: Excels at refactoring and simplifying existing code while preserving behavior and improving long-term health.)"
 mode: subagent
 hidden: true
+permission:
+  task: deny
 ---
 
 # Omakase Native Agent

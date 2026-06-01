@@ -138,15 +138,28 @@ function nativeAgentDirs(baseDir, isGlobal) {
   return [...new Set(dirs)];
 }
 
-function countNativeAgents(baseDir, isGlobal) {
-  let count = 0;
+/** Count unique persona ids (not duplicate paths across opencode/codex/cursor). */
+function summarizeNativeAgents(baseDir, isGlobal) {
+  const ids = new Set();
+  const byLocation = {};
   for (const dir of nativeAgentDirs(baseDir, isGlobal)) {
     if (!fs.existsSync(dir)) continue;
-    for (const entry of fs.readdirSync(dir)) {
-      if (entry.startsWith('omakase-')) count++;
+    const rel = path.relative(baseDir, dir) || dir;
+    const files = fs.readdirSync(dir).filter((e) => e.startsWith('omakase-'));
+    if (files.length) byLocation[rel] = files.length;
+    for (const f of files) {
+      ids.add(f.replace(/\.(md|toml)$/, ''));
     }
   }
-  return count;
+  return { unique: ids.size, byLocation, ids: [...ids].sort() };
+}
+
+function formatNativeSummary(summary) {
+  if (!summary.unique) return '0';
+  const locs = Object.entries(summary.byLocation)
+    .map(([k, n]) => `${k} (${n})`)
+    .join(', ');
+  return `${summary.unique} personas · ${locs}`;
 }
 
 function installSkills(targetHarness, options = {}) {
@@ -243,20 +256,20 @@ function installSkills(targetHarness, options = {}) {
 
   const finalSkillDir = path.join(targetDot, `skills/${skillName}`);
   const fileCount = fs.existsSync(finalSkillDir) ? getSkillFileCount(finalSkillDir) : 0;
-  const nativeCount = nativeAgents ? countNativeAgents(baseDir, isGlobal) : 0;
+  const nativeSummary = nativeAgents ? summarizeNativeAgents(baseDir, isGlobal) : { unique: 0 };
 
   console.log(`
           〜
 
   仕上がり
     skill: ${fileCount} files → ${path.relative(baseDir, finalSkillDir) || '(codex agents only)'}
-    native agents: ${nativeCount} (omakase-*)
+    native: ${formatNativeSummary(nativeSummary)}
     overlays: ${copied.join(', ') || '(none)'}
 
           〜
 `);
 
-  if (nativeAgents && nativeCount > 0) {
+  if (nativeAgents && nativeSummary.unique > 0) {
     console.log('  Leads (invoke directly): @omakase-engineer, @omakase-critic, @omakase-archivist');
     console.log('  Specialists: hidden in OpenCode; delegate via leads only');
   }
@@ -270,7 +283,7 @@ function installSkills(targetHarness, options = {}) {
     console.log('  再起動  reload your harness');
   }
 
-  return { harness, nativeCount, fileCount };
+  return { harness, nativeSummary, fileCount };
 }
 
 function installProjectStack(options = {}) {
@@ -341,14 +354,38 @@ function uninstallSkills(targetHarness, options = {}) {
 
 function uninstallProjectStack(options = {}) {
   const cwd = process.cwd();
+  const isGlobal = !!options.global;
+  const baseDir = isGlobal ? os.homedir() : cwd;
   const skillName = options.test ? 'omakase-test' : 'omakase';
+  let skillsRemoved = 0;
+
+  console.log(`
+          〜
+
+  道
+  uninstall · project stack${isGlobal ? ' (user-level)' : ''}
+`);
+
   for (const h of ['agents', 'cursor', 'claude', 'codex']) {
-    const skillDir = path.join(cwd, HARNESS_CONFIG[h].dotDir, 'skills', skillName);
+    const skillDir = path.join(baseDir, HARNESS_CONFIG[h].dotDir, 'skills', skillName);
     if (fs.existsSync(skillDir)) {
-      uninstallSkills(h, options);
+      fs.rmSync(skillDir, { recursive: true, force: true });
+      skillsRemoved++;
     }
   }
-  removeNativeAgents(cwd, false);
+
+  const agentsRemoved =
+    options.nativeAgents !== false ? removeNativeAgents(baseDir, isGlobal) : 0;
+
+  console.log(`
+          〜
+
+  仕上がり
+    skill trees removed: ${skillsRemoved}
+    native agent files removed: ${agentsRemoved}
+
+          〜
+`);
 }
 
 function initProject(options = {}) {
@@ -441,8 +478,9 @@ Specialists (\`omakase-senior-reviewer\`, etc.) are internal — invoked by lead
     nativeAgents: options.nativeAgents !== false,
   };
 
-  const results = installProjectStack(installOpts);
-  const totalNative = results.reduce((s, r) => s + (r.nativeCount || 0), 0);
+  installProjectStack(installOpts);
+  const initBase = installOpts.global ? os.homedir() : cwd;
+  const nativeSummary = summarizeNativeAgents(initBase, !!installOpts.global);
 
   console.log(`
           〜
@@ -450,7 +488,7 @@ Specialists (\`omakase-senior-reviewer\`, etc.) are internal — invoked by lead
   仕上がり
     .omakaseagent/     taste + decisions
     AGENTS.md          Omakase section
-    native agents:     ${totalNative} installed
+    native:            ${formatNativeSummary(nativeSummary)}
 
   Next: @omakase-engineer <your task>
         or /omakase engineer <task> (skill fallback)

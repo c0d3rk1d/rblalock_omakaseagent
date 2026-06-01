@@ -456,3 +456,9 @@ Next natural steps could include harness-specific agent manifest files or even t
 - Cursor: agents on disk; no headless runner (IDE @ invocation).
 **Known gaps**: OpenCode `@omakase-engineer` still routes through skill + lead.md; Cursor @ not automated; init agent count inflated when multiple harness dirs install; no CI harness smoke tests yet.
 **Revisit if**: Harnesses change agent discovery paths or we add Pi support.
+
+## 2026-06-02 — Native Sub-Agents Hardening (Round 2)
+**Context**: Post-install harness testing; P0 gaps on @ routing, delegation, docs, CLI counts, CI.
+**Decision**: (1) SKILL.md native precedence + skill description that rejects @omakase-* hijack; (2) generator adds OpenCode `permission.task` allowlists + delegation ids in lead prompts; (3) `docs/NATIVE-SUBAGENTS.md` + `reference/native-agents.md`; (4) `summarizeNativeAgents()` for honest init counts; (5) single-pass `uninstallProjectStack`; (6) `npm run verify:native-agents` smoke tests.
+**Validation**: OpenCode `run --agent omakase-engineer` → Task → `omakase-senior-reviewer` returned `REVIEWER_OK`. verify script passes; init reports `11 personas` not inflated totals.
+**Remaining**: OpenCode `@omakase-engineer` may still load skill (harness behavior); Cursor IDE @ not CI-automated; prompt duplication across skill + native files.

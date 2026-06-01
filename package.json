@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "node scripts/build.js",
+    "verify:native-agents": "node scripts/verify-native-agents.js",
     "skills:install": "node bin/omakase.js skills install",
     "prepare": "npm run build"
   },

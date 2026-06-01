@@ -1,6 +1,6 @@
 ---
 name: omakase
-description: "Omakase standard — senior taste, zero slop. Primary entry: native agents @omakase-engineer, @omakase-critic, @omakase-archivist (after omakase init / skills install). This skill is the thin router fallback when native agents are unavailable."
+description: "Omakase fallback router for plan, taste, handoff, and init. NOT for @omakase-engineer / @omakase-critic / @omakase-archivist — those are separate native agents when installed. Do not load this skill when the user @mentions omakase-* leads."
 argument-hint: "[engineer|critique|plan|init|taste|handoff] [goal or target]"
 user-invocable: true
 license: MIT
@@ -79,14 +79,33 @@ After `omakase init` or `omakase skills install`, these harness-native agents ar
 
 **Internal specialists** (`omakase-senior-reviewer`, `omakase-deslop-critic`, etc.) are **not** user-facing. Leads delegate via the platform `Task` tool with isolated context. On OpenCode, specialists are `hidden: true` (omitted from `@` autocomplete).
 
+See `reference/native-agents.md` for per-harness invoke and delegation details.
+
+## Native agent precedence (non-negotiable when installed)
+
+Run this check **before** Setup step 4 or loading any `teams/*/lead.md`:
+
+1. Native leads exist if **any** of these paths are present:
+   - `.opencode/agents/omakase-engineer.md`
+   - `.cursor/agents/omakase-engineer.md`
+   - `.claude/agents/omakase-engineer.md`
+2. If native leads exist **and** the user invoked a team lead (`/omakase engineer`, `/omakase critique`, `@omakase-engineer`, `@omakase-critic`, `@omakase-archivist`, or equivalent):
+   - **Stop.** Do not load `teams/*/lead.md`. Do not role-play the lead inside this skill thread.
+   - **Do not** treat `@omakase-engineer` as a request to invoke `skill("omakase")` — that string is a **native agent id**, not this skill.
+   - Reply once with the correct native entry for the harness (examples):
+     - OpenCode: `opencode run --agent omakase-engineer "<task>"` or `@omakase-engineer` in the TUI (not this skill)
+     - Claude: `claude -p --agent omakase-engineer "<task>"`
+     - Cursor: `@omakase-engineer` in the IDE
+3. This skill **does** handle: `plan`, `taste`, `handoff`, `init` guidance, smart chef mode when native leads are **absent**, and explicit `/omakase` commands that are not lead aliases.
+
 ## Command Router (fallback when native agents unavailable)
 
 | Trigger                  | Behavior                                                                 | Reference loaded          |
 |--------------------------|--------------------------------------------------------------------------|---------------------------|
 | `init`                   | Prefer CLI: `omakase init`. Or bootstrap `.omakaseagent/` per `reference/init.md` | `reference/init.md`       |
-| `critique` (explicit or intent) | Smart traffic-cop. Detect domain (strong eng signals vs. explicit non-eng signals like "product strategy", "high-level", "writing"). **Merge** engineering extensions *only* when appropriate; always produce a Domain Detection & Merge Declaration. Run the (possibly merged) standard. | `reference/critique.md` |
+| `critique` (explicit or intent) | If native `omakase-critic` exists → redirect only. Else smart traffic-cop + domain merge + critique reference. | `reference/critique.md` |
 | `plan` (explicit or intent)     | Senior planning. Domain detection + merge relevant standards. Always include explicit Domain Detection & Merge Declaration near top of plan.            | `reference/plan.md`       |
-| `engineer`               | Activate the Engineering team via its lead (The Engineer). Applies full senior engineering standards. | `teams/engineering/lead.md` |
+| `engineer`               | If native `omakase-engineer` exists → redirect only (see precedence). Else load Engineering lead. | `teams/engineering/lead.md` |
 | `taste`                  | Read / query / update persistent taste memory.                           | `reference/taste.md`      |
 | `handoff`                | Produce clean, high-signal handoff notes + protocol.                     | `reference/handoff.md`    |
 | (anything else)          | Smart chef mode. Detect intent + domain. Apply appropriate standards + critique gate. | (dynamic) |
@@ -126,9 +145,9 @@ This parity is a design goal, not a current hard contract. It will ultimately be
 3. **Read relevant project context** before doing real work (README, AGENTS.md, existing architecture notes, recent files being discussed, etc.).
 
 4. **If the user invoked an explicit team or command** (`/omakase engineer`, `/omakase critique`, etc.):
-   - Route to the appropriate **team lead** (see Teams Model above).
-   - Load the lead’s markdown from `teams/<team>/lead.md`.
-   - The lead may internally delegate to sub-personas under `teams/<team>/sub-personas/`.
+   - Apply **Native agent precedence** first. If redirect applies, do not continue this step.
+   - Otherwise route to the team lead and load `teams/<team>/lead.md`.
+   - The lead may delegate to sub-personas via native Task ids (`omakase-senior-reviewer`, etc.) when installed, else `teams/<team>/sub-personas/`.
    - Never address sub-personas directly from outside their team.
 
 5. **Loading sub-personas (internal only) — Prefer native sub-agent mechanisms**

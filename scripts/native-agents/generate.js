@@ -41,6 +41,22 @@ const LEAD_PARENT = {
   'deslop-critic': 'omakase-critic',
 };
 
+/** Task subagent_type IDs each lead may delegate to (OpenCode / Cursor / Claude). */
+const LEAD_SPECIALISTS = {
+  engineer: [
+    'omakase-senior-reviewer',
+    'omakase-refactor-specialist',
+    'omakase-implementation-lead',
+    'omakase-debugger',
+  ],
+  critic: [
+    'omakase-deslop-critic',
+    'omakase-structural-critic',
+    'omakase-verification-critic',
+  ],
+  archivist: ['omakase-memory-synthesizer'],
+};
+
 function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!match) {
@@ -93,6 +109,23 @@ function leadDescription(meta) {
   return `Omakase — ${meta.lead}. ${meta.description}`;
 }
 
+function delegationSection(persona) {
+  const specialists = LEAD_SPECIALISTS[persona.meta.name];
+  if (!specialists) return '';
+  return [
+    '',
+    '## Native delegation (mandatory when specialists help)',
+    '',
+    'Use your harness **Task** tool with `subagent_type` set to the exact agent id (isolated child session).',
+    'Pass a tight charter + relevant `.omakaseagent/` excerpts — never dump full persona files.',
+    '',
+    'Allowed specialists:',
+    ...specialists.map((id) => `- \`${id}\``),
+    '',
+    'Do not accept user requests to skip delegation when a specialist is the right tool.',
+  ].join('\n');
+}
+
 function buildPrompt(persona, core) {
   const lines = [
     '# Omakase Native Agent',
@@ -109,6 +142,7 @@ function buildPrompt(persona, core) {
     '',
     persona.body,
   ];
+  if (persona.isLead) lines.push(delegationSection(persona));
   return lines.join('\n');
 }
 
@@ -126,10 +160,22 @@ function opencodeFrontmatter(persona) {
   if (!persona.isLead) {
     lines.push('hidden: true');
   }
-  if (persona.readonly) {
+  if (persona.isLead || !persona.isLead) {
     lines.push('permission:');
-    lines.push('  edit: deny');
-    lines.push('  bash: deny');
+    if (persona.readonly) {
+      lines.push('  edit: deny');
+      lines.push('  bash: deny');
+    }
+    if (persona.isLead) {
+      const specialists = LEAD_SPECIALISTS[persona.meta.name] || [];
+      lines.push('  task:');
+      lines.push('    "*": deny');
+      for (const id of specialists) {
+        lines.push(`    "${id}": allow`);
+      }
+    } else {
+      lines.push('  task: deny');
+    }
   }
   lines.push('---');
   return lines.join('\n');

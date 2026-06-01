@@ -2,6 +2,8 @@
 description: "Omakase internal — Critics specialist under omakase-critic. Do not invoke directly; only omakase-critic delegates via Task. (Original: Specializes in verifying claims with evidence. Turns vague assertions into falsifiable statements and delivers clear VERIFIED / NOT VERIFIED / INCONCLUSIVE verdicts.)"
 mode: subagent
 hidden: true
+permission:
+  task: deny
 ---
 
 # Omakase Native Agent

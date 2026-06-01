@@ -5,6 +5,7 @@ hidden: true
 permission:
   edit: deny
   bash: deny
+  task: deny
 ---
 
 # Omakase Native Agent

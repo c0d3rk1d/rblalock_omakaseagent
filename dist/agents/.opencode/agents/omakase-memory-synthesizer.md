@@ -2,6 +2,8 @@
 description: "Omakase internal — Archives specialist under omakase-archivist. Do not invoke directly; only omakase-archivist delegates via Task. (Original: Specializes in synthesizing insights, patterns, and decisions across conversations and time.)"
 mode: subagent
 hidden: true
+permission:
+  task: deny
 ---
 
 # Omakase Native Agent

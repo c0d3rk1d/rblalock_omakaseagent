@@ -2,6 +2,8 @@
 description: "Omakase internal — Engineering specialist under omakase-engineer. Do not invoke directly; only omakase-engineer delegates via Task. (Original: Methodical root-cause analysis and fixing of complex, gnarly, or intermittent issues.)"
 mode: subagent
 hidden: true
+permission:
+  task: deny
 ---
 
 # Omakase Native Agent

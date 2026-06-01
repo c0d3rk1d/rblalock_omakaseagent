@@ -31,9 +31,12 @@ This bootstraps `.omakaseagent/`, updates `AGENTS.md`, installs the skill, and r
 Reload your harness, then:
 
 ```
-@omakase-engineer add rate limiting with backoff and jitter
-@omakase-critic review the auth module
+@omakase-engineer add rate limiting with backoff and jitter   # Cursor / Claude IDE
+opencode run --agent omakase-engineer "add rate limiting…"   # OpenCode (preferred)
+claude -p --agent omakase-critic "review the auth module"
 ```
+
+On OpenCode, prefer `opencode run --agent` over `@` if the harness routes `@omakase-*` to the skill instead of the native agent.
 
 Fallback (skill router only):
 
@@ -72,6 +75,12 @@ npx omakase skills install codex
 ```
 
 Native agents are installed by default. Use `--no-native-agents` for skill-only install.
+
+See [docs/NATIVE-SUBAGENTS.md](docs/NATIVE-SUBAGENTS.md) for invoke commands, delegation, and troubleshooting.
+
+```bash
+npm run verify:native-agents   # smoke-test dist/ agent artifacts
+```
 
 ### Also available via the general skills installer
 
