@@ -309,3 +309,150 @@ This is the first real change landed under the new deep personas.
 - Removed the dead link to the retired OMAKASE-SPEC.md. Replaced with a pointer to current sources of truth.
 
 The small CLI issue is resolved. OMAKASE-SPEC.md is gone. The repo is in a clean state for the next commit.
+
+## 2026-06-02 — Global vs Per-Project Install + Local Dev Documentation
+**Context**: User asked for global + per-project installation options (like Impeccable), whether it will prompt, and requested a "Local Development" section in the README. They specifically asked if we had studied how impeccable.style handles this.
+
+**Research Performed**:
+- Reviewed https://impeccable.style and https://github.com/pbakaus/impeccable in detail.
+- Impeccable uses the exact same core pattern we do: `npx <tool> skills install` (with harness auto-detection or explicit).
+- Their primary path is project-scoped.
+- They explicitly document manual `cp` commands for user-level/global installs on many harnesses (Claude Code `~/.claude/`, Codex `~/.agents/skills/`, Trae, Qoder, Rovo, etc.).
+- They also have a separate npm CLI package for their detector tool.
+
+**Changes Made**:
+- Added first-class `--global` / `-g` support to `bin/omakase.js`.
+  - `omakase skills install cursor --global` now installs to `~/.cursor/skills/omakase`
+  - Works together with `--test`
+  - Clear logging distinguishes global vs project installs
+- Updated help text to document the new flags.
+- Added a comprehensive "Local Development" section to README.md explaining:
+  - `npm link` workflow
+  - Per-project vs global (`--global`)
+  - How this compares to Impeccable
+  - Recommended daily local dev commands
+
+This gives users the same flexibility Impeccable offers, while keeping our installer thin and opinionated.
+
+The installer will **not** prompt — you explicitly choose per-project (default) or `--global`.
+
+## 2026-06-02 — Japanese Terminal Aesthetic + Haiku Help Style
+**Context**: User liked the haiku idea and asked to explore a visual style that feels Japanese but lives comfortably in the terminal.
+
+**Design Direction** (tasteful, senior, Omakase-aligned):
+- Heavy use of **間 (ma)** — generous whitespace and deliberate pauses (the 〜 wave dashes).
+- Single kanji section headers for quiet cultural flavor without explanation:
+  - 道 (michi / the way)
+  - 心 (kokoro / heart, spirit, intent)
+  - 核 (kaku / core, nucleus)
+  - 仕上がり (shiagari / the finish / completion)
+- A very short 5-7-5 haiku at the top of --help as the "greeting" from the chef.
+- Minimal decoration. No emojis, no heavy boxes, no bright colors.
+- Mix of precise English + occasional Japanese terms used like seasoning (not translation crutch).
+- Overall voice: quiet, confident, precise — like a chef at a high-end omakase counter presenting one piece at a time.
+
+**Current Implementation**:
+- --help now opens with a haiku and uses the kanji structure.
+- Install success messages use the same 〜 / 仕上がり framing for consistency.
+- Goal: the entire CLI should eventually feel like one coherent, refined aesthetic rather than scattered messages.
+
+This style will continue to be refined across all CLI output (install, uninstall, errors) in future passes.
+
+## 2026-06-02 — Refined Japanese Menu Style for CLI (Haiku + Breathing Room)
+**Feedback incorporated**:
+- Strong preference for generous breathing room (multiple blank lines + 〜 separators).
+- All explanatory text must be in clear English.
+- Japanese characters (single kanji) are allowed and encouraged **only as elegant section headers** at the start of sections (e.g. 道, 心, 仕上がり).
+- Remove all references to the three OMAKASE-*.md files from help output.
+- Lean into a "menu" / omakase counter presentation feel.
+
+**Current aesthetic**:
+- Haiku greeting at the very top of --help (5-7-5).
+- 〜 used as refined pauses / section dividers.
+- Single kanji as quiet, high-end section labels (道 for the CLI tools, 心 for how to speak to the skill, 仕上がり for completion messages).
+- Extremely minimal text. Lots of vertical space.
+- Consistent treatment across help, install success, and uninstall messages.
+
+The CLI is starting to feel like a quiet, precise omakase experience rather than a typical tool.
+
+Next possible refinements (if desired):
+- Apply the same treatment to error messages and version output.
+- Explore even more sparse "kaiseki menu" structure.
+- Subtle use of other Japanese punctuation (・ 、 etc.) for lists.
+
+## 2026-06-02 — CLI Visual Refinement (Layout + Subtle Colors)
+**Changes**:
+- Reduced indentation significantly under kanji section headers (道, 心, 仕上がり). Content now starts more directly below or aligned with the character for a cleaner, less nested "menu card" feel.
+- Introduced very restrained ANSI colors:
+  - Main commands (`omakase skills install`, etc.) in cyan + bold.
+  - Flags (`--test`, `--global`) in yellow.
+  - Key paths in success messages highlighted in cyan.
+- Kept the overall aesthetic calm and high-end (not flashy). Colors are subtle accents only.
+- Applied the same treatment to install success and uninstall messages for visual consistency across the CLI.
+
+**Color philosophy**: Optional elegance. The output remains perfectly readable in no-color environments. The goal is refined hierarchy that feels like a quiet omakase presentation rather than a typical colorful CLI tool.
+
+This continues the Japanese terminal menu direction while addressing feedback on indentation and visual weight.
+
+## 2026-06-02 — Final CLI Aesthetic (No Colors, Consistent Menu Treatment)
+**Update**:
+- Removed all ANSI colors per user feedback. The output is now purely structural + subtle Japanese typography (〜, single kanji headers).
+- Extended the same refined treatment (breathing room, 〜 separators, 道/心/仕上がり framing, reduced indentation, menu-like presentation) to:
+  - Install action headers
+  - Uninstall action headers + success
+  - Success messages
+- Error messages were lightly cleaned for tone consistency.
+- The CLI now has one coherent, calm, high-end voice across every message.
+
+This matches the user's preference: "i like everything else you did. its perfect."
+
+## 2026-06-02 — Fixed Duplicate ~ Separators + Consistent Runtime Framing
+**Issue reported**: Several subcommands (especially uninstall) were printing duplicate `~` blocks with extra blank lines between the 道 header and 仕上がり result.
+
+**Fix**:
+- Removed the trailing `~` closer from the 道 action headers in both installSkills and uninstallSkills.
+- The 仕上がり success block now provides the natural single separator after the action info.
+- Improved alignment of content under "道" in runtime messages to better match the --help style (less deep indent on the first line of action details).
+- Applied the same `~` framing treatment to error messages ("Unknown harness", "Unknown command") for full consistency.
+
+The visual flow is now clean: one 道 block → breathing space → 仕上がり result, with consistent menu aesthetic across all CLI output.
+
+## 2026-06-02 — Major Strengthening of Sub-Agent / Teams Model
+**Goal**: Move from "mostly context injection + LLM role-play" toward reliable use of platform-native sub-agent primitives with isolated context.
+
+**Changes made**:
+- Updated main SKILL.md router to explicitly prefer native sub-agent spawning mechanisms (Task tool, sub-agents, etc.) over loading full persona MDs into the current context.
+- Added `subagent: true` and `invocation: task` hints to canonical frontmatter in TEAMS.md and to the key leads (The Engineer, The Critic).
+- Strengthened delegation language in The Engineer persona to treat native sub-agent invocation as the default when available.
+- Made the top-level skill description advertise sub-agent preference.
+- Updated error/unknown harness messages and action headers for consistency with the refined CLI aesthetic.
+
+This directly addresses the gap observed in real OpenCode sessions where delegation fell back to context stuffing instead of proper isolated sub-agents.
+
+Future work: Harness-specific adapters or better registration of individual personas as first-class sub-agents during install.
+
+## 2026-06-02 — All Three Strengthening Directions Implemented
+**User request**: Do all three — (1) concrete frontmatter + router updates, (2) make teams behave as proper sub-agents, (3) prioritize OpenCode + Cursor (with Claude too).
+
+**Actions taken**:
+- Updated canonical frontmatter in TEAMS.md with richer fields drawn from current Cursor, Claude Code, and OpenCode sub-agent docs (description as delegation signal, readonly, is_background, subagent, invocation, permissionMode, model).
+- Enhanced actual persona files (The Engineer, The Critic, Senior Reviewer) with improved descriptions and sub-agent metadata.
+- Significantly strengthened SKILL.md router with explicit "Prefer native sub-agent mechanisms" language and dedicated harness-specific guidance section (OpenCode Task tool first, then Cursor and Claude Code).
+- Added practical sub-agent registration notes to TEAMS.md covering installation implications for each prioritized harness.
+- Rebuilt all dist/ bundles so the improvements ship immediately on `omakase skills install`.
+
+This moves Omakase from primarily "sophisticated skill + context injection" toward better leveraging platform-native isolated sub-agents with leads managing delegation.
+
+Next natural steps could include harness-specific agent manifest files or even tighter integration during install.
+
+## 2026-06-02 — Native Sub-Agents: Generator + CLI Init + Multi-Harness Install
+**Context**: Prior work improved router language but personas still were not first-class registered agents. Harness testing (OpenCode, Claude, Cursor files, Codex) confirmed the gap.
+**Decision**: Add `scripts/native-agents/generate.js` (build-time) emitting `omakase-*` agents for OpenCode, Cursor, Claude, and Codex from canonical `skill/teams/`. Extend CLI with `omakase init`, native agents on by default (`--no-native-agents` opt-out), and `codex` harness. Leads use OpenCode `mode: all`; specialists use `mode: subagent` + `hidden: true`.
+**Why**: Claude/Codex/OpenCode `run --agent` and install discovery work when files land in the right dirs. Single source of truth stays in `skill/teams/`; dist ships both skill and native agent trees.
+**Harness validation (2026-06-02)**:
+- Claude: `--agent omakase-engineer` and specialist guardrails work.
+- OpenCode: `opencode agent list` shows all personas; `run --agent omakase-engineer` uses native session after `mode: all` fix.
+- Codex: `codex exec -c 'agent="omakase_engineer"'` works with project TOMLs.
+- Cursor: agents on disk; no headless runner (IDE @ invocation).
+**Known gaps**: OpenCode `@omakase-engineer` still routes through skill + lead.md; Cursor @ not automated; init agent count inflated when multiple harness dirs install; no CI harness smoke tests yet.
+**Revisit if**: Harnesses change agent discovery paths or we add Pi support.

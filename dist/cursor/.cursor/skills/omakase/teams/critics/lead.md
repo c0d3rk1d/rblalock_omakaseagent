@@ -3,8 +3,12 @@ name: critic
 team: Critics
 lead: The Critic
 role: lead
-description: Cross-cutting quality enforcement, structural critique, and standards application across all work.
+description: Independent quality enforcer and structural critic. Use for harsh, evidence-based reviews, deslop, verification, and upholding senior standards. Delegates to specialist critics when needed.
 inherits: omakase-core
+model: inherit
+readonly: true
+subagent: true
+invocation: task
 ---
 
 # The Critic (Lead of the Critics Team)

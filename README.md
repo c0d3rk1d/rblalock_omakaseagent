@@ -23,21 +23,23 @@ If the output could have been written by a generic model with no strong opinions
 ## Quick start
 
 ```bash
-npx omakase skills install
+npx omakase init
 ```
 
-Reload your tool. Then either:
+This bootstraps `.omakaseagent/`, updates `AGENTS.md`, installs the skill, and registers **native sub-agents** (`@omakase-engineer`, `@omakase-critic`, `@omakase-archivist`) for OpenCode, Cursor, Claude Code, and Codex.
 
-```bash
-/omakase init
-```
-
-or just describe what you want:
+Reload your harness, then:
 
 ```
-/omakase engineer add proper rate limiting with backoff and jitter
-/omakase critique the new auth module
-/omakase plan the migration strategy
+@omakase-engineer add rate limiting with backoff and jitter
+@omakase-critic review the auth module
+```
+
+Fallback (skill router only):
+
+```
+/omakase engineer <task>
+/omakase critique <target>
 ```
 
 ## The Standard (ships with every install)
@@ -65,8 +67,11 @@ Explicit harness:
 ```bash
 npx omakase skills install cursor
 npx omakase skills install claude
-npx omakase skills install agents
+npx omakase skills install agents   # also .opencode/agents + .codex/agents
+npx omakase skills install codex
 ```
+
+Native agents are installed by default. Use `--no-native-agents` for skill-only install.
 
 ### Also available via the general skills installer
 
@@ -77,6 +82,37 @@ npx skills add rblalock/omakaseagent
 This makes Omakase discoverable on [skills.sh](https://skills.sh) and works with the unified skills ecosystem.
 
 **Note:** The dedicated `npx omakase skills install` path is recommended for the best results while the skill is actively evolving.
+
+## Local Development (no npm publish required)
+
+If you're working on Omakase itself (or want the absolute latest version locally):
+
+1. **Link the CLI globally** (so the `omakase` command always uses your local copy):
+
+   ```bash
+   cd /path/to/omakaseagent
+   npm link
+   ```
+
+   This also runs the build automatically.
+
+2. **Install the skill** with full control:
+
+   ```bash
+   # Per-project (most common during development)
+   omakase skills install cursor --test
+   omakase skills install claude --test
+
+   # Global / user-level (available in every project)
+   omakase skills install cursor --global
+   omakase skills install agents --global --test
+   ```
+
+   `--global` installs to `~/.cursor/skills/`, `~/.claude/skills/`, or `~/.agents/skills/` instead of the current project.
+
+This model is very close to how [Impeccable](https://impeccable.style) handles installation (their `npx impeccable skills install` + documented global paths for several harnesses).
+
+You can freely switch between the published version (`npx omakase ...`) and your local linked version at any time.
 
 ## Usage
 

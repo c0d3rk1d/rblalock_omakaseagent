@@ -19,10 +19,15 @@ name: short-kebab-case-name
 team: Team Name
 lead: The Lead Name
 role: lead | member
-description: One-sentence purpose (used for intent detection and routing)
+description: One-sentence purpose. This is the primary signal for automatic delegation in harnesses like Cursor and Claude Code.
 inherits: omakase-core
-model: optional-override
+model: inherit | specific-model-id
 tools: optional-allowlist
+readonly: true | false          # Recommended for reviewers, auditors, explorers
+is_background: true | false     # For long-running work that shouldn't block
+subagent: true                  # Signal that this should be treated as a native sub-agent when possible
+invocation: task | skill | context
+permissionMode: default | plan | acceptEdits | bypassPermissions   # Claude Code style
 ---
 ```
 
@@ -82,6 +87,21 @@ All new teams and personas must inherit the full Omakase principles.
 ## Testing & Cleanup
 
 For development and cross-harness testing, use the `omakase-test` installation path when available. This installs under a clearly removable namespace so it can be cleaned up in one command across all supported harnesses.
+
+## Native Sub-Agent Registration (Harness Specific)
+
+`omakase init` and `omakase skills install` (native agents on by default) emit **first-class agent files** generated from this directory:
+
+| Harness | Lead agents (user-invokable) | Specialists (lead-only) |
+|---------|------------------------------|-------------------------|
+| OpenCode | `.opencode/agents/omakase-engineer.md` etc. | Same dir, `hidden: true` |
+| Cursor / Claude | `.cursor/agents/`, `.claude/agents/` | `omakase-*` with internal-only descriptions |
+| Codex | `.codex/agents/omakase_*.toml` | TOML with internal-only descriptions |
+| Skill fallback | `.agents/skills/omakase/teams/` | Loaded by lead via Task, not direct user entry |
+
+**Naming:** all native agents use the `omakase-` prefix (Codex: `omakase_engineer`).
+
+**Entry model:** users invoke **leads only** (`@omakase-engineer`, `@omakase-critic`, `@omakase-archivist`). Specialists are delegated by leads via the platform `Task` tool. The `SKILL.md` router is a thin fallback when native files are missing.
 
 ## Related Documents
 

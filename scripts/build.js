@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { generateNativeAgents } = require('./native-agents/generate');
 
 const root = path.resolve(__dirname, '..');
 const skillSrc = path.join(root, 'skill');
@@ -116,13 +117,24 @@ for (const h of harnesses) {
   console.log(`    top-level: ${top}`);
 }
 
+const native = generateNativeAgents();
+console.log(`\n✓ Native agents: ${native.count} personas → opencode, cursor, claude, codex`);
+
+// Ensure codex dist marker exists for install validation
+const codexMarker = path.join(distRoot, 'codex/.codex');
+fs.mkdirSync(codexMarker, { recursive: true });
+
 // Strict distribution guard: only the intended files may ship in bundles.
 // OMAKASE-SPEC.md (internal) + any stray files outside the three approved skill trees are rejected.
 const FORBIDDEN_IN_DIST = ['OMAKASE-SPEC.md', '.git', 'node_modules', '.DS_Store'];
 const ALLOWED_PREFIXES = [
   'dist/cursor/.cursor/skills/omakase/',
+  'dist/cursor/.cursor/agents/',
   'dist/claude/.claude/skills/omakase/',
+  'dist/claude/.claude/agents/',
   'dist/agents/.agents/skills/omakase/',
+  'dist/agents/.opencode/agents/',
+  'dist/codex/.codex/agents/',
 ];
 
 function isAllowedDistPath(rel) {
