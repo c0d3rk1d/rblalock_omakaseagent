@@ -1,7 +1,7 @@
 ---
-name: omakase
-description: "Omakase fallback router for plan, taste, handoff, and init. NOT for @omakase-engineer / @omakase-critic / @omakase-archivist — those are separate native agents when installed. Do not load this skill when the user @mentions omakase-* leads."
-argument-hint: "[engineer|critique|plan|init|taste|handoff] [goal or target]"
+name: omakase-router
+description: "Omakase fallback router (plan, taste, handoff, init only). NOT for engineering/critique/archivist — use native agents @omakase-engineer @omakase-critic @omakase-archivist. Never load when user @mentions omakase-* (that prefix is reserved for native agents, not this skill)."
+argument-hint: "[plan|init|taste|handoff|critique] [goal or target]"
 user-invocable: true
 license: MIT
 ---
@@ -112,7 +112,7 @@ Run this check **before** Setup step 4 or loading any `teams/*/lead.md`:
 
 ## Routing Logic (agentic)
 
-1. **Explicit command match** (`/omakase engineer ...`, `/omakase critique ...`) → load the corresponding reference and behave accordingly.
+1. **Explicit command match** (`/omakase-router …`, or legacy `/omakase engineer` / `/omakase critique`) → apply native precedence for lead commands; else load the corresponding reference.
 2. **Strong engineering signals** in the request or recent context → activate the **Engineering team** via its lead (The Engineer). The team operates under the full Omakase principles plus Engineering-specific standards.
 3. **Non-engineering or pure product/strategy/writing/process signals** (see expanded lists in `reference/critique.md` and `reference/plan.md`) → stay in smart general chef mode or load the command reference with **core standards only**. Explicitly avoid over-applying engineering extensions (code judo, file health, deslop in the code sense, etc.) when the work is high-level product strategy, GTM, narrative writing, process design, or exec-level planning. The "ask once" protocol in the critique and plan references takes precedence for borderline cases.
 4. **Otherwise / ambiguous** → smart general chef mode with domain detection as the first step. Still enforce all Core Laws, still run critique on non-trivial work (using core rubric with domain-appropriate interpretation of bullets like Pragmatic Craftsmanship and Structural Integrity), still explain taste, still consult memory. The chef decides the right depth and persona.
@@ -137,7 +137,7 @@ This parity is a design goal, not a current hard contract. It will ultimately be
    - If `.omakaseagent/taste.md` or `decisions.md` exist at project root, **read their full contents early**. They are sacred context — treat absence of specific entries as a Context Fidelity failure if ignored.
    - Weave the current standards and known preferences into your reasoning **and explicitly cite them**.
    - **Every non-trivial output must include a visible "Memory consulted" declaration** (one sentence in the output or "Why this approach") naming the specific taste.md bullets or decisions.md entries that were active and influenced the work. Absence of this citation on non-trivial work is a Context Fidelity failure.
-   - If the project looks like it would benefit from them but they are missing, gently offer to run `/omakase init`. For the very first significant engineering-style task with no memory present, create a minimal seed (see reference/init.md "Minimal Seed for First Task") *or* ask once before heavy work. Never silently proceed with rich context-dependent work while memory is absent.
+   - If the project looks like it would benefit from them but they are missing, gently offer `omakase init` (CLI). For the very first significant engineering-style task with no memory present, create a minimal seed (see reference/init.md "Minimal Seed for First Task") *or* ask once before heavy work. Never silently proceed with rich context-dependent work while memory is absent.
 
 2. **Load the core standard.**
    - The three OMAKASE-*.md files (Principles, Rules, Critique) are the single source of truth. They are embedded above and available as files.
@@ -159,9 +159,14 @@ This parity is a design goal, not a current hard contract. It will ultimately be
 **Harness-specific guidance (prioritized)**
 
 **OpenCode** (`.opencode/agents/omakase-*.md`):
-- User entry: `@omakase-engineer`, `@omakase-critic`, `@omakase-archivist`.
-- Lead → specialist: `Task` with `subagent_type` matching the agent file name (e.g. `omakase-senior-reviewer`). Specialists are `hidden: true`.
-- Child sessions via Task are the preferred isolation mechanism.
+- User entry: `opencode run --agent omakase-engineer` (preferred) or `@omakase-engineer`.
+- Skill router is **`omakase-router`** — do not invoke `skill("omakase")` for `@omakase-*` leads.
+- Lead → specialist: `Task` with `subagent_type` (e.g. `omakase-senior-reviewer`). Specialists are `hidden: true`.
+
+**Grok Build** (`.grok/agents/omakase-*.md`):
+- User entry: `grok --agent omakase-engineer` or Task with `subagent_type: omakase-engineer`.
+- Skills at `.grok/skills/omakase/`; router skill name `omakase-router`.
+- Subagents: [xAI docs — isolated child sessions](https://docs.x.ai/build/features/skills-plugins-marketplaces#subagents).
 
 **Cursor** (`.cursor/agents/omakase-*.md`):
 - User entry: `@omakase-engineer` (or natural language). Specialists have descriptions that signal lead-only delegation.

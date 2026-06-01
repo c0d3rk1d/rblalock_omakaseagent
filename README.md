@@ -38,12 +38,14 @@ claude -p --agent omakase-critic "review the auth module"
 
 On OpenCode, prefer `opencode run --agent` over `@` if the harness routes `@omakase-*` to the skill instead of the native agent.
 
-Fallback (skill router only):
+Fallback (skill `omakase-router` only — plan/taste/handoff, not engineering):
 
 ```
-/omakase engineer <task>
-/omakase critique <target>
+/omakase-router plan <goal>
+/omakase-router critique <target>
 ```
+
+Grok Build: `grok --agent omakase-engineer "…"` after init. See [docs/NATIVE-SUBAGENTS.md](docs/NATIVE-SUBAGENTS.md).
 
 ## The Standard (ships with every install)
 
@@ -70,7 +72,8 @@ Explicit harness:
 ```bash
 npx omakase skills install cursor
 npx omakase skills install claude
-npx omakase skills install agents   # also .opencode/agents + .codex/agents
+npx omakase skills install agents   # .agents/skills + .opencode/agents + .codex/agents
+npx omakase skills install grok     # .grok/skills + .grok/agents
 npx omakase skills install codex
 ```
 

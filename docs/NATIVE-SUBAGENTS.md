@@ -8,7 +8,7 @@ How Omakase registers team leads and specialists as first-class harness agents.
 npx omakase init
 ```
 
-Then use **`@omakase-engineer`**, **`@omakase-critic`**, or **`@omakase-archivist`** (or harness CLI equivalents below). Do not use the `omakase` skill for lead work when native agents are installed.
+Use **`@omakase-engineer`**, **`@omakase-critic`**, or **`@omakase-archivist`** (or harness CLI below). Do **not** use the **`omakase-router`** skill for lead work — that skill is plan/taste/handoff only.
 
 ## Architecture
 
@@ -16,76 +16,87 @@ Then use **`@omakase-engineer`**, **`@omakase-critic`**, or **`@omakase-archivis
 flowchart LR
   User -->|@omakase-engineer| Lead[Native lead agent]
   Lead -->|Task subagent_type| Spec[Hidden specialist]
-  User -->|/omakase plan| Skill[omakase skill router]
+  User -->|/omakase-router plan| Skill[omakase-router skill]
 ```
 
 - **Source of truth:** `skill/teams/**/*.md`
 - **Build:** `scripts/native-agents/generate.js` → `dist/**/agents/`
-- **Install:** `bin/omakase.js` copies dist overlays into the project
+- **Agent bodies:** `{file:...}` includes point at `.agents/skills/omakase/` (no duplicated core text in dist agents, except Codex TOML)
 
-## Agent inventory
+## Harness coverage
 
-| id | Role | User can invoke? |
-|----|------|------------------|
-| omakase-engineer | The Engineer | Yes |
-| omakase-critic | The Critic | Yes |
-| omakase-archivist | The Archivist | Yes |
-| omakase-senior-reviewer | Engineering specialist | No (lead only) |
-| omakase-refactor-specialist | Engineering specialist | No |
-| omakase-implementation-lead | Engineering specialist | No |
-| omakase-debugger | Engineering specialist | No |
-| omakase-deslop-critic | Critics specialist | No |
-| omakase-structural-critic | Critics specialist | No |
-| omakase-verification-critic | Critics specialist | No |
-| omakase-memory-synthesizer | Archives specialist | No |
+| Harness | Skill (router) | Native agents |
+|---------|----------------|---------------|
+| Agents / OpenCode | `.agents/skills/omakase/` (`name: omakase-router`) | `.opencode/agents/omakase-*.md` |
+| Grok Build | `.grok/skills/omakase/` | `.grok/agents/omakase-*.md` |
+| Cursor | `.cursor/skills/omakase/` | `.cursor/agents/omakase-*.md` |
+| Claude Code | `.claude/skills/omakase/` | `.claude/agents/omakase-*.md` |
+| Codex | — | `.codex/agents/omakase-*.toml` |
+
+`omakase init` installs **agents + grok + codex** overlays always; adds cursor/claude when those dirs exist.
 
 ## Per-harness commands
 
 ### OpenCode
 
 ```bash
-opencode agent list | rg '^omakase-'
-opencode run --agent omakase-engineer "task"
+opencode run --agent omakase-engineer "your task"
 ```
 
-Leads: `mode: all`. Specialists: `mode: subagent`, `hidden: true`.
+Prefer `run --agent` over `@omakase-engineer` if your session still routes `@` to the skill. The skill is named **`omakase-router`** (not `omakase`) so `@omakase-engineer` should not invoke it.
+
+### Grok Build
+
+[Grok skills, plugins, and subagents](https://docs.x.ai/build/features/skills-plugins-marketplaces#subagents) — subagents spawn isolated child sessions via the `task` tool.
+
+```bash
+# After omakase init — agents in .grok/agents/
+grok --agent omakase-engineer "your task"
+```
+
+Grok also reads `.claude/agents/` and `.agents/skills/` for compatibility, but prefer explicit `.grok/agents/` definitions from install.
+
+Leads: `permission_mode: default`. Specialists: `permission_mode: plan` + `INTERNAL ONLY` descriptions.
 
 ### Claude Code
 
 ```bash
-claude -p --agent omakase-engineer "task"
+claude -p --agent omakase-engineer "your task"
 ```
 
 ### Cursor
 
-Install `.cursor/agents/omakase-*.md`, then `@omakase-engineer` in the IDE.
+`@omakase-engineer` in the IDE. Specialists use `INTERNAL ONLY` descriptions + `is_background: true` (no `hidden` field on Cursor).
 
 ### Codex
 
 ```bash
-codex exec --skip-git-repo-check -c 'agent="omakase_engineer"' "task"
+codex exec --skip-git-repo-check -c 'agent="omakase_engineer"' "your task"
 ```
 
-## Migration from skill-only
+## Skill vs native agent
 
-1. Run `omakase init` in the project.
-2. Switch entry from `/omakase engineer` to `@omakase-engineer`.
-3. Keep `/omakase plan`, `/omakase taste`, `/omakase handoff` on the skill router.
+| User intent | Target |
+|-------------|--------|
+| Engineering / critique / archivist work | `@omakase-engineer` etc. |
+| Plan, taste, handoff, init guidance | `/omakase-router …` skill |
+| `@omakase-engineer` | Native agent — **never** `skill("omakase")` or `skill("omakase-router")` |
 
 ## Troubleshooting
 
 | Symptom | Fix |
 |---------|-----|
-| `@omakase-engineer` loads skill + `lead.md` | Use `opencode run --agent omakase-engineer` or update skill (precedence rules). Do not call `skill("omakase")` for lead work. |
-| `run --agent omakase-engineer` falls back to `build` | Re-run `npm run build` + `omakase init`; lead needs `mode: all` in `.opencode/agents/omakase-engineer.md`. |
-| Specialist appears in `@` menu (OpenCode) | Regenerate agents; specialists must have `hidden: true`. |
-| Codex exec fails | `git init` or `--skip-git-repo-check`; use `agent="omakase_engineer"` (underscore). |
+| `@omakase-engineer` loads skill + `lead.md` | Re-init; skill must be `omakase-router`. Use `opencode run --agent omakase-engineer`. |
+| `run --agent` falls back to `build` | Lead needs `mode: all` in `.opencode/agents/omakase-engineer.md`. |
+| Specialist in `@` menu (OpenCode) | Regenerate; specialists need `hidden: true`. |
+| `{file:}` not resolving | Run `omakase init` so `.agents/skills/omakase/teams/` exists relative to agent files. |
+| Grok missing agents | Run `omakase skills install grok` or full `omakase init`. |
 
-## CI / local verify
+## CI
 
 ```bash
 npm run build
 npm run verify:native-agents
 ```
 
-See also `skill/reference/native-agents.md` (shipped inside the skill bundle).
+GitHub Actions: `.github/workflows/verify.yml`

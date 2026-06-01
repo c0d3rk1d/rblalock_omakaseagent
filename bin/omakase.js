@@ -21,6 +21,7 @@ const HARNESS_CONFIG = {
   cursor: { dotDir: '.cursor', label: 'Cursor', distName: 'cursor' },
   claude: { dotDir: '.claude', label: 'Claude Code', distName: 'claude' },
   agents: { dotDir: '.agents', label: 'Agents / OpenCode', distName: 'agents' },
+  grok: { dotDir: '.grok', label: 'Grok Build', distName: 'grok' },
   codex: { dotDir: '.codex', label: 'Codex', distName: 'codex' },
 };
 
@@ -29,6 +30,7 @@ const DIST_OVERLAYS = {
   cursor: ['.cursor'],
   claude: ['.claude'],
   agents: ['.agents', '.opencode'],
+  grok: ['.grok'],
   codex: ['.codex'],
 };
 
@@ -36,6 +38,7 @@ const NATIVE_AGENT_GLOBS = {
   '.cursor/agents': 'omakase-',
   '.claude/agents': 'omakase-',
   '.opencode/agents': 'omakase-',
+  '.grok/agents': 'omakase-',
   '.codex/agents': 'omakase-',
 };
 
@@ -48,6 +51,7 @@ const GLOBAL_NATIVE_PATHS = {
 
 function detectHarness() {
   const cwd = process.cwd();
+  if (fs.existsSync(path.join(cwd, '.grok'))) return 'grok';
   if (fs.existsSync(path.join(cwd, '.cursor'))) return 'cursor';
   if (fs.existsSync(path.join(cwd, '.claude'))) return 'claude';
   if (fs.existsSync(path.join(cwd, '.codex'))) return 'codex';
@@ -173,7 +177,7 @@ function installSkills(targetHarness, options = {}) {
           〜
 
   Unknown harness: ${targetHarness}
-  Supported: cursor | claude | agents | codex
+  Supported: cursor | claude | agents | grok | codex
 
           〜
 `);
@@ -287,18 +291,20 @@ function installSkills(targetHarness, options = {}) {
 }
 
 function installProjectStack(options = {}) {
-  const results = [];
-  results.push(installSkills('agents', options));
+  installSkills('agents', options);
+  installSkills('grok', options);
   if (fs.existsSync(path.join(process.cwd(), '.cursor'))) {
-    results.push(installSkills('cursor', options));
+    installSkills('cursor', options);
   }
   if (fs.existsSync(path.join(process.cwd(), '.claude'))) {
-    results.push(installSkills('claude', options));
+    installSkills('claude', options);
   }
-  if (fs.existsSync(path.join(process.cwd(), '.codex')) && !fs.existsSync(path.join(process.cwd(), '.agents'))) {
-    results.push(installSkills('codex', options));
+  if (
+    fs.existsSync(path.join(process.cwd(), '.codex')) &&
+    !fs.existsSync(path.join(process.cwd(), '.agents'))
+  ) {
+    installSkills('codex', options);
   }
-  return results;
 }
 
 function uninstallSkills(targetHarness, options = {}) {
@@ -312,7 +318,7 @@ function uninstallSkills(targetHarness, options = {}) {
           〜
 
   Unknown harness: ${targetHarness}
-  Supported: cursor | claude | agents | codex
+  Supported: cursor | claude | agents | grok | codex
 
           〜
 `);
@@ -366,7 +372,7 @@ function uninstallProjectStack(options = {}) {
   uninstall · project stack${isGlobal ? ' (user-level)' : ''}
 `);
 
-  for (const h of ['agents', 'cursor', 'claude', 'codex']) {
+  for (const h of ['agents', 'grok', 'cursor', 'claude', 'codex']) {
     const skillDir = path.join(baseDir, HARNESS_CONFIG[h].dotDir, 'skills', skillName);
     if (fs.existsSync(skillDir)) {
       fs.rmSync(skillDir, { recursive: true, force: true });
@@ -460,7 +466,7 @@ Specialists (\`omakase-senior-reviewer\`, etc.) are internal — invoked by lead
 
 **Memory:** \`.omakaseagent/taste.md\` and \`.omakaseagent/decisions.md\`
 
-**Fallback router:** \`/omakase <goal>\` or the installed \`omakase\` skill when native agents are unavailable.
+**Fallback router:** \`/omakase-router plan\` / \`/omakase-router taste\` (skill \`omakase-router\` in \`.agents/skills/omakase/\`) — not for lead work.
 `;
 
   if (!fs.existsSync(agentsPath)) {
@@ -504,11 +510,11 @@ omakase v${VERSION}
           〜
 
   道
-  omakase init [--test]
+  omakase init [--test] [--global]
       Bootstrap .omakaseagent/, AGENTS.md, install skill + native agents
-      (agents + opencode + codex; + cursor/claude if those dirs exist)
+      (agents + opencode + grok + codex; + cursor/claude if those dirs exist)
 
-  omakase skills install [cursor|claude|agents|codex] [--test] [--global]
+  omakase skills install [cursor|claude|agents|grok|codex] [--test] [--global]
       Install skill + native omakase-* agents (default)
       --no-native-agents   skill only, no omakase-* agent files
 
@@ -519,7 +525,7 @@ omakase v${VERSION}
 
   心
   Primary: @omakase-engineer | @omakase-critic | @omakase-archivist
-  Fallback: /omakase engineer | /omakase critique | /omakase <goal>
+  Fallback: /omakase-router plan | /omakase-router critique (skill omakase-router)
 
           〜
 `);

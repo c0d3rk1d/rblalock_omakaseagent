@@ -44,6 +44,10 @@ const harnesses = [
     name: 'agents',
     targetDir: path.join(distRoot, 'agents/.agents/skills/omakase'),
   },
+  {
+    name: 'grok',
+    targetDir: path.join(distRoot, 'grok/.grok/skills/omakase'),
+  },
 ];
 
 console.log('Omakase build starting...\n');
@@ -119,7 +123,7 @@ for (const h of harnesses) {
 }
 
 const native = generateNativeAgents();
-console.log(`\n✓ Native agents: ${native.count} personas → opencode, cursor, claude, codex`);
+console.log(`\n✓ Native agents: ${native.count} personas → opencode, cursor, claude, grok, codex`);
 
 // Ensure codex dist marker exists for install validation
 const codexMarker = path.join(distRoot, 'codex/.codex');
@@ -135,6 +139,8 @@ const ALLOWED_PREFIXES = [
   'dist/claude/.claude/agents/',
   'dist/agents/.agents/skills/omakase/',
   'dist/agents/.opencode/agents/',
+  'dist/grok/.grok/skills/omakase/',
+  'dist/grok/.grok/agents/',
   'dist/codex/.codex/agents/',
 ];
 

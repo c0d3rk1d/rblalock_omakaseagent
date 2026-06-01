@@ -41,7 +41,6 @@ const LEAD_PARENT = {
   'deslop-critic': 'omakase-critic',
 };
 
-/** Task subagent_type IDs each lead may delegate to (OpenCode / Cursor / Claude). */
 const LEAD_SPECIALISTS = {
   engineer: [
     'omakase-senior-reviewer',
@@ -55,6 +54,22 @@ const LEAD_SPECIALISTS = {
     'omakase-verification-critic',
   ],
   archivist: ['omakase-memory-synthesizer'],
+};
+
+/** Relative path from harness agents dir → installed skill tree (after omakase init). */
+const SKILL_REL_FROM_AGENTS = {
+  opencode: '../../.agents/skills/omakase',
+  cursor: '../skills/omakase',
+  claude: '../skills/omakase',
+  grok: '../skills/omakase',
+};
+
+const OUTPUTS = {
+  opencode: path.join(distRoot, 'agents/.opencode/agents'),
+  cursor: path.join(distRoot, 'cursor/.cursor/agents'),
+  claude: path.join(distRoot, 'claude/.claude/agents'),
+  grok: path.join(distRoot, 'grok/.grok/agents'),
+  codex: path.join(distRoot, 'codex/.codex/agents'),
 };
 
 function parseFrontmatter(content) {
@@ -99,9 +114,9 @@ function loadPersonas() {
 
 function memberDescription(meta, parentId) {
   return (
-    `Omakase internal — ${meta.team} specialist under ${parentId}. ` +
-    `Do not invoke directly; only ${parentId} delegates via Task. ` +
-    `(Original: ${meta.description})`
+    `INTERNAL ONLY — ${meta.team} specialist under ${parentId}. ` +
+    `Never user-invokable; only ${parentId} delegates via Task. ` +
+    meta.description
   );
 }
 
@@ -116,23 +131,47 @@ function delegationSection(persona) {
     '',
     '## Native delegation (mandatory when specialists help)',
     '',
-    'Use your harness **Task** tool with `subagent_type` set to the exact agent id (isolated child session).',
-    'Pass a tight charter + relevant `.omakaseagent/` excerpts — never dump full persona files.',
+    'Use the **Task** tool with `subagent_type` set to the exact agent id below.',
+    'Pass a tight charter + relevant `.omakaseagent/` excerpts.',
     '',
     'Allowed specialists:',
     ...specialists.map((id) => `- \`${id}\``),
-    '',
-    'Do not accept user requests to skip delegation when a specialist is the right tool.',
   ].join('\n');
 }
 
-function buildPrompt(persona, core) {
+function fileInclude(skillBase, relPath) {
+  return `{file:${skillBase}/${relPath}}`;
+}
+
+/** Slim body via {file:} includes (OpenCode, Cursor, Claude, Grok). Codex stays inline. */
+function buildAgentBody(persona, harness, core) {
+  const skillBase = SKILL_REL_FROM_AGENTS[harness];
+  if (!skillBase) {
+    return buildInlineBody(persona, core);
+  }
+
   const lines = [
     '# Omakase Native Agent',
     '',
     persona.isLead
-      ? `You are **${persona.meta.lead}**, a first-class Omakase team lead. Users may invoke you directly (@${persona.id} or Task).`
-      : `You are an **internal** Omakase specialist under **${persona.parentId}**. You must not accept work unless delegated by that lead.`,
+      ? `You are **${persona.meta.lead}**. Users invoke you as \`${persona.id}\`.`
+      : `You are an **internal** specialist under **${persona.parentId}**. Reject undelegated work.`,
+    '',
+    fileInclude(skillBase, 'core/omakase-core.md'),
+    '',
+    fileInclude(skillBase, `teams/${persona.rel}`),
+  ];
+  if (persona.isLead) lines.push(delegationSection(persona));
+  return lines.join('\n');
+}
+
+function buildInlineBody(persona, core) {
+  const lines = [
+    '# Omakase Native Agent',
+    '',
+    persona.isLead
+      ? `You are **${persona.meta.lead}**, a first-class Omakase team lead (@${persona.id}).`
+      : `You are an **internal** Omakase specialist under **${persona.parentId}**.`,
     '',
     '## Omakase Core (inherited)',
     '',
@@ -153,35 +192,29 @@ function opencodeFrontmatter(persona) {
   const lines = [
     '---',
     `description: ${yamlQuote(desc)}`,
-    // Leads: `all` so users can @mention and `opencode run --agent` works (not only Task delegation).
-    // Members: `subagent` + hidden to keep @ menu clean.
     `mode: ${persona.isLead ? 'all' : 'subagent'}`,
   ];
-  if (!persona.isLead) {
-    lines.push('hidden: true');
+  if (!persona.isLead) lines.push('hidden: true');
+  lines.push('permission:');
+  if (persona.readonly) {
+    lines.push('  edit: deny');
+    lines.push('  bash: deny');
   }
-  if (persona.isLead || !persona.isLead) {
-    lines.push('permission:');
-    if (persona.readonly) {
-      lines.push('  edit: deny');
-      lines.push('  bash: deny');
+  if (persona.isLead) {
+    const specialists = LEAD_SPECIALISTS[persona.meta.name] || [];
+    lines.push('  task:');
+    lines.push('    "*": deny');
+    for (const id of specialists) {
+      lines.push(`    "${id}": allow`);
     }
-    if (persona.isLead) {
-      const specialists = LEAD_SPECIALISTS[persona.meta.name] || [];
-      lines.push('  task:');
-      lines.push('    "*": deny');
-      for (const id of specialists) {
-        lines.push(`    "${id}": allow`);
-      }
-    } else {
-      lines.push('  task: deny');
-    }
+  } else {
+    lines.push('  task: deny');
   }
   lines.push('---');
   return lines.join('\n');
 }
 
-function cursorFrontmatter(persona) {
+function markdownAgentFrontmatter(persona, harness) {
   const desc = persona.isLead
     ? leadDescription(persona.meta)
     : memberDescription(persona.meta, persona.parentId);
@@ -191,43 +224,43 @@ function cursorFrontmatter(persona) {
     `description: ${yamlQuote(desc)}`,
     'model: inherit',
   ];
-  if (persona.readonly) {
+  if (persona.readonly || !persona.isLead) {
     lines.push('readonly: true');
   }
   if (!persona.isLead) {
     lines.push('is_background: true');
   }
-  lines.push('---');
-  return lines.join('\n');
-}
-
-function claudeFrontmatter(persona) {
-  const desc = persona.isLead
-    ? leadDescription(persona.meta)
-    : memberDescription(persona.meta, persona.parentId);
-  const lines = [
-    '---',
-    `name: ${persona.id}`,
-    `description: ${yamlQuote(desc)}`,
-    'model: inherit',
-  ];
-  if (persona.readonly) {
+  if (harness === 'claude' && persona.readonly) {
     lines.push('permissionMode: plan');
-    lines.push('readonly: true');
-  }
-  if (!persona.isLead) {
-    lines.push('is_background: true');
   }
   lines.push('---');
   return lines.join('\n');
 }
 
-function codexToml(persona, prompt) {
+function grokFrontmatter(persona) {
   const desc = persona.isLead
     ? leadDescription(persona.meta)
     : memberDescription(persona.meta, persona.parentId);
-  const sandbox = persona.readonly ? 'read-only' : 'workspace-write';
-  const escaped = prompt.replace(/\\/g, '\\\\').replace(/"""/g, '\\"\\"\\"');
+  const lines = [
+    '---',
+    `name: ${persona.id}`,
+    'description: >',
+    `  ${desc}`,
+    'prompt_mode: full',
+    'model: inherit',
+    `permission_mode: ${persona.readonly || !persona.isLead ? 'plan' : 'default'}`,
+    'agents_md: true',
+  ];
+  lines.push('---');
+  return lines.join('\n');
+}
+
+function codexToml(persona, body) {
+  const desc = persona.isLead
+    ? leadDescription(persona.meta)
+    : memberDescription(persona.meta, persona.parentId);
+  const sandbox = persona.readonly || !persona.isLead ? 'read-only' : 'workspace-write';
+  const escaped = body.replace(/\\/g, '\\\\').replace(/"""/g, '\\"\\"\\"');
   return [
     `name = "${persona.id.replace(/-/g, '_')}"`,
     `description = ${tomlQuote(desc)}`,
@@ -255,62 +288,58 @@ function writeAgentFile(dir, filename, content) {
   fs.writeFileSync(path.join(dir, filename), content, 'utf8');
 }
 
-function rimraf(dir) {
-  if (!fs.existsSync(dir)) return;
-  for (const entry of fs.readdirSync(dir)) {
-    const p = path.join(dir, entry);
-    if (fs.statSync(p).isDirectory()) rimraf(p);
-    else fs.unlinkSync(p);
+function rimrafFile(p) {
+  if (fs.statSync(p).isDirectory()) {
+    for (const e of fs.readdirSync(p)) rimrafFile(path.join(p, e));
+    fs.rmdirSync(p);
+  } else {
+    fs.unlinkSync(p);
   }
-  fs.rmdirSync(dir);
 }
 
 function generateNativeAgents() {
   const { core, personas } = loadPersonas();
-  const outputs = {
-    opencode: path.join(distRoot, 'agents/.opencode/agents'),
-    cursor: path.join(distRoot, 'cursor/.cursor/agents'),
-    claude: path.join(distRoot, 'claude/.claude/agents'),
-    codex: path.join(distRoot, 'codex/.codex/agents'),
-  };
 
-  for (const dir of Object.values(outputs)) {
-    if (fs.existsSync(dir)) {
-      for (const f of fs.readdirSync(dir)) {
-        if (f.startsWith('omakase-')) {
-          const p = path.join(dir, f);
-          if (fs.statSync(p).isDirectory()) rimraf(p);
-          else fs.unlinkSync(p);
-        }
+  for (const dir of Object.values(OUTPUTS)) {
+    if (!fs.existsSync(dir)) continue;
+    for (const f of fs.readdirSync(dir)) {
+      if (f.startsWith('omakase-')) {
+        rimrafFile(path.join(dir, f));
       }
     }
   }
 
-  let count = 0;
   for (const persona of personas) {
-    const prompt = buildPrompt(persona, core);
     const mdName = `${persona.id}.md`;
 
     writeAgentFile(
-      outputs.opencode,
+      OUTPUTS.opencode,
       mdName,
-      `${opencodeFrontmatter(persona)}\n\n${prompt}\n`
+      `${opencodeFrontmatter(persona)}\n\n${buildAgentBody(persona, 'opencode', core)}\n`
     );
     writeAgentFile(
-      outputs.cursor,
+      OUTPUTS.cursor,
       mdName,
-      `${cursorFrontmatter(persona)}\n\n${prompt}\n`
+      `${markdownAgentFrontmatter(persona, 'cursor')}\n\n${buildAgentBody(persona, 'cursor', core)}\n`
     );
     writeAgentFile(
-      outputs.claude,
+      OUTPUTS.claude,
       mdName,
-      `${claudeFrontmatter(persona)}\n\n${prompt}\n`
+      `${markdownAgentFrontmatter(persona, 'claude')}\n\n${buildAgentBody(persona, 'claude', core)}\n`
     );
-    writeAgentFile(outputs.codex, `${persona.id}.toml`, codexToml(persona, prompt));
-    count++;
+    writeAgentFile(
+      OUTPUTS.grok,
+      mdName,
+      `${grokFrontmatter(persona)}\n\n${buildAgentBody(persona, 'grok', core)}\n`
+    );
+    writeAgentFile(
+      OUTPUTS.codex,
+      `${persona.id}.toml`,
+      codexToml(persona, buildInlineBody(persona, core))
+    );
   }
 
-  return { count, personas: personas.map((p) => p.id) };
+  return { count: personas.length, personas: personas.map((p) => p.id) };
 }
 
 if (require.main === module) {
@@ -318,4 +347,10 @@ if (require.main === module) {
   console.log(`Generated ${result.count} native agents: ${result.personas.join(', ')}`);
 }
 
-module.exports = { generateNativeAgents, loadPersonas, PERSONA_PATHS };
+module.exports = {
+  generateNativeAgents,
+  loadPersonas,
+  PERSONA_PATHS,
+  OUTPUTS,
+  LEAD_SPECIALISTS,
+};
