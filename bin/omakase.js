@@ -158,12 +158,28 @@ function summarizeNativeAgents(baseDir, isGlobal) {
   return { unique: ids.size, byLocation, ids: [...ids].sort() };
 }
 
-function formatNativeSummary(summary) {
-  if (!summary.unique) return '0';
-  const locs = Object.entries(summary.byLocation)
-    .map(([k, n]) => `${k} (${n})`)
-    .join(', ');
-  return `${summary.unique} personas · ${locs}`;
+/** Short harness labels for summaries (not full paths). */
+function harnessLabelsFromSummary(summary) {
+  const labels = [];
+  for (const dir of Object.keys(summary.byLocation)) {
+    if (dir.includes('opencode')) labels.push('opencode');
+    else if (dir.includes('.grok')) labels.push('grok');
+    else if (dir.includes('.cursor')) labels.push('cursor');
+    else if (dir.includes('.claude')) labels.push('claude');
+    else if (dir.includes('.codex')) labels.push('codex');
+    else labels.push(dir);
+  }
+  return [...new Set(labels)];
+}
+
+function formatAgentSummary(summary) {
+  if (!summary.unique) return 'none';
+  const labels = harnessLabelsFromSummary(summary);
+  return `${summary.unique} → ${labels.join(', ')}`;
+}
+
+function log(msg = '') {
+  console.log(msg);
 }
 
 function installSkills(targetHarness, options = {}) {
@@ -173,14 +189,8 @@ function installSkills(targetHarness, options = {}) {
   const nativeAgents = options.nativeAgents !== false;
 
   if (targetHarness && !isValidHarness(harness)) {
-    console.log(`
-          〜
-
-  Unknown harness: ${targetHarness}
-  Supported: cursor | claude | agents | grok | codex
-
-          〜
-`);
+    log(`error: unknown harness "${targetHarness}"`);
+    log('supported: cursor | claude | agents | grok | codex');
     process.exit(1);
   }
 
@@ -190,29 +200,20 @@ function installSkills(targetHarness, options = {}) {
   const marker = path.join(treeSource, dotDirName);
 
   if (!fs.existsSync(treeSource) || !fs.existsSync(marker)) {
-    console.log(`No dist bundle found for ${harness}.`);
-    console.log('Run `npm run build` in the omakase repo and try again.');
+    log(`error: no dist bundle for ${harness} — run npm run build in the omakase repo`);
     process.exit(1);
   }
 
+  const quiet = !!options.quiet;
   const cwd = process.cwd();
   const baseDir = isGlobal ? os.homedir() : cwd;
   const targetDot = path.join(baseDir, dotDirName);
   const skillName = isTest ? 'omakase-test' : 'omakase';
-  const alreadyPresent = fs.existsSync(path.join(targetDot, `skills/${skillName}/SKILL.md`));
+  const targetLabel = isGlobal ? `~/${dotDirName}` : dotDirName;
 
-  let action = alreadyPresent ? 'refresh' : 'install';
-  if (isTest) action = 'test-install';
-  if (isGlobal) action = isTest ? 'global-test-install' : 'global-install';
-
-  console.log(`
-          〜
-
-  道
-  ${action} · ${harness}
-      source: ${path.relative(root, treeSource)}
-      target: ${isGlobal ? '~' : ''}${dotDirName}/skills/${skillName}${isGlobal ? ' (user-level)' : ''}
-`);
+  if (!quiet) {
+    log(`install ${harness} → ${targetLabel}`);
+  }
 
   const copied = copyDistOverlay(harness, baseDir, options);
 
@@ -258,53 +259,44 @@ function installSkills(targetHarness, options = {}) {
     }
   }
 
-  const finalSkillDir = path.join(targetDot, `skills/${skillName}`);
-  const fileCount = fs.existsSync(finalSkillDir) ? getSkillFileCount(finalSkillDir) : 0;
-  const nativeSummary = nativeAgents ? summarizeNativeAgents(baseDir, isGlobal) : { unique: 0 };
+  const nativeSummary = nativeAgents
+    ? summarizeNativeAgents(baseDir, isGlobal)
+    : { unique: 0, byLocation: {} };
 
-  console.log(`
-          〜
-
-  仕上がり
-    skill: ${fileCount} files → ${path.relative(baseDir, finalSkillDir) || '(codex agents only)'}
-    native: ${formatNativeSummary(nativeSummary)}
-    overlays: ${copied.join(', ') || '(none)'}
-
-          〜
-`);
-
-  if (nativeAgents && nativeSummary.unique > 0) {
-    console.log('  Leads (invoke directly): @omakase-engineer, @omakase-critic, @omakase-archivist');
-    console.log('  Specialists: hidden in OpenCode; delegate via leads only');
+  if (!quiet) {
+    const parts = [`skill`];
+    if (nativeSummary.unique) parts.push(`${nativeSummary.unique} agents`);
+    log(`  ${parts.join(', ')}`);
+    if (isTest) log('  test install — remove omakase-test when done');
+    else if (!isGlobal) log('  reload your harness to pick up changes');
   }
 
-  if (isTest) {
-    console.log('  omakase-test (isolated)');
-    console.log('  削除  delete the omakase-test folder + omakase-* agents');
-  } else if (isGlobal) {
-    console.log('  再起動  restart your harness');
-  } else {
-    console.log('  再起動  reload your harness');
-  }
-
-  return { harness, nativeSummary, fileCount };
+  return { harness, nativeSummary, copied };
 }
 
 function installProjectStack(options = {}) {
-  installSkills('agents', options);
-  installSkills('grok', options);
-  if (fs.existsSync(path.join(process.cwd(), '.cursor'))) {
-    installSkills('cursor', options);
-  }
-  if (fs.existsSync(path.join(process.cwd(), '.claude'))) {
-    installSkills('claude', options);
-  }
+  const quiet = !!options.quiet;
+  const stackOpts = { ...options, quiet: true };
+  const harnesses = ['agents', 'grok'];
+  if (fs.existsSync(path.join(process.cwd(), '.cursor'))) harnesses.push('cursor');
+  if (fs.existsSync(path.join(process.cwd(), '.claude'))) harnesses.push('claude');
   if (
     fs.existsSync(path.join(process.cwd(), '.codex')) &&
     !fs.existsSync(path.join(process.cwd(), '.agents'))
   ) {
-    installSkills('codex', options);
+    harnesses.push('codex');
   }
+  if (!quiet) log(`install ${harnesses.join(', ')}`);
+  for (const h of harnesses) {
+    installSkills(h, stackOpts);
+  }
+  if (!quiet) {
+    const baseDir = options.global ? os.homedir() : process.cwd();
+    const summary = summarizeNativeAgents(baseDir, !!options.global);
+    log(`  agents: ${formatAgentSummary(summary)}`);
+    log('  reload your harness to pick up changes');
+  }
+  return harnesses;
 }
 
 function uninstallSkills(targetHarness, options = {}) {
@@ -314,14 +306,7 @@ function uninstallSkills(targetHarness, options = {}) {
   const removeNative = options.nativeAgents !== false;
 
   if (targetHarness && !isValidHarness(harness)) {
-    console.log(`
-          〜
-
-  Unknown harness: ${targetHarness}
-  Supported: cursor | claude | agents | grok | codex
-
-          〜
-`);
+    log(`error: unknown harness "${targetHarness}"`);
     process.exit(1);
   }
 
@@ -331,31 +316,17 @@ function uninstallSkills(targetHarness, options = {}) {
   const skillName = isTest ? 'omakase-test' : 'omakase';
   const skillDir = path.join(targetDot, 'skills', skillName);
 
-  console.log(`
-          〜
-
-  道
-  uninstall · ${harness}${isGlobal ? ' (user-level)' : ''}
-`);
+  log(`uninstall ${harness}${isGlobal ? ' (global)' : ''}`);
 
   if (fs.existsSync(skillDir)) {
     fs.rmSync(skillDir, { recursive: true, force: true });
-    console.log(`  removed skill: ${skillName}`);
   }
 
   if (removeNative) {
-    const n = removeNativeAgents(baseDir, isGlobal);
-    if (n > 0) console.log(`  removed ${n} native agent file(s)`);
+    removeNativeAgents(baseDir, isGlobal);
   }
 
-  console.log(`
-          〜
-
-  仕上がり
-    done
-
-          〜
-`);
+  log('  done');
 }
 
 function uninstallProjectStack(options = {}) {
@@ -365,12 +336,7 @@ function uninstallProjectStack(options = {}) {
   const skillName = options.test ? 'omakase-test' : 'omakase';
   let skillsRemoved = 0;
 
-  console.log(`
-          〜
-
-  道
-  uninstall · project stack${isGlobal ? ' (user-level)' : ''}
-`);
+  log(`uninstall all${isGlobal ? ' (global)' : ''}`);
 
   for (const h of ['agents', 'grok', 'cursor', 'claude', 'codex']) {
     const skillDir = path.join(baseDir, HARNESS_CONFIG[h].dotDir, 'skills', skillName);
@@ -383,15 +349,7 @@ function uninstallProjectStack(options = {}) {
   const agentsRemoved =
     options.nativeAgents !== false ? removeNativeAgents(baseDir, isGlobal) : 0;
 
-  console.log(`
-          〜
-
-  仕上がり
-    skill trees removed: ${skillsRemoved}
-    native agent files removed: ${agentsRemoved}
-
-          〜
-`);
+  log(`  removed ${skillsRemoved} skill tree(s), ${agentsRemoved} agent file(s)`);
 }
 
 function initProject(options = {}) {
@@ -402,12 +360,7 @@ function initProject(options = {}) {
   const agentsPath = path.join(cwd, 'AGENTS.md');
   const today = new Date().toISOString().slice(0, 10);
 
-  console.log(`
-          〜
-
-  道
-  init · project bootstrap
-`);
+  log('omakase init');
 
   fs.mkdirSync(memDir, { recursive: true });
 
@@ -484,51 +437,23 @@ Specialists (\`omakase-senior-reviewer\`, etc.) are internal — invoked by lead
     nativeAgents: options.nativeAgents !== false,
   };
 
-  installProjectStack(installOpts);
+  const harnesses = installProjectStack({ ...installOpts, quiet: true });
   const initBase = installOpts.global ? os.homedir() : cwd;
   const nativeSummary = summarizeNativeAgents(initBase, !!installOpts.global);
 
-  console.log(`
-          〜
-
-  仕上がり
-    .omakaseagent/     taste + decisions
-    AGENTS.md          Omakase section
-    native:            ${formatNativeSummary(nativeSummary)}
-
-  Next: @omakase-engineer <your task>
-        or /omakase engineer <task> (skill fallback)
-
-          〜
-`);
+  log(`  memory:  .omakaseagent/`);
+  log(`  agents:  ${formatAgentSummary(nativeSummary)} (${harnesses.join(', ')})`);
+  log(`  next:    @omakase-engineer <your task>`);
 }
 
 function showHelp() {
-  console.log(`
-omakase v${VERSION}
-
-          〜
-
-  道
-  omakase init [--test] [--global]
-      Bootstrap .omakaseagent/, AGENTS.md, install skill + native agents
-      (agents + opencode + grok + codex; + cursor/claude if those dirs exist)
-
-  omakase skills install [cursor|claude|agents|grok|codex] [--test] [--global]
-      Install skill + native omakase-* agents (default)
-      --no-native-agents   skill only, no omakase-* agent files
-
-  omakase skills uninstall [--global] [--test] [--no-native-agents]
-      Remove installed skill and omakase-* agents
-
-          〜
-
-  心
-  Primary: @omakase-engineer | @omakase-critic | @omakase-archivist
-  Fallback: /omakase-router plan | /omakase-router critique (skill omakase-router)
-
-          〜
-`);
+  log(`omakase v${VERSION}`);
+  log('');
+  log('  omakase init [--test] [--global]');
+  log('  omakase skills install [cursor|claude|agents|grok|codex] [--test] [--global]');
+  log('  omakase skills uninstall [harness] [--global] [--test]');
+  log('');
+  log('  leads: @omakase-engineer | @omakase-critic | @omakase-archivist');
 }
 
 const isTest = flag('--test') || flag('-t');
@@ -559,12 +484,6 @@ if (command === 'init') {
 } else if (command === 'skills' && (sub === 'help' || !sub)) {
   showHelp();
 } else {
-  console.log(`
-          〜
-
-  Unknown command. See \`omakase help\`.
-
-          〜
-`);
+  log('error: unknown command — run `omakase help`');
   process.exit(1);
 }
