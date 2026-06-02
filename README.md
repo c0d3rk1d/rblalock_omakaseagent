@@ -157,10 +157,7 @@ We only ship what we would use daily.
 
 Source of truth is `skill/`. Shipped bundles live in `dist/` (committed). **Do not commit** local harness installs (`.cursor/`, `.claude/`, `.grok/`, `.opencode/`, `.agents/`, `.codex/`) — they are gitignored; regenerate with init.
 
-This repo **does** commit:
-
-- `.omakaseagent/` — example taste + decisions memory
-- `AGENTS.md` — example project pointer for harnesses
+This repo **does** commit `dist/` and `skill/`. Local `.omakaseagent/` and harness dirs are gitignored — run `npx omakase init` after clone to dogfood.
 
 ```bash
 npm run build
@@ -170,7 +167,7 @@ npx omakase init    # dogfood Cursor / OpenCode / Grok in this clone (local only
 
 Never edit `dist/` directly.
 
-The original implementation spec (OMAKASE-SPEC.md) has been retired. The current state is captured in this README, the personas under `skill/teams/`, and `.omakaseagent/decisions.md`.
+The original implementation spec (OMAKASE-SPEC.md) has been retired. The current state is captured in this README and the personas under `skill/teams/`.
 
 ## License
 

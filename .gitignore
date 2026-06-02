@@ -23,6 +23,7 @@ omakase-dogfood-*
 /.opencode/
 /.codex/
 /.agents/
+/.omakaseagent/
 
 # Environment / secrets
 .env
@@ -31,5 +32,4 @@ omakase-dogfood-*
 *.key
 
 # dist/ — committed (built bundles for npm install)
-# .omakaseagent/ — committed (example taste + decisions memory)
-# AGENTS.md — committed (example project pointer)
+# AGENTS.md — committed (example project pointer; optional for this repo)
