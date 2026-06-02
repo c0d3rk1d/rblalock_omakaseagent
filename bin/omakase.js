@@ -112,7 +112,9 @@ function copyDistOverlay(harness, baseDir, options = {}) {
     copied.push(overlay);
   }
 
-  if (harness === 'grok' || harness === 'cursor' || harness === 'claude') {
+  // Cursor reads .claude/agents/ — prune specialists there and in .cursor only.
+  // Do not prune .grok/agents (specialists stay for Grok Task delegation).
+  if (harness === 'cursor' || harness === 'claude') {
     const dot = HARNESS_CONFIG[harness].dotDir;
     pruneNonLeadAgentFiles(path.join(baseDir, `${dot}/agents`));
   }
