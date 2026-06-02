@@ -47,7 +47,7 @@ function read(p) {
 for (const [name, dir] of Object.entries(paths)) {
   const ext = name === 'codex' ? '.toml' : '.md';
   const n = countOmakase(dir, ext);
-  const expected = name === 'grok' || name === 'cursor' ? LEAD_COUNT : PERSONA_COUNT;
+  const expected = name === 'cursor' || name === 'claude' ? LEAD_COUNT : PERSONA_COUNT;
   if (n !== expected) {
     fail(`${name}: expected ${expected} omakase-*${ext}, got ${n}`);
   } else {
@@ -160,8 +160,8 @@ try {
   });
   const grokDir = path.join(tmpGrok, '.grok/agents');
   const n = countOmakase(grokDir, '.md');
-  if (n !== LEAD_COUNT) fail(`grok install: expected ${LEAD_COUNT} lead agents, got ${n}`);
-  else ok('CLI install grok --test → .grok/agents (leads only)');
+  if (n !== PERSONA_COUNT) fail(`grok install: expected ${PERSONA_COUNT} agents, got ${n}`);
+  else ok('CLI install grok --test → .grok/agents');
   fs.rmSync(tmpGrok, { recursive: true, force: true });
 } catch (e) {
   fail(`grok install smoke: ${e.message}`);

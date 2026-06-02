@@ -328,23 +328,30 @@ function generateNativeAgents() {
       `${opencodeFrontmatter(persona)}\n\n${buildAgentBody(persona, 'opencode', core)}\n`
     );
     writeAgentFile(
-      OUTPUTS.claude,
-      mdName,
-      `${markdownAgentFrontmatter(persona, 'claude')}\n\n${buildAgentBody(persona, 'claude', core)}\n`
-    );
-    writeAgentFile(
       OUTPUTS.codex,
       `${persona.id}.toml`,
       codexToml(persona, buildInlineBody(persona, core))
     );
 
-    // Grok/Cursor pickers: leads only. Specialists stay in .opencode (hidden) + .claude (background) for delegation.
+    // User-facing pickers: leads in .cursor / .claude / .grok (Cursor also reads .claude/agents/).
     if (isLead) {
       writeAgentFile(
         OUTPUTS.cursor,
         mdName,
         `${markdownAgentFrontmatter(persona, 'cursor')}\n\n${buildAgentBody(persona, 'cursor', core)}\n`
       );
+      writeAgentFile(
+        OUTPUTS.claude,
+        mdName,
+        `${markdownAgentFrontmatter(persona, 'claude')}\n\n${buildAgentBody(persona, 'claude', core)}\n`
+      );
+      writeAgentFile(
+        OUTPUTS.grok,
+        mdName,
+        `${grokFrontmatter(persona)}\n\n${buildAgentBody(persona, 'grok', core)}\n`
+      );
+    } else {
+      // Specialists: OpenCode (hidden) + Grok (delegation). Not in .claude — Cursor would list them.
       writeAgentFile(
         OUTPUTS.grok,
         mdName,

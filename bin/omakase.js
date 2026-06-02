@@ -112,11 +112,9 @@ function copyDistOverlay(harness, baseDir, options = {}) {
     copied.push(overlay);
   }
 
-  if (harness === 'grok') {
-    pruneNonLeadAgentFiles(path.join(baseDir, '.grok/agents'));
-  }
-  if (harness === 'cursor') {
-    pruneNonLeadAgentFiles(path.join(baseDir, '.cursor/agents'));
+  if (harness === 'grok' || harness === 'cursor' || harness === 'claude') {
+    const dot = HARNESS_CONFIG[harness].dotDir;
+    pruneNonLeadAgentFiles(path.join(baseDir, `${dot}/agents`));
   }
 
   return copied;
