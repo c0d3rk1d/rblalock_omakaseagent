@@ -155,10 +155,17 @@ We only ship what we would use daily.
 
 ## Development
 
-Source of truth is `skill/`.
+Source of truth is `skill/`. Shipped bundles live in `dist/` (committed). **Do not commit** local harness installs (`.cursor/`, `.claude/`, `.grok/`, `.opencode/`, `.agents/`, `.codex/`) — they are gitignored; regenerate with init.
+
+This repo **does** commit:
+
+- `.omakaseagent/` — example taste + decisions memory
+- `AGENTS.md` — example project pointer for harnesses
 
 ```bash
 npm run build
+npm run verify:native-agents
+npx omakase init    # dogfood Cursor / OpenCode / Grok in this clone (local only)
 ```
 
 Never edit `dist/` directly.

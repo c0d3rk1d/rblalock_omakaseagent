@@ -11,16 +11,18 @@ node_modules/
 *.log
 npm-debug.log*
 
-# Temporary test projects (our dogfooding harnesses)
+# Temporary test projects (dogfooding harnesses)
 omakase-dogfood-*
 /tmp/omakase-*
 
-# Local harness test installs the developer creates *at the root* of this (or any) project
-# when testing the installer. Anchored with leading / so they don't accidentally ignore
-# the bundled dist/<harness>/.xxx/ trees that we intentionally commit.
- /.cursor/
- /.claude/
- /.agents/
+# Harness installs at repo root (from `omakase init` / `skills install`).
+# Anchored with / so dist/<harness>/.xxx/ bundles in dist/ stay committed.
+/.cursor/
+/.claude/
+/.grok/
+/.opencode/
+/.codex/
+/.agents/
 
 # Environment / secrets
 .env
@@ -28,9 +30,6 @@ omakase-dogfood-*
 *.pem
 *.key
 
-# dist/ and .omakaseagent/ are deliberately NOT ignored.
-/.agents/skills/omakase
-/.codex/agents
-/.cursor
-/.grok
-/.opencode/agents
+# dist/ — committed (built bundles for npm install)
+# .omakaseagent/ — committed (example taste + decisions memory)
+# AGENTS.md — committed (example project pointer)
