@@ -224,14 +224,20 @@ function markdownAgentFrontmatter(persona, harness) {
     `description: ${yamlQuote(desc)}`,
     'model: inherit',
   ];
-  if (persona.readonly || !persona.isLead) {
-    lines.push('readonly: true');
-  }
-  if (!persona.isLead) {
-    lines.push('is_background: true');
-  }
-  if (harness === 'claude' && persona.readonly) {
-    lines.push('permissionMode: plan');
+  if (harness === 'claude') {
+    if (persona.readonly || !persona.isLead) {
+      lines.push('permissionMode: plan');
+    }
+    if (!persona.isLead) {
+      lines.push('background: true');
+    }
+  } else if (harness === 'cursor') {
+    if (persona.readonly || !persona.isLead) {
+      lines.push('readonly: true');
+    }
+    if (!persona.isLead) {
+      lines.push('is_background: true');
+    }
   }
   lines.push('---');
   return lines.join('\n');

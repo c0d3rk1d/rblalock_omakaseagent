@@ -60,9 +60,15 @@ Leads: `permission_mode: default`. Specialists: `permission_mode: plan` + `INTER
 
 ### Claude Code
 
+**Install:** `omakase init` always writes `.claude/agents/` (you do **not** need a pre-existing `.claude/` folder).
+
+**See them in the TUI:** run **`/agents`** → **Library** → scroll to **Project agents** (below Plugin / Built-in). **Start a new Claude session** after init — agents load at session start.
+
 ```bash
 claude -p --agent omakase-engineer "your task"
 ```
+
+If Library only shows Plugin + Built-in agents, Claude agents were never installed: check `ls .claude/agents/omakase-engineer.md`.
 
 ### Cursor
 
@@ -70,9 +76,17 @@ claude -p --agent omakase-engineer "your task"
 
 ### Codex
 
+Custom agents live in `.codex/agents/*.toml` (installed by `omakase init` via the `agents` harness). Codex does **not** show a browsable catalog like OpenCode `@` or Claude `/agents` Library.
+
+The TUI **Subagents** screen (`/agent`) lists **active threads** (e.g. `Main [default]`) — not available agent definitions. You only see more rows after Codex **spawns** a subagent.
+
+**Use them:**
+
 ```bash
 codex exec --skip-git-repo-check -c 'agent="omakase_engineer"' "your task"
 ```
+
+In the interactive TUI, ask explicitly, e.g. `Spawn a subagent using the omakase_engineer custom agent to review this diff.` (names use **underscores**: `omakase_engineer`, not hyphens).
 
 ## Skill vs native agent
 
@@ -91,6 +105,8 @@ codex exec --skip-git-repo-check -c 'agent="omakase_engineer"' "your task"
 | Specialist in `@` menu (OpenCode) | Regenerate; specialists need `hidden: true`. |
 | `{file:}` not resolving | Run `omakase init` so `.agents/skills/omakase/teams/` exists relative to agent files. |
 | Grok missing agents | Run `omakase skills install grok` or full `omakase init`. |
+| Claude Library has no Project agents | Re-run `omakase init`; confirm `.claude/agents/omakase-*.md`; **new session**. |
+| Codex Subagents only shows Main | Expected — spawn agents via prompt or `agent="omakase_engineer"`. |
 
 ## CI
 

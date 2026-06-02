@@ -2,8 +2,8 @@
 name: omakase-verification-critic
 description: "INTERNAL ONLY — Critics specialist under omakase-critic. Never user-invokable; only omakase-critic delegates via Task. Specializes in verifying claims with evidence. Turns vague assertions into falsifiable statements and delivers clear VERIFIED / NOT VERIFIED / INCONCLUSIVE verdicts."
 model: inherit
-readonly: true
-is_background: true
+permissionMode: plan
+background: true
 ---
 
 # Omakase Native Agent

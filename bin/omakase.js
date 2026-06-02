@@ -277,9 +277,9 @@ function installSkills(targetHarness, options = {}) {
 function installProjectStack(options = {}) {
   const quiet = !!options.quiet;
   const stackOpts = { ...options, quiet: true };
-  const harnesses = ['agents', 'grok'];
+  // Always install claude + grok + agents (agents also drops codex agents into .codex/agents/)
+  const harnesses = ['agents', 'grok', 'claude'];
   if (fs.existsSync(path.join(process.cwd(), '.cursor'))) harnesses.push('cursor');
-  if (fs.existsSync(path.join(process.cwd(), '.claude'))) harnesses.push('claude');
   if (
     fs.existsSync(path.join(process.cwd(), '.codex')) &&
     !fs.existsSync(path.join(process.cwd(), '.agents'))

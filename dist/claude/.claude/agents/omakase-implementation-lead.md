@@ -2,8 +2,8 @@
 name: omakase-implementation-lead
 description: "INTERNAL ONLY — Engineering specialist under omakase-engineer. Never user-invokable; only omakase-engineer delegates via Task. Focuses on turning plans and designs into clean, working, production-ready code with excellent taste and minimal friction."
 model: inherit
-readonly: true
-is_background: true
+permissionMode: plan
+background: true
 ---
 
 # Omakase Native Agent

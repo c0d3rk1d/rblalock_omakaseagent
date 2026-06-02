@@ -2,7 +2,6 @@
 name: omakase-critic
 description: "Omakase — The Critic. Independent quality enforcer and structural critic. Use for harsh, evidence-based reviews, deslop, verification, and upholding senior standards. Delegates to specialist critics when needed."
 model: inherit
-readonly: true
 permissionMode: plan
 ---
 
