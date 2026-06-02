@@ -29,3 +29,8 @@ omakase-dogfood-*
 *.key
 
 # dist/ and .omakaseagent/ are deliberately NOT ignored.
+/.agents/skills/omakase
+/.codex/agents
+/.cursor
+/.grok
+/.opencode/agents

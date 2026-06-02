@@ -2,8 +2,8 @@
 name: omakase-memory-synthesizer
 description: "INTERNAL ONLY — Archives specialist under omakase-archivist. Never user-invokable; only omakase-archivist delegates via Task. Specializes in synthesizing insights, patterns, and decisions across conversations and time."
 model: inherit
-readonly: true
-is_background: true
+permissionMode: plan
+background: true
 ---
 
 # Omakase Native Agent

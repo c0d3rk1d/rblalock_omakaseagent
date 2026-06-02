@@ -2,8 +2,8 @@
 name: omakase-debugger
 description: "INTERNAL ONLY — Engineering specialist under omakase-engineer. Never user-invokable; only omakase-engineer delegates via Task. Methodical root-cause analysis and fixing of complex, gnarly, or intermittent issues."
 model: inherit
-readonly: true
-is_background: true
+permissionMode: plan
+background: true
 ---
 
 # Omakase Native Agent

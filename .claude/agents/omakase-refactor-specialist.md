@@ -2,8 +2,8 @@
 name: omakase-refactor-specialist
 description: "INTERNAL ONLY — Engineering specialist under omakase-engineer. Never user-invokable; only omakase-engineer delegates via Task. Excels at refactoring and simplifying existing code while preserving behavior and improving long-term health."
 model: inherit
-readonly: true
-is_background: true
+permissionMode: plan
+background: true
 ---
 
 # Omakase Native Agent

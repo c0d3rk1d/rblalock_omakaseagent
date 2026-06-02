@@ -41,6 +41,9 @@ const LEAD_PARENT = {
   'deslop-critic': 'omakase-critic',
 };
 
+/** User-invokable leads only; specialists are lead-delegated. */
+const LEAD_IDS = new Set(['omakase-engineer', 'omakase-critic', 'omakase-archivist']);
+
 const LEAD_SPECIALISTS = {
   engineer: [
     'omakase-senior-reviewer',
@@ -317,6 +320,7 @@ function generateNativeAgents() {
 
   for (const persona of personas) {
     const mdName = `${persona.id}.md`;
+    const isLead = LEAD_IDS.has(persona.id);
 
     writeAgentFile(
       OUTPUTS.opencode,
@@ -324,25 +328,29 @@ function generateNativeAgents() {
       `${opencodeFrontmatter(persona)}\n\n${buildAgentBody(persona, 'opencode', core)}\n`
     );
     writeAgentFile(
-      OUTPUTS.cursor,
-      mdName,
-      `${markdownAgentFrontmatter(persona, 'cursor')}\n\n${buildAgentBody(persona, 'cursor', core)}\n`
-    );
-    writeAgentFile(
       OUTPUTS.claude,
       mdName,
       `${markdownAgentFrontmatter(persona, 'claude')}\n\n${buildAgentBody(persona, 'claude', core)}\n`
-    );
-    writeAgentFile(
-      OUTPUTS.grok,
-      mdName,
-      `${grokFrontmatter(persona)}\n\n${buildAgentBody(persona, 'grok', core)}\n`
     );
     writeAgentFile(
       OUTPUTS.codex,
       `${persona.id}.toml`,
       codexToml(persona, buildInlineBody(persona, core))
     );
+
+    // Grok/Cursor pickers: leads only. Specialists stay in .opencode (hidden) + .claude (background) for delegation.
+    if (isLead) {
+      writeAgentFile(
+        OUTPUTS.cursor,
+        mdName,
+        `${markdownAgentFrontmatter(persona, 'cursor')}\n\n${buildAgentBody(persona, 'cursor', core)}\n`
+      );
+      writeAgentFile(
+        OUTPUTS.grok,
+        mdName,
+        `${grokFrontmatter(persona)}\n\n${buildAgentBody(persona, 'grok', core)}\n`
+      );
+    }
   }
 
   return { count: personas.length, personas: personas.map((p) => p.id) };
@@ -358,5 +366,6 @@ module.exports = {
   loadPersonas,
   PERSONA_PATHS,
   OUTPUTS,
+  LEAD_IDS,
   LEAD_SPECIALISTS,
 };

@@ -33,7 +33,7 @@ flowchart LR
 | Claude Code | `.claude/skills/omakase/` | `.claude/agents/omakase-*.md` |
 | Codex | — | `.codex/agents/omakase-*.toml` |
 
-`omakase init` installs **agents + grok + codex** overlays always; adds cursor/claude when those dirs exist.
+`omakase init` installs **agents + grok + claude + codex** always. **Leads only** in `.grok/agents/` and `.cursor/agents/` (3 files). **All 11** in `.opencode/agents/` (specialists `hidden: true`) and `.claude/agents/` (specialists `background: true` — for Claude + Grok delegation; Grok also reads `.claude/agents/`).
 
 ## Per-harness commands
 
@@ -103,6 +103,8 @@ In the interactive TUI, ask explicitly, e.g. `Spawn a subagent using the omakase
 | `@omakase-engineer` loads skill + `lead.md` | Re-init; skill must be `omakase-router`. Use `opencode run --agent omakase-engineer`. |
 | `run --agent` falls back to `build` | Lead needs `mode: all` in `.opencode/agents/omakase-engineer.md`. |
 | Specialist in `@` menu (OpenCode) | Regenerate; specialists need `hidden: true`. |
+| Specialists in Grok/Cursor pickers | Expected fixed: only 3 leads in `.grok`/`.cursor`; specialists live in `.opencode` + `.claude`. |
+| Specialists in Claude `/agents` Library | `background: true` — may appear under background agents, not for direct pick. |
 | `{file:}` not resolving | Run `omakase init` so `.agents/skills/omakase/teams/` exists relative to agent files. |
 | Grok missing agents | Run `omakase skills install grok` or full `omakase init`. |
 | Claude Library has no Project agents | Re-run `omakase init`; confirm `.claude/agents/omakase-*.md`; **new session**. |

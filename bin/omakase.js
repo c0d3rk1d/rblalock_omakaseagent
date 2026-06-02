@@ -16,6 +16,9 @@ const root = path.resolve(__dirname, '..');
 const distRoot = path.join(root, 'dist');
 const pkg = require(path.join(root, 'package.json'));
 const VERSION = pkg.version;
+const { LEAD_IDS } = require(path.join(root, 'scripts/native-agents/generate'));
+
+const LEAD_AGENT_FILES = [...LEAD_IDS].map((id) => `${id}.md`);
 
 const HARNESS_CONFIG = {
   cursor: { dotDir: '.cursor', label: 'Cursor', distName: 'cursor' },
@@ -109,7 +112,26 @@ function copyDistOverlay(harness, baseDir, options = {}) {
     copied.push(overlay);
   }
 
+  if (harness === 'grok') {
+    pruneNonLeadAgentFiles(path.join(baseDir, '.grok/agents'));
+  }
+  if (harness === 'cursor') {
+    pruneNonLeadAgentFiles(path.join(baseDir, '.cursor/agents'));
+  }
+
   return copied;
+}
+
+/** Grok/Cursor ship leads only; drop legacy specialist files from older installs. */
+function pruneNonLeadAgentFiles(agentDir) {
+  if (!fs.existsSync(agentDir)) return;
+  for (const entry of fs.readdirSync(agentDir)) {
+    if (!entry.startsWith('omakase-')) continue;
+    const id = entry.replace(/\.(md|toml)$/, '');
+    if (!LEAD_IDS.has(id)) {
+      fs.rmSync(path.join(agentDir, entry), { force: true });
+    }
+  }
 }
 
 function removeNativeAgents(baseDir, isGlobal = false) {

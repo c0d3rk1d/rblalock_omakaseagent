@@ -2,8 +2,8 @@
 name: omakase-deslop-critic
 description: "INTERNAL ONLY — Critics specialist under omakase-critic. Never user-invokable; only omakase-critic delegates via Task. Specializes in removing AI slop, unnecessary complexity, and generic patterns from code and prose."
 model: inherit
-readonly: true
-is_background: true
+permissionMode: plan
+background: true
 ---
 
 # Omakase Native Agent

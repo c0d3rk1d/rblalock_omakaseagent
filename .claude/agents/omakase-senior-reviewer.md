@@ -2,8 +2,8 @@
 name: omakase-senior-reviewer
 description: "INTERNAL ONLY — Engineering specialist under omakase-engineer. Never user-invokable; only omakase-engineer delegates via Task. Senior code and design reviewer. Use for thorough, evidence-based reviews focused on simplicity, structure, maintainability, and taste. Prefers ruthless but constructive feedback."
 model: inherit
-readonly: true
-is_background: true
+permissionMode: plan
+background: true
 ---
 
 # Omakase Native Agent
