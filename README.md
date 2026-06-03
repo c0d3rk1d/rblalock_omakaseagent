@@ -1,24 +1,16 @@
 # Omakase
 
-**The chef's standard.**
+**The chef's standard.** One skill. Senior taste. Zero AI slop.
 
 [![skills.sh](https://skills.sh/b/rblalock/omakaseagent)](https://skills.sh/rblalock/omakaseagent)
 
-One skill. Senior taste. Zero AI slop. It holds the work to the same bar you would.
+Trust the chef — state the goal. Omakase applies the bar, remembers taste, and critiques before anything significant ships.
 
-Trust the chef. State the goal. We decide the approach and enforce the standard.
+## What it is
 
-## Why this exists
+Omakase is a **portable quality standard** for agent work: twelve rules, a critique rubric, and project memory (`.omakaseagent/taste.md`, `decisions.md`). Not a bag of prompts.
 
-Most agent skills are bags of prompts. Omakase is a **standard** — a small set of non-negotiable rules and a critique rubric that every significant output must pass.
-
-It is deliberately anti-slop by design:
-- Ruthless simplicity is the default stance
-- Critique is mandatory
-- Persistent project taste memory is first-class
-- You always explain your taste on non-trivial work
-
-If the output could have been written by a generic model with no strong opinions, it has failed.
+Generic, hedging, over-engineered output fails. Non-trivial work explains *why* this approach.
 
 ## Quick start
 
@@ -26,153 +18,72 @@ If the output could have been written by a generic model with no strong opinions
 npx omakase init
 ```
 
-This bootstraps `.omakaseagent/`, updates `AGENTS.md`, installs the skill, and registers **native sub-agents** (`@omakase-engineer`, `@omakase-critic`, `@omakase-archivist`) for OpenCode, Cursor, Claude Code, and Codex.
+Reload your harness, then talk to a **lead** (not a menu of skills):
 
-Reload your harness, then:
+| Harness | Example |
+|---------|---------|
+| Cursor / Claude IDE | `@omakase-engineer add rate limiting with backoff` |
+| OpenCode | `opencode run --agent omakase-engineer "add rate limiting…"` |
+| Grok | `grok --agent omakase-engineer "…"` |
+| Claude CLI | `claude -p --agent omakase-critic "review the auth module"` |
 
-```
-@omakase-engineer add rate limiting with backoff and jitter   # Cursor / Claude IDE
-opencode run --agent omakase-engineer "add rate limiting…"   # OpenCode (preferred)
-claude -p --agent omakase-critic "review the auth module"
-```
+**Leads:** `@omakase-engineer` · `@omakase-critic` · `@omakase-archivist` — specialists stay internal; leads delegate.
 
-On OpenCode, prefer `opencode run --agent` over `@` if the harness routes `@omakase-*` to the skill instead of the native agent.
-
-Fallback (skill `omakase-router` only — plan/taste/handoff, not engineering):
+**Router skill** (`omakase-router`) is only for plan, taste, handoff, and init when you are not using a native lead:
 
 ```
 /omakase-router plan <goal>
 /omakase-router critique <target>
 ```
 
-Grok Build: `grok --agent omakase-engineer "…"` after init. See [docs/NATIVE-SUBAGENTS.md](docs/NATIVE-SUBAGENTS.md).
+Harness quirks, Codex names, and troubleshooting: [docs/NATIVE-SUBAGENTS.md](docs/NATIVE-SUBAGENTS.md).
 
-## The Standard (ships with every install)
+## The standard (always loaded)
 
-Three small documents. These are sacred context:
+| File | Role |
+|------|------|
+| [OMAKASE-RULES.md](OMAKASE-RULES.md) | Twelve non-negotiable rules |
+| [OMAKASE-CRITIQUE.md](OMAKASE-CRITIQUE.md) | Rubric for major output |
+| [OMAKASE-PRINCIPLES.md](OMAKASE-PRINCIPLES.md) | Why this is a standard, not a prompt pack |
 
-- **OMAKASE-RULES.md** — The 12 rules (Full Context First, Zero Slop Policy, Ruthless Simplicity, Explain Your Taste, Persistent Memory, etc.)
-- **OMAKASE-CRITIQUE.md** — The 8-bullet rubric every major output must pass
-- **OMAKASE-PRINCIPLES.md** — This is a standard, not another prompt collection
+Memory lives in `.omakaseagent/` after `init`.
 
-Project memory lives in `.omakaseagent/taste.md` and `decisions.md`. The skill loads them on relevant work.
+## Install
 
-## Installation
-
-### Recommended
-
-```bash
-npx omakase skills install
-```
-
-This gives the best experience and automatically detects your harness (Cursor, Claude Code, agents-style, etc.).
-
-Explicit harness:
+**New project:**
 
 ```bash
-npx omakase skills install cursor
-npx omakase skills install claude
-npx omakase skills install agents   # .agents/skills + .opencode/agents + .codex/agents
-npx omakase skills install grok     # .grok/skills + .grok/agents
-npx omakase skills install codex
+npx omakase init
 ```
 
-Native agents are installed by default. Use `--no-native-agents` for skill-only install.
-
-See [docs/NATIVE-SUBAGENTS.md](docs/NATIVE-SUBAGENTS.md) for invoke commands, delegation, and troubleshooting.
+**Skill + agents only** (harness already configured):
 
 ```bash
-npm run verify:native-agents   # smoke-test dist/ agent artifacts
+npx omakase skills install          # auto-detect harness
+npx omakase skills install cursor   # or: claude | agents | grok | codex
 ```
 
-### Also available via the general skills installer
+Also on the skills ecosystem: `npx skills add rblalock/omakaseagent` ([skills.sh](https://skills.sh/rblalock/omakaseagent)).
+
+Use `omakase skills install --no-native-agents` for skill-only. Verify artifacts: `npm run verify:native-agents`.
+
+## Roadmap
+
+Active plan: [plans/OMAKASE-TEAMS-EXPANSION-RESEARCH.md](plans/OMAKASE-TEAMS-EXPANSION-RESEARCH.md) (Sales team, ship/verify workflows, `omakase learn`, project-specific agents).
+
+## Developing this repo
+
+Source: `skill/`. Shipped bundles: `dist/` (committed — do not edit by hand).
 
 ```bash
-npx skills add rblalock/omakaseagent
-```
-
-This makes Omakase discoverable on [skills.sh](https://skills.sh) and works with the unified skills ecosystem.
-
-**Note:** The dedicated `npx omakase skills install` path is recommended for the best results while the skill is actively evolving.
-
-## Local Development (no npm publish required)
-
-If you're working on Omakase itself (or want the absolute latest version locally):
-
-1. **Link the CLI globally** (so the `omakase` command always uses your local copy):
-
-   ```bash
-   cd /path/to/omakaseagent
-   npm link
-   ```
-
-   This also runs the build automatically.
-
-2. **Install the skill** with full control:
-
-   ```bash
-   # Per-project (most common during development)
-   omakase skills install cursor --test
-   omakase skills install claude --test
-
-   # Global / user-level (available in every project)
-   omakase skills install cursor --global
-   omakase skills install agents --global --test
-   ```
-
-   `--global` installs to `~/.cursor/skills/`, `~/.claude/skills/`, or `~/.agents/skills/` instead of the current project.
-
-This model is very close to how [Impeccable](https://impeccable.style) handles installation (their `npx impeccable skills install` + documented global paths for several harnesses).
-
-You can freely switch between the published version (`npx omakase ...`) and your local linked version at any time.
-
-## Usage
-
-One entry point:
-
-```
-/omakase <goal or command>
-```
-
-Common explicit commands:
-
-- `init` — Bootstrap `.omakaseagent/` with taste + decisions
-- `engineer` — Full senior Engineering persona (code judo, deslop, critique gate)
-- `critique` — Domain-aware review that merges the right extensions
-- `plan` — Senior planning with explicit reasoning and options
-
-For everything else, just say what you want. The skill detects intent and applies the appropriate standard.
-
-## Philosophy
-
-Mediocre work is not acceptable.
-
-The output should feel like it came from a practitioner with strong, earned opinions — not from a model averaging its training data.
-
-We reject generic AI patterns at the architecture level. Critique is non-negotiable. Taste is persisted. Simplicity is the default. "Why this approach" is required on anything non-trivial.
-
-We only ship what we would use daily.
-
-## Development
-
-Source of truth is `skill/`. Shipped bundles live in `dist/` (committed). **Do not commit** local harness installs (`.cursor/`, `.claude/`, `.grok/`, `.opencode/`, `.agents/`, `.codex/`) — they are gitignored; regenerate with init.
-
-This repo **does** commit `dist/` and `skill/`. Local `.omakaseagent/` and harness dirs are gitignored — run `npx omakase init` after clone to dogfood.
-
-```bash
+npm link              # local CLI
 npm run build
 npm run verify:native-agents
-npx omakase init    # dogfood Cursor / OpenCode / Grok in this clone (local only)
+npx omakase init      # dogfood in this clone
 ```
 
-Never edit `dist/` directly.
-
-The original implementation spec (OMAKASE-SPEC.md) has been retired. The current state is captured in this README and the personas under `skill/teams/`.
+Do not commit local harness dirs (`.cursor/`, `.claude/`, etc.) — regenerate with `init`. Personas: `skill/teams/`.
 
 ## License
 
-Apache 2.0. The tooling is licensed for distribution. The standard is meant to be adopted and enforced by teams that care about quality.
-
----
-
-Trust the chef.
+Apache 2.0
