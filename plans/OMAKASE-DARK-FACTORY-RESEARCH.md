@@ -44,9 +44,9 @@ The current repo already contains most of the language needed for this methodolo
 - visible "Memory consulted" and "Why this approach" expectations
 - smart-default parity as a future enforcement target
 
-[`plans/OMAKASE-AGENT-HARNESSES-RESEARCH.md`](./OMAKASE-AGENT-HARNESSES-RESEARCH.md) already did useful groundwork on subagents and harnesses. It found that most modern agent systems converge on markdown or markdown-like definitions, isolated subagent context, and parent-child handoffs.
+Harness research (completed; plan archived) found that most modern agent systems converge on markdown or markdown-like definitions, isolated subagent context, and parent-child handoffs. Native sub-agents are now shipped — see [`docs/NATIVE-SUBAGENTS.md`](../docs/NATIVE-SUBAGENTS.md).
 
-[`OMAKASE-HEAVY-TEST-FINDINGS-2026-05-31.md`](../OMAKASE-HEAVY-TEST-FINDINGS-2026-05-31.md) is the most important internal evidence. It showed real gaps:
+A May 2026 heavy-test battery (archived) was the most important internal evidence. It showed real gaps:
 
 - smart default behavior can lag explicit persona activation
 - first-task memory seeding can be weak
@@ -878,6 +878,5 @@ Repo artifacts grounded in the memo:
 - [`README.md`](../README.md)
 - [`skill/SKILL.md`](../skill/SKILL.md)
 - [`.omakaseagent/decisions.md`](../.omakaseagent/decisions.md)
-- [`plans/OMAKASE-AGENT-HARNESSES-RESEARCH.md`](./OMAKASE-AGENT-HARNESSES-RESEARCH.md)
-- [`OMAKASE-HEAVY-TEST-FINDINGS-2026-05-31.md`](../OMAKASE-HEAVY-TEST-FINDINGS-2026-05-31.md)
+- [`docs/NATIVE-SUBAGENTS.md`](../docs/NATIVE-SUBAGENTS.md) (native sub-agents; harness research, implementation plans, and heavy-test report archived)
 
