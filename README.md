@@ -67,10 +67,6 @@ Also on the skills ecosystem: `npx skills add rblalock/omakaseagent` ([skills.sh
 
 Use `omakase skills install --no-native-agents` for skill-only. Verify artifacts: `npm run verify:native-agents`.
 
-## Roadmap
-
-Active plan: [plans/OMAKASE-TEAMS-EXPANSION-RESEARCH.md](plans/OMAKASE-TEAMS-EXPANSION-RESEARCH.md) (Sales team, ship/verify workflows, `omakase learn`, project-specific agents).
-
 ## Developing this repo
 
 Source: `skill/`. Shipped bundles: `dist/` (committed — do not edit by hand).
