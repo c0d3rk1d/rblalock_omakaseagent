@@ -1,7 +1,7 @@
 # Omakase Teams Expansion — Research & Plan
 
-**Date:** 2026-06-03  
-**Status:** Plan (research complete, not implemented)  
+**Date:** 2026-06-03 (backlog updated 2026-06-04)  
+**Status:** Active backlog — Phases A–G below. Foundation (native agents, three-team MLP, build/CI, Engineering Rubric) is **archived** in [`archive/2026-06-04-shipped-foundation.md`](archive/2026-06-04-shipped-foundation.md).  
 **Audience:** Personal Omakase agent set (rblalock). Others may adopt; design optimizes for *you* — one entry point per team, hidden specialists, no skill shopping.
 
 **Sources researched:**
@@ -337,34 +337,36 @@ omakase learn --project-agents-only
 
 ---
 
-## 5. GBrain & existing siphon map
+## 5. Siphon map (open items only)
 
-Already in repo (keep, extend):
+Shipped items (GBrain, native MLP, Engineering Rubric): [`archive/2026-06-04-shipped-foundation.md`](archive/2026-06-04-shipped-foundation.md).
 
-| Source | Where | Status |
-|--------|-------|--------|
-| GBrain synthesis | `memory-synthesizer.md` | Shipped |
-| GBrain co-curator | `archivist/lead.md` | Shipped |
-| Client prospector SOP | — | **Planned → Sales** |
-| skill-judge rubric | — | **Planned → Critics specialist** |
-| cursor-team-kit workflows | — | **Planned → ship/verify specialists** |
-| revfactory/harness patterns + evals | — | **Planned → reference + Archivist + dark factory** |
-| revfactory/harness init discovery | — | **Planned → Phase G project extension at `omakase init`** |
+| Source | Target | Phase |
+|--------|--------|-------|
+| Client prospector SOP | Sales team + `client-research.md` | A |
+| skill-judge rubric | Critics specialist | C |
+| cursor-team-kit workflows | ship/verify specialists | B |
+| revfactory/harness patterns + evals | reference + Archivist + dark factory | E, F |
+| revfactory/harness init discovery | `omakase learn` + project agents | G |
 
-Archivist should absorb **weekly-review** / **what-did-i-get-done** / **workflow-from-chats** (git + chat mining → `taste.md` / `decisions.md`) — not Sales or Engineering.
+Archivist should absorb **weekly-review** / **what-did-i-get-done** / **workflow-from-chats** (git + chat mining → `taste.md` / `decisions.md`) — Phase D; not Sales or Engineering.
 
 ---
 
-## 6. Team roster after expansion
+## 6. Team roster
 
-| Team | Lead (native) | Specialists (hidden) | New? |
-|------|---------------|----------------------|------|
-| Engineering | `@omakase-engineer` | implementation-lead, senior-reviewer, refactor-specialist, debugger, **ship**, **verify** | ship, verify |
-| Critics | `@omakase-critic` | deslop, structural, verification, **skill-judge** | skill-judge |
-| Archives | `@omakase-archivist` | memory-synthesizer (+ git/chat mining prompts) | extend lead |
-| Sales | `@omakase-sales` | market-mapper, verifier, qualifier, account-researcher, brief-writer | **whole team** |
+**Today (shipped):** 3 leads — Engineering, Critics, Archives — plus hidden specialists. See archive link above.
 
-**Native agent count:** 4 leads + ~12 specialists (generator + `verify:native-agents` must be extended).
+**After this plan:**
+
+| Team | Lead (native) | Specialists (hidden) | New in plan |
+|------|---------------|----------------------|-------------|
+| Engineering | `@omakase-engineer` | existing four + **ship**, **verify** | ship, verify |
+| Critics | `@omakase-critic` | existing three + **skill-judge** | skill-judge |
+| Archives | `@omakase-archivist` | memory-synthesizer (+ git/chat mining in lead) | extend lead |
+| Sales | `@omakase-sales` | market-mapper, verifier, qualifier, account-researcher, brief-writer | whole team |
+
+Extend `scripts/native-agents/generate.js` and `verify:native-agents` when adding Sales, ship, verify, or skill-judge.
 
 ---
 

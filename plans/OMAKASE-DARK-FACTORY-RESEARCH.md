@@ -1,5 +1,7 @@
 # Omakase dark factory methodology playbook
 
+**Status (2026-06-04):** Active methodology reference. Shipped repo foundation (native agents, CI, AGENTS.md, three-team MLP) is archived in [`plans/archive/2026-06-04-shipped-foundation.md`](archive/2026-06-04-shipped-foundation.md). **Open backlog** here: scenario/gate/handoff templates, dogfooding, mechanical checks, evals — not a runner or Level 5 autonomy.
+
 ## Short version
 
 Omakase should not try to become a dark factory runner first. That is the wrong center of gravity for this repo.
@@ -44,9 +46,9 @@ The current repo already contains most of the language needed for this methodolo
 - visible "Memory consulted" and "Why this approach" expectations
 - smart-default parity as a future enforcement target
 
-Harness research (completed; plan archived) found that most modern agent systems converge on markdown or markdown-like definitions, isolated subagent context, and parent-child handoffs. Native sub-agents are now shipped — see [`docs/NATIVE-SUBAGENTS.md`](../docs/NATIVE-SUBAGENTS.md).
+Native sub-agents and the three-team MLP are shipped — see [`docs/NATIVE-SUBAGENTS.md`](../docs/NATIVE-SUBAGENTS.md) and [`plans/archive/2026-06-04-shipped-foundation.md`](archive/2026-06-04-shipped-foundation.md).
 
-A May 2026 heavy-test battery (archived) was the most important internal evidence. It showed real gaps:
+A May 2026 heavy-test battery was the most important internal evidence. It showed real gaps (still open unless noted):
 
 - smart default behavior can lag explicit persona activation
 - first-task memory seeding can be weak
@@ -636,14 +638,14 @@ Good first uses in this repo:
 - Class 1: build script tests, install smoke tests, dist guard checks
 - Class 2: new skill commands, persona changes, scenario eval definitions
 
-Current gaps this playbook would address:
+Open gaps this playbook should still address:
 
-- No automated test suite beyond `npm run build`.
-- No CI.
-- No repo-local `AGENTS.md`.
 - No executable scenario harness for explicit versus smart-default parity.
-- No durable gate report format.
+- No durable gate report format under `.omakaseagent/`.
 - No automated check that non-trivial outputs include memory citation or internal critique markers.
+- No install smoke tests beyond build + native-agent verify (optional Class 1 expansion).
+
+Closed since playbook draft (see archive): CI via `.github/workflows/verify.yml`; repo `AGENTS.md`.
 
 The first implementation later should probably not be "build Attractor for Omakase." It should be:
 
