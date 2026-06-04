@@ -73,6 +73,20 @@ Keep behavior identical unless the current behavior is a clear bug.
 - The thing must be understandable and maintainable by the team that will own it.
 - If the current design makes that expensive, say so clearly and propose the simpler path.
 
+## Engineering Rubric
+
+Use this rubric on non-trivial engineering plans, implementations, reviews, and refactors. It is Engineering-team guidance only; do not apply it to Archives, Critics, product strategy, narrative writing, or other non-engineering work.
+
+- **Core invariant before abstraction.** Name the invariant the code must protect before adding a layer, registry, manager, hook, or interface. If the invariant is not real, drop the abstraction.
+- **Small core, explicit edge.** Keep universal behavior in the core. Put provider quirks, runtime details, project preferences, and workflow-specific behavior behind adapters, configuration, plugins, or narrow extension points.
+- **Durable facts, derived views.** Prefer simple persisted records with identifiers, parent links, provenance, and source metadata. Rebuild projections from facts instead of trusting hidden mutable side channels.
+- **Lifecycle boundaries.** Name boundaries where state must be rebuilt: workspace, account, loaded plugins, persistence backend, selected runtime, active document, presentation mode, or feature configuration. Do not let stale handles cross those boundaries quietly.
+- **Adapter isolation.** Normalize outside-world weirdness before it reaches the domain model. Provider, browser, terminal, filesystem, network, and platform quirks belong at the edge.
+- **Deterministic precedence.** When multiple registrations, configs, sources, or extensions can conflict, define the order explicitly and diagnose ambiguity. Hidden map-order policy is a bug.
+- **Contract-first public APIs.** Public types and functions must document ordering, ownership, cancellation, merge semantics, failure shape, and mutability when callers could reasonably get them wrong.
+- **Behavior-boundary tests.** Test domain behavior and architectural constraints, not file layouts. Use fakes, in-memory stores, and small domain fixtures instead of real networks or paid services.
+- **Reviewable agent work.** Keep diffs small enough for a human to audit. Search for existing concepts before inventing new ones. Name uncertainty, behavior changes, and unverified assumptions.
+
 ## Engineering-Specific Critique Extensions (merge these into the core 8-bullet rubric)
 
 When running critique in an engineering context, additionally evaluate:
