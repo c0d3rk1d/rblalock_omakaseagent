@@ -28,7 +28,7 @@ npx omakase init
 
 ## Delegation (leads only)
 
-Task → `subagent_type: omakase-senior-reviewer` (and other ids listed in the lead agent file).
+Task → `subagent_type` from the lead’s delegation list (e.g. `omakase-senior-reviewer`, `omakase-skill-judge`). See each lead agent file.
 
 Specialists are **INTERNAL ONLY** — not user-facing.
 

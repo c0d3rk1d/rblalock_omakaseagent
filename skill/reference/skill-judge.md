@@ -109,6 +109,25 @@ In addition to the 120-point rubric, note pass/fail on:
 [1–2 sentences on this report; issues found or none]
 ```
 
+## Example report (abbreviated)
+
+```markdown
+# Skill Evaluation Report: omakase-router
+
+## Summary
+- **Total score**: 108/120 (90%)
+- **Grade**: A
+- **Pattern**: Navigation
+- **Knowledge ratio**: E:A:R = 8:2:0
+- **Verdict**: Thin router with strong precedence and pointers; suitable after native-agent install.
+
+## Critical issues
+- none
+
+## Top 3 improvements
+1. Keep body under ~150 lines as references grow.
+```
+
 ## Lineage
 
 Rubric distilled from [softaworks/agent-toolkit skill-judge](https://github.com/softaworks/agent-toolkit/tree/main/skills/skill-judge) (MIT). Rewritten for Omakase voice and report-only policy.

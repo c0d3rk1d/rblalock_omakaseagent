@@ -9,7 +9,7 @@ This project follows the [Omakase](https://github.com/rblalock/omakaseagent) sta
 - `@omakase-critic` — quality enforcement and review
 - `@omakase-archivist` — memory and decisions
 
-Specialists (`omakase-senior-reviewer`, etc.) are internal — invoked by leads via Task, not directly.
+Specialists (`omakase-senior-reviewer`, `omakase-skill-judge`, etc.) are internal — invoked by leads via Task, not directly.
 
 **Memory:** `.omakaseagent/taste.md` and `.omakaseagent/decisions.md`
 
