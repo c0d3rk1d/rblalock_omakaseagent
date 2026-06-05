@@ -55,7 +55,7 @@ permissionMode: default | plan | acceptEdits | bypassPermissions   # Claude Code
 | Team         | Lead            | Primary Invocation       | Purpose |
 |--------------|-----------------|--------------------------|---------|
 | Engineering  | The Engineer    | `/omakase engineer`      | Implementation, review, refactoring, debugging, architecture |
-| Archives     | The Archivist   | Handoff or explicit      | Memory, decisions, knowledge synthesis |
+| Archives     | The Archivist   | `@omakase-archivist`     | Memory, decisions, synthesis; git recap & chat preferences (`reference/archivist-workflows.md`) |
 | Critics      | The Critic      | `/omakase critique`      | Cross-cutting quality enforcement and judging |
 
 ## Sub-Personas Inside Teams
@@ -107,6 +107,8 @@ For development and cross-harness testing, use the `omakase-test` installation p
 | Skill fallback | `.agents/skills/omakase/teams/` | Loaded by lead via Task, not direct user entry |
 
 **Naming:** all native agents use the `omakase-` prefix (Codex: `omakase_engineer`).
+
+**Archivist examples:** `@omakase-archivist` — “Weekly recap of my commits on main”; “What did I ship since Monday?”; “Mine last week’s chats for durable preferences — propose taste patches, confirm before apply.”
 
 **Entry model:** users invoke **leads only** (`@omakase-engineer`, `@omakase-critic`, `@omakase-archivist`). Specialists are delegated by leads via the platform `Task` tool. The `SKILL.md` router is a thin fallback when native files are missing.
 

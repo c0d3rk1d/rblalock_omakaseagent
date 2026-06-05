@@ -349,7 +349,7 @@ Shipped items (GBrain, native MLP, Engineering Rubric): [`archive/2026-06-04-shi
 | revfactory/harness patterns + evals | reference + Archivist + dark factory | E, F |
 | revfactory/harness init discovery | `omakase learn` + project agents | G |
 
-Archivist should absorb **weekly-review** / **what-did-i-get-done** / **workflow-from-chats** (git + chat mining → `taste.md` / `decisions.md`) — Phase D; not Sales or Engineering.
+Archivist git/chat workflows — **shipped** Phase D (`reference/archivist-workflows.md`); not Sales or Engineering.
 
 ---
 
@@ -363,7 +363,7 @@ Archivist should absorb **weekly-review** / **what-did-i-get-done** / **workflow
 |------|---------------|----------------------|-------------|
 | Engineering | `@omakase-engineer` | existing four + **ship**, **verify** | ship, verify |
 | Critics | `@omakase-critic` | deslop, structural, verification, skill-judge | skill-judge shipped |
-| Archives | `@omakase-archivist` | memory-synthesizer (+ git/chat mining in lead) | extend lead |
+| Archives | `@omakase-archivist` | memory-synthesizer + `archivist-workflows.md` | D shipped |
 | Sales | `@omakase-sales` | market-mapper, verifier, qualifier, account-researcher, brief-writer | whole team |
 
 Extend `scripts/native-agents/generate.js` and `verify:native-agents` when adding Sales, ship, verify, or skill-judge.
@@ -393,10 +393,12 @@ Shipped: `skill/teams/critics/sub-personas/skill-judge.md`, `skill/reference/ski
 
 Optional follow-up: calibration run on `skill/SKILL.md` when changing router or teams.
 
-### Phase D — Archivist kit leftovers
+### Phase D — Archivist kit leftovers (shipped 2026-06-05)
 
-1. Add git-window recap + chat-mining guidance to Archivist (from weekly-review, workflow-from-chats)
-2. No new native agents
+Shipped: `skill/reference/archivist-workflows.md`, Archives lead routing, memory-synthesizer charter note. Details: [`archive/2026-06-05-archivist-workflows.md`](archive/2026-06-05-archivist-workflows.md).
+
+1. ~~Add git-window recap + chat-mining guidance to Archivist~~ — done
+2. No new native agents — unchanged
 
 ### Phase E — Harness-derived reference + drift (lightweight)
 
