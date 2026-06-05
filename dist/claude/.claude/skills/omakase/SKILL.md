@@ -50,7 +50,7 @@ After `omakase init` or `omakase skills install`, these harness-native agents ar
 |-------|-------------|
 | `@omakase-engineer` | Implementation, architecture, refactoring, debugging |
 | `@omakase-critic` | Quality enforcement, critique, deslop, verification |
-| `@omakase-archivist` | Memory, decisions, taste synthesis |
+| `@omakase-archivist` | Memory, decisions, synthesis; git recap & chat preferences |
 
 **Internal specialists** (`omakase-senior-reviewer`, `omakase-deslop-critic`, `omakase-skill-judge`, etc.) are **not** user-facing. Leads delegate via the platform `Task` tool with isolated context. On OpenCode, specialists are `hidden: true` (omitted from `@` autocomplete).
 

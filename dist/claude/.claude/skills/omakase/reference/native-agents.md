@@ -14,7 +14,7 @@ npx omakase init
 |----------|---------|
 | `omakase-engineer` | Implementation, architecture, refactoring |
 | `omakase-critic` | Quality enforcement, critique |
-| `omakase-archivist` | Memory, decisions, synthesis |
+| `omakase-archivist` | Memory, decisions, synthesis; git recap & chat preferences (`reference/archivist-workflows.md`) |
 
 ## Invoke
 
