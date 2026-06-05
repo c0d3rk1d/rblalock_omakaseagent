@@ -8,6 +8,10 @@ Protocols for **@omakase-archivist**. Not user-facing skills. Distilled from cur
 
 ---
 
+## Setup (all workflows)
+
+Read `.omakaseagent/taste.md` and `decisions.md` when present. Include **Memory consulted** in the output (exact entries or “none yet — init seed only”).
+
 ## When to run
 
 | User intent | Workflow |
@@ -25,7 +29,7 @@ Protocols for **@omakase-archivist**. Not user-facing skills. Distilled from cur
 
 ### Setup
 
-1. Resolve **author** — default `git config user.email`. If the user asks for team/we scope, use all authors or named emails they give.
+1. Resolve **author** — default `git config user.email`. If the user asks for team/we scope, use all authors or named emails they give. **Sanity check:** if that email has zero commits in the window, run `git shortlog -sn main --since="<since>"` and ask the user which author(s) to use, or match a name they gave (e.g. `--author="Rick"`). Cloud/agent environments often use a bot email that is not the human author.
 2. Resolve **window** — default last **7 days**; weekly-style asks may use up to **10**. User ranges (“yesterday”, “since 2026-05-28”) → concrete dates; state the range used in the output.
 3. **Branch context** — default `main` (or repo default: `git symbolic-ref refs/remotes/origin/HEAD` shortened to branch name). Use current branch only if the user scoped to it.
 4. Collect commits on that branch in the window for the author(s). **Exclude merge commits.**
