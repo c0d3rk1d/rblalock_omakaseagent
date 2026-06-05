@@ -20,6 +20,11 @@ Gather signals from multiple layers, in rough priority order:
 - File paths or discussion of specific modules, types, performance, boundaries
 - Recent context that was already in Engineering persona
 
+**Skill package signals** (delegate to **The Skill Judge** via The Critic, or run `reference/skill-judge.md` when you are the Critic handling it directly):
+- "Evaluate this skill", "audit SKILL.md", "score this persona", reviewing an import before merge
+- Target is primarily `SKILL.md`, skill-shaped reference under `skill/`, or persona markdown for team packaging
+- Do **not** merge engineering extensions for pure skill audits; use the skill-judge rubric + core Omakase slop/taste bullets
+
 **Non-Engineering / Core-Only Signals** (use core Omakase Critique Rubric *only*; do NOT merge engineering extensions):
 - Explicit qualifiers: "high-level", "product strategy", "GTM", "positioning", "messaging", "voice and tone", "exec brief", "one-pager", "process design", "operating rhythm", "customer communication", "without any implementation or code details"
 - Pure writing, narrative, or documentation critique ("review this email", "strengthen the argument in this doc", "improve clarity of this strategy brief")

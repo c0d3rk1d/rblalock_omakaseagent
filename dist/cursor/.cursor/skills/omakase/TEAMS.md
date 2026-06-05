@@ -67,6 +67,13 @@ Example (inside Engineering):
 - The Senior Reviewer
 - The Refactor Specialist
 
+Example (inside Critics):
+
+- The Deslop Critic
+- The Structural Critic
+- The Verification Critic
+- The Skill Judge (SKILL.md / skill-package audits; see `reference/skill-judge.md`)
+
 ## Naming Conventions
 
 - Team Leads: Always “The X” (e.g., The Engineer, The Critic, The Archivist)
