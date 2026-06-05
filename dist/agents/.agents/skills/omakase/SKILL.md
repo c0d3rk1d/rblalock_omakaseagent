@@ -1,7 +1,7 @@
 ---
 name: omakase-router
-description: "Omakase fallback router (plan, taste, handoff, init only). NOT for engineering/critique/archivist — use native agents @omakase-engineer @omakase-critic @omakase-archivist. Never load when user @mentions omakase-* (that prefix is reserved for native agents, not this skill)."
-argument-hint: "[plan|init|taste|handoff|critique] [goal or target]"
+description: "Omakase fallback router (plan, init, learn, taste, handoff only). NOT for engineering/critique/archivist — use native agents @omakase-engineer @omakase-critic @omakase-archivist. Never load when user @mentions omakase-* (that prefix is reserved for native agents, not this skill)."
+argument-hint: "[plan|init|learn|taste|handoff|critique] [goal or target]"
 user-invocable: true
 license: MIT
 ---
@@ -73,7 +73,7 @@ Run this check **before** Setup step 4 or loading any `teams/*/lead.md`:
      - OpenCode: `opencode run --agent omakase-engineer "<task>"` or `@omakase-engineer` in the TUI (not this skill)
      - Claude: `claude -p --agent omakase-engineer "<task>"`
      - Cursor: `@omakase-engineer` in the IDE
-3. This skill **does** handle: `plan`, `taste`, `handoff`, `init` guidance, smart chef mode when native leads are **absent**, and explicit `/omakase` commands that are not lead aliases.
+3. This skill **does** handle: `plan`, `taste`, `handoff`, `init`, `learn` guidance, smart chef mode when native leads are **absent**, and explicit `/omakase` commands that are not lead aliases.
 
 ### Router NEVER (when this skill is active)
 
@@ -88,6 +88,7 @@ Run this check **before** Setup step 4 or loading any `teams/*/lead.md`:
 | Trigger                  | Behavior                                                                 | Reference loaded          |
 |--------------------------|--------------------------------------------------------------------------|---------------------------|
 | `init`                   | Prefer CLI: `omakase init`. Or bootstrap `.omakaseagent/` per `reference/init.md` | `reference/init.md`       |
+| `learn`                  | Prefer CLI: `omakase learn`. Repo factory bootstrap per `reference/learn.md` | `reference/learn.md`      |
 | `critique` (explicit or intent) | If native `omakase-critic` exists → redirect only. Else smart traffic-cop + domain merge + critique reference. | `reference/critique.md` |
 | `plan` (explicit or intent)     | Senior planning. Domain detection + merge relevant standards. Always include explicit Domain Detection & Merge Declaration near top of plan.            | `reference/plan.md`       |
 | `engineer`               | If native `omakase-engineer` exists → redirect only (see precedence). Else load Engineering lead. | `teams/engineering/lead.md` |
