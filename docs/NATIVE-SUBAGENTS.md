@@ -39,9 +39,9 @@ flowchart LR
 |------|-------|-----|
 | `.cursor/agents/` | 3 leads | Cursor `@` picker |
 | `.claude/agents/` | 3 leads | Claude `/agents` — **Cursor also reads this path**, so specialists must not live here |
-| `.grok/agents/` | 11 (leads + specialists) | Grok delegation; Cursor does **not** read `.grok/agents/` |
-| `.opencode/agents/` | 11, specialists `hidden: true` | OpenCode `@` + delegation |
-| `.codex/agents/` | 11 `.toml` | Codex spawn-by-name only (no library UI) |
+| `.grok/agents/` | 12 (leads + specialists) | Grok delegation; Cursor does **not** read `.grok/agents/` |
+| `.opencode/agents/` | 12, specialists `hidden: true` | OpenCode `@` + delegation |
+| `.codex/agents/` | 12 `.toml` | Codex spawn-by-name only (no library UI) |
 
 ## Per-harness commands
 
@@ -112,7 +112,7 @@ In the interactive TUI, ask explicitly, e.g. `Spawn a subagent using the omakase
 | `run --agent` falls back to `build` | Lead needs `mode: all` in `.opencode/agents/omakase-engineer.md`. |
 | Specialist in `@` menu (OpenCode) | Regenerate; specialists need `hidden: true`. |
 | Specialists in Cursor `@` menu | Re-run `omakase init` — remove stale files from `.claude/agents/`. Specialists are only in `.grok` + `.opencode`, not `.claude`. |
-| Specialists in Grok `grok inspect` | Expected (11 in `.grok/agents/`). Use the 3 leads in the UI; specialists are delegate-only. |
+| Specialists in Grok `grok inspect` | Expected (12 in `.grok/agents/`). Use the 3 leads in the UI; specialists are delegate-only. |
 | `{file:}` not resolving | Run `omakase init` so `.agents/skills/omakase/teams/` exists relative to agent files. |
 | Grok missing agents | Run `omakase skills install grok` or full `omakase init`. |
 | Claude Library has no Project agents | Re-run `omakase init`; confirm `.claude/agents/omakase-*.md`; **new session**. |

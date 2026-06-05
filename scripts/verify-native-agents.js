@@ -13,7 +13,7 @@ const distRoot = path.join(root, 'dist');
 
 const LEADS = ['omakase-engineer', 'omakase-critic', 'omakase-archivist'];
 const SPECIALIST = 'omakase-senior-reviewer';
-const PERSONA_COUNT = 11;
+const PERSONA_COUNT = 12;
 const LEAD_COUNT = 3;
 
 const paths = {
@@ -68,6 +68,15 @@ if (!fs.existsSync(engineerMd)) {
   else ok('engineer has task permissions');
   if (!t.includes('{file:')) fail('markdown agents should use {file:} includes');
   else ok('opencode uses {file:} includes');
+}
+
+const criticMd = path.join(paths.opencode, 'omakase-critic.md');
+if (!fs.existsSync(criticMd)) {
+  fail('missing omakase-critic.md');
+} else {
+  const t = read(criticMd);
+  if (!t.includes('omakase-skill-judge')) fail('critic missing omakase-skill-judge delegation');
+  else ok('critic lists skill-judge');
 }
 
 const specialistMd = path.join(paths.opencode, SPECIALIST + '.md');

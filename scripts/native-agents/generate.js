@@ -25,6 +25,7 @@ const PERSONA_PATHS = [
   'critics/sub-personas/verification-critic.md',
   'critics/sub-personas/structural-critic.md',
   'critics/sub-personas/deslop-critic.md',
+  'critics/sub-personas/skill-judge.md',
 ];
 
 const LEAD_PARENT = {
@@ -39,6 +40,7 @@ const LEAD_PARENT = {
   'verification-critic': 'omakase-critic',
   'structural-critic': 'omakase-critic',
   'deslop-critic': 'omakase-critic',
+  'skill-judge': 'omakase-critic',
 };
 
 /** User-invokable leads only; specialists are lead-delegated. */
@@ -55,6 +57,7 @@ const LEAD_SPECIALISTS = {
     'omakase-deslop-critic',
     'omakase-structural-critic',
     'omakase-verification-critic',
+    'omakase-skill-judge',
   ],
   archivist: ['omakase-memory-synthesizer'],
 };

@@ -18,7 +18,7 @@
 | User-facing | Hidden |
 |-------------|--------|
 | `@omakase-engineer` | ship, verify, implementation-lead, senior-reviewer, debugger, refactor |
-| `@omakase-critic` | deslop, structural, verification, **skill-judge** (new) |
+| `@omakase-critic` | deslop, structural, verification, skill-judge |
 | `@omakase-archivist` | memory-synthesizer |
 | `@omakase-sales` (new) | market-mapper, verifier, qualifier, account-researcher, brief-writer |
 
@@ -344,7 +344,7 @@ Shipped items (GBrain, native MLP, Engineering Rubric): [`archive/2026-06-04-shi
 | Source | Target | Phase |
 |--------|--------|-------|
 | Client prospector SOP | Sales team + `client-research.md` | A |
-| skill-judge rubric | Critics specialist | C |
+| skill-judge rubric | Critics specialist | **Shipped** — see archive |
 | cursor-team-kit workflows | ship/verify specialists | B |
 | revfactory/harness patterns + evals | reference + Archivist + dark factory | E, F |
 | revfactory/harness init discovery | `omakase learn` + project agents | G |
@@ -362,7 +362,7 @@ Archivist should absorb **weekly-review** / **what-did-i-get-done** / **workflow
 | Team | Lead (native) | Specialists (hidden) | New in plan |
 |------|---------------|----------------------|-------------|
 | Engineering | `@omakase-engineer` | existing four + **ship**, **verify** | ship, verify |
-| Critics | `@omakase-critic` | existing three + **skill-judge** | skill-judge |
+| Critics | `@omakase-critic` | deslop, structural, verification, skill-judge | skill-judge shipped |
 | Archives | `@omakase-archivist` | memory-synthesizer (+ git/chat mining in lead) | extend lead |
 | Sales | `@omakase-sales` | market-mapper, verifier, qualifier, account-researcher, brief-writer | whole team |
 
@@ -387,11 +387,11 @@ Extend `scripts/native-agents/generate.js` and `verify:native-agents` when addin
 3. Extend `engineering/lead.md` routing
 4. Regenerate dist + verify CI
 
-### Phase C — Critics skill-judge
+### Phase C — Critics skill-judge (shipped 2026-06-04)
 
-1. `sub-personas/skill-judge.md` (siphoned rubric, Omakase-tuned)
-2. Extend `critics/lead.md` delegation
-3. Run skill-judge on `skill/SKILL.md` and new Sales lead as calibration
+Shipped: `skill/teams/critics/sub-personas/skill-judge.md`, `skill/reference/skill-judge.md`, critic lead delegation, native `omakase-skill-judge`. Details: [`archive/2026-06-04-skill-judge.md`](archive/2026-06-04-skill-judge.md).
+
+Optional follow-up: calibration run on `skill/SKILL.md` when changing router or teams.
 
 ### Phase D — Archivist kit leftovers
 
@@ -453,8 +453,7 @@ Extend `scripts/native-agents/generate.js` and `verify:native-agents` when addin
 
 1. **Phase A** — Sales (full five specialists + capability-adaptive research)
 2. **Phase B** — ship + verify specialists
-3. **Phase C** — skill-judge (report-only)
-4. **Phase D** — Archivist git/chat mining
+3. **Phase D** — Archivist git/chat mining
 5. **Phase E** — team-architecture reference + drift
 6. **Phase G** — project extension at init (after core teams stable)
 7. **Phase F** — dark-factory templates (when ready)

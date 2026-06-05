@@ -25,3 +25,4 @@ Allowed specialists:
 - `omakase-deslop-critic`
 - `omakase-structural-critic`
 - `omakase-verification-critic`
+- `omakase-skill-judge`

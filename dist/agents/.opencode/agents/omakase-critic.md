@@ -9,6 +9,7 @@ permission:
     "omakase-deslop-critic": allow
     "omakase-structural-critic": allow
     "omakase-verification-critic": allow
+    "omakase-skill-judge": allow
 ---
 
 # Omakase Native Agent
@@ -28,3 +29,4 @@ Allowed specialists:
 - `omakase-deslop-critic`
 - `omakase-structural-critic`
 - `omakase-verification-critic`
+- `omakase-skill-judge`
