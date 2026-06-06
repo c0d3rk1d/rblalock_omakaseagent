@@ -413,8 +413,10 @@ Shipped: `skill/reference/archivist-workflows.md`, Archives lead routing, memory
 
 ### Phase G — Project extension + `omakase learn` (Harness-inspired)
 
-1. **`bin/omakase.js`:** `learn` subcommand + flags (`--dry-run`, `--memory-only`, `--project-agents-only`, optional `--sync-skills`)
-2. **`skill/reference/learn.md`** — full learn protocol; **`reference/init.md`** — calls learn at end of init
+**Partial (2026-06-05):** `omakase learn` + factory bootstrap shipped — see `skill/reference/learn.md`, `reference/dark-factory.md`, `examples/factory-dogfood/`. Project agents still open.
+
+1. **`bin/omakase.js`:** ~~`learn` subcommand~~ + flags (`--dry-run`, `--memory-only`, `--factory-only`); **`--project-agents-only`** still open
+2. **`skill/reference/learn.md`** — shipped; **`reference/init.md`** — calls learn at end of init
 3. **`skill/SKILL.md` / router** — document `omakase learn` + `/omakase-router learn` fallback
 4. `.omakaseagent/project-agents/` canonical source; native generator emits namespaced agents on learn
 5. Archivist lead: “repo learn” is an Archivist-owned workflow; Engineer/Sales may *trigger* learn after major domain shifts

@@ -14,3 +14,13 @@ Specialists (`omakase-senior-reviewer`, `omakase-skill-judge`, etc.) are interna
 **Memory:** `.omakaseagent/taste.md` and `.omakaseagent/decisions.md`
 
 **Fallback router:** `/omakase-router plan` / `/omakase-router taste` (skill `omakase-router` in `.agents/skills/omakase/`) — not for lead work.
+
+## Omakase Dark Factory
+
+This repo uses **Level 4** Omakase: approve intent and scenarios; review gate evidence at checkpoint.
+
+- **Factory playbook:** `.omakaseagent/factory.md`
+- **Scenarios:** `.omakaseagent/scenarios/`
+- **Gate reports:** `.omakaseagent/gates/`
+- **Refresh:** `npx omakase learn` (use `--dry-run` first)
+

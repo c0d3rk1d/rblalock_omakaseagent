@@ -9,6 +9,8 @@ npx omakase init
 
 This creates `.omakaseagent/`, updates `AGENTS.md`, installs the skill bundle, and registers **native agents** (`omakase-engineer`, `omakase-critic`, `omakase-archivist`, plus hidden/internal specialists) for OpenCode, Cursor, Claude Code, and Codex.
 
+**Next:** `npx omakase learn` — bootstrap Level 4 factory for this repo (`factory.md`, scenarios, gates). See `reference/learn.md`.
+
 **Skill fallback:** `/omakase init` in a harness chat follows the steps below when the CLI cannot be run — but the CLI path is strongly preferred so native agents are actually on disk.
 
 `omakase init` creates the persistent memory layer and sets the project up to use the standard.
