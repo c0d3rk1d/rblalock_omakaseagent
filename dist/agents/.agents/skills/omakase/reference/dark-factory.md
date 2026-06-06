@@ -14,11 +14,13 @@ Not Level 5: no unattended merge or deploy in v1.
 
 ## Loop
 
-1. **Seed** — what changes, non-goals, behavior, risk class, evidence required  
-2. **Scenarios** — approve `.omakaseagent/scenarios/*.md` before Class 2+ work  
+1. **Task brief** (agent co-writes from user's goal — users don't need the word "seed") — what changes, non-goals, behavior, risk class, evidence required  
+2. **Scenarios** — agent proposes; human confirms before Class 2+ deep work  
 3. **Work** — `@omakase-engineer` between gates; read memory first  
 4. **Evidence** — scenarios + mechanical (`npm test`, build, CI) + `@omakase-critic` + memory cite/update  
-5. **Checkpoint** — human reads gate report (`.omakaseagent/gates/`), not every diff by default  
+5. **Checkpoint** — agent writes gate report (`.omakaseagent/gates/`); human reviews intent + evidence, not every diff by default  
+
+**Agent protocol:** `reference/task-intake.md` — Engineer runs intake automatically on non-trivial tasks.
 
 ## Risk classes (short)
 

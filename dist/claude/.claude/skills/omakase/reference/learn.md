@@ -34,8 +34,10 @@ omakase learn --factory-only  # factory.md + scenarios, skip taste merge
 
 ## After learn
 
-- Class **0–1:** seed + mechanical checks + gate report optional but light.  
-- Class **2+:** approved scenarios required; end with `.omakaseagent/gates/<date>-<task>-gate.md`.  
+Agents follow **`reference/task-intake.md`** — users state goals in plain language; Engineer co-writes the task brief and scenarios.
+
+- Class **0–1:** brief inline; mechanical checks; light checkpoint OK.  
+- Class **2+:** brief + scenarios (agent drafts); one confirm; gate file at end.  
 - Re-run `learn` when stack or CI changes (`--dry-run` first).
 
 ## Gate report shape (minimum headings)

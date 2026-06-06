@@ -144,10 +144,10 @@ function buildScenarios(cwd, pkg, checks) {
     body: `# Scenario: level4-checkpoint
 
 **Actor:** Human + @omakase-engineer  
-**Start:** Approved seed + scenarios for a Class 2 task  
+**Start:** User states goal in plain language; agent co-writes task brief + scenarios (Class 2)  
 **Action:** Agent implements; runs mechanical checks; @omakase-critic reviews  
 **Observe:** Gate report in \`.omakaseagent/gates/\` with evidence stack + memory cited  
-**Must not:** "Done" with only chat narrative — no gate artifact  
+**Must not:** User required to say "seed"; "done" with only chat — no gate artifact  
 **Evidence:** Gate markdown file path + check outputs referenced inside
 `,
   });
@@ -184,8 +184,8 @@ ${riskLines}
 
 ## Workflow
 
-1. **Seed** — what changes, non-goals, risk class, evidence required  
-2. **Scenarios** — approve \`.omakaseagent/scenarios/*.md\` before Class 2+ agent work  
+1. **Task brief** — agent co-writes from user goal (see \`reference/task-intake.md\`)  
+2. **Scenarios** — agent proposes; confirm before Class 2+ agent work  
 3. **Work** — \`@omakase-engineer\` between gates; cite \`taste.md\` / \`decisions.md\`  
 4. **Evidence** — scenarios + mechanical + @omakase-critic + memory updates  
 5. **Gate** — write \`.omakaseagent/gates/<date>-<task>-gate.md\`; human reviews intent + evidence, not every line by default  
@@ -197,8 +197,9 @@ Global methodology: \`skill/reference/dark-factory.md\` (in omakase package) or 
 
 function buildTasteSection(pkg, stack, checks) {
   const bullets = [
-    'Level 4: Class 2+ needs approved scenarios before long agent runs',
-    'Checkpoint = gate report under `.omakaseagent/gates/`, not chat-only "done"',
+    'Users state goals plainly — agents co-create task brief + scenarios (`reference/task-intake.md`)',
+    'Level 4: Class 2+ needs brief confirm before long runs; gate report at end',
+    'Checkpoint = gate file under `.omakaseagent/gates/`, not chat-only "done"',
   ];
   if (stack.includes('committed dist bundles')) {
     bullets.push('Never edit `dist/` by hand — `npm run build` only');
