@@ -80,7 +80,7 @@ npx omakase init      # dogfood in this clone
 npx omakase learn     # factory layout for this repo
 ```
 
-Level 4 methodology: [skill/reference/dark-factory.md](skill/reference/dark-factory.md). Dogfood output snapshot: [examples/factory-dogfood/](examples/factory-dogfood/).
+Level 4 methodology: [skill/reference/dark-factory.md](skill/reference/dark-factory.md). Multi-agent E2E: [examples/factory-e2e/](examples/factory-e2e/). Learn snapshot: [examples/factory-dogfood/](examples/factory-dogfood/).
 
 Do not commit local harness dirs (`.cursor/`, `.claude/`, etc.) — regenerate with `init`. Personas: `skill/teams/`.
 

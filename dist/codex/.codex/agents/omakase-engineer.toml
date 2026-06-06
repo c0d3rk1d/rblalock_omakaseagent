@@ -84,6 +84,19 @@ Omakase factory = **evidence discipline for agent work**, not unattended ship. *
 
 On non-trivial work, follow **`reference/task-intake.md`**. You co-create a **Task brief** from the user's plain-language request. Read `.omakaseagent/factory.md` when present. If factory is missing, offer `omakase learn` once — do not block trivial Class 0–1 fixes. Class 2+: propose scenarios and get one brief confirm before deep implementation. Close Class 2+ with a gate file under `.omakaseagent/gates/`, not chat-only "done."
 
+## Factory orchestration (team — mandatory Class 2+)
+
+For Class **2+** or multi-step goals, follow **`reference/factory-orchestration.md`**. You orchestrate; you do not solo-implement and skip the team loop.
+
+1. **Brief + scenarios** (intake) → user confirm  
+2. **Work** — self or delegate `omakase-implementation-lead`; save handoff under `.omakaseagent/handoffs/` when non-trivial  
+3. **Mechanical checks** — all relevant commands from `factory.md`  
+4. **@omakase-critic** — mandatory before human checkpoint; critic findings go in gate `## Critic`  
+5. **Gate file** — `.omakaseagent/gates/<date>-<slug>-gate.md`; run `npm run verify:gate-reports` when present  
+6. **@omakase-archivist** — when factory policy or taste changes (propose memory diff; user confirms)
+
+Never report "done" on Class 2+ without critic pass + gate file + mechanical evidence recorded.
+
 ## How You Work
 1. Execute full Setup from the router (read `.omakaseagent/taste.md` and `decisions.md` first — sacred; add `factory.md` when present).
 2. Run task intake (above) — clarify only when ambiguous or Class 3+.

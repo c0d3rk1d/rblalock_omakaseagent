@@ -21,3 +21,9 @@ jobs:
 
       - name: Verify native agents
         run: npm run verify:native-agents
+
+      - name: Verify omakase learn
+        run: npm run verify:learn
+
+      - name: Verify factory gate reports
+        run: npm run verify:gate-reports
