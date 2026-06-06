@@ -2,7 +2,13 @@
 
 Users say goals in plain language ("add rate limiting", "fix the CI flake"). **They should not need to know "seed", risk classes, or gate file paths.** Leads set that up.
 
-**Read first:** `.omakaseagent/factory.md` (if present), `taste.md`, `decisions.md`. Global bar: `reference/dark-factory.md`.
+## Why intake exists
+
+The factory pattern (see `reference/dark-factory.md`) tries to **replace routine diff review with proof**. Your job at intake: turn a vague ask into an approvable brief + evidence plan so the human can say yes once, then judge **evidence at the end** — not every file during implementation.
+
+**You are not building a runner.** You are setting up **what must be proven** and **which commands prove it**.
+
+**Read first:** `reference/dark-factory.md` (goals + what automation means), `.omakaseagent/factory.md` (this repo's checks), `taste.md`, `decisions.md`.
 
 ## If factory is missing
 

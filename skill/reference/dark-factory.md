@@ -1,6 +1,52 @@
 # Dark factory — Level 4 with Omakase
 
-Portable methodology. **Per-repo setup:** `omakase learn` (writes `.omakaseagent/factory.md` and starter scenarios).
+**Read this first if you are an agent.** Per-repo commands and checks live in `.omakaseagent/factory.md` (created by `omakase learn`). Day-to-day intake: `reference/task-intake.md`.
+
+---
+
+## What this pattern is (and is not)
+
+**Omakase "factory"** is a **trust and evidence system** for agent engineering — not a deployment pipeline and not lights-out automation.
+
+| It **is** | It **is not** |
+|-----------|----------------|
+| A way to earn **longer agent runs** without the human reading every line | Level 5 dark factory (unattended merge, ship, deploy) |
+| **Scenarios** humans approve once; agents prove behavior later | A DOT/Attractor runner or custom orchestration engine (v1) |
+| **Mechanical checks** agents run (`build`, `test`, CI scripts) | Replacing the repo's CI — it complements CI |
+| **Gate reports** that bundle evidence for human checkpoint | Vague "done" in chat |
+| **Risk classes** — more autonomy on low risk, more human on high | Same rules for docs and auth migrations |
+
+**Goal:** Humans spend review time on **intent and proof**, not routine diff reading. Agents spend effort on **implementation + running checks + writing evidence**. Omakase supplies **taste, critique, memory, and gate shape**.
+
+Industry "dark factory" often means full autonomy. **Omakase targets Level 4 (Dan Shapiro):** human approves what should be true; agent proves it; human accepts at checkpoint.
+
+---
+
+## What "automation" means here
+
+**Automated today (agent responsibility):**
+
+- Co-create task brief + scenarios from plain user goals (`task-intake.md`)
+- Run repo mechanical commands listed in `factory.md`
+- Produce gate report under `.omakaseagent/gates/`
+- Cite memory; propose memory updates when durable
+- Offer `omakase learn` when factory layout is missing
+
+**Automated later (repo/CI, not agent guesswork):**
+
+- CI validates gate report headings exist on PRs (optional)
+- Scenario eval harness for skill/persona parity
+- Narrow task classes may earn more autonomy **after** evidence history — still human accept
+
+**Never automate in v1:**
+
+- Merging, deploying, production changes without explicit human accept
+- Judging "taste" or "slop" purely with scripts — use **@omakase-critic**
+- Inventing scenarios that change product intent without user confirm (Class 2+)
+
+**Operating rule (encode, don't re-review):** If a human would check the same thing on every task, propose a **scenario** or **mechanical check** and add it to `factory.md` / CI — do not make the human repeat the inspection.
+
+---
 
 ## Rule
 
@@ -8,48 +54,50 @@ Portable methodology. **Per-repo setup:** `omakase learn` (writes `.omakaseagent
 
 | Human owns | Agent owns | Omakase owns |
 |------------|------------|--------------|
-| Intent, constraints, scenarios, risk class, final accept | Implementation, checks, evidence, checkpoint draft | Taste, critique, memory shape, gate language |
+| Intent, constraints, scenario approval, risk class, final accept | Implementation, running checks, evidence collection, gate draft | Taste bar, critique, memory shape, gate language |
 
-Not Level 5: no unattended merge or deploy in v1.
+---
 
-## Loop
+## Loop (one task)
 
-1. **Task brief** (agent co-writes from user's goal — users don't need the word "seed") — what changes, non-goals, behavior, risk class, evidence required  
+1. **Task brief** — agent co-writes from user goal (no "seed" jargon for users)  
 2. **Scenarios** — agent proposes; human confirms before Class 2+ deep work  
-3. **Work** — `@omakase-engineer` between gates; read memory first  
-4. **Evidence** — scenarios + mechanical (`npm test`, build, CI) + `@omakase-critic` + memory cite/update  
-5. **Checkpoint** — agent writes gate report (`.omakaseagent/gates/`); human reviews intent + evidence, not every diff by default  
+3. **Work** — `@omakase-engineer` between gates; memory first  
+4. **Evidence** — scenarios + mechanical + critic + memory  
+5. **Checkpoint** — gate file; human reviews evidence stack  
 
-**Agent protocol:** `reference/task-intake.md` — Engineer runs intake automatically on non-trivial tasks.
+---
 
-## Risk classes (short)
+## Risk classes
 
-| Class | Examples |
-|-------|----------|
-| 0 | Docs, README, packaging copy |
-| 1 | CI, scripts, smoke tests |
-| 2 | Features, personas, CLI behavior |
-| 3+ | Auth, money, migrations — stay involved |
+| Class | Autonomy | Examples |
+|-------|----------|----------|
+| 0 | High — brief inline, light checkpoint | Docs, README |
+| 1 | Medium — run mechanical checks | CI, scripts |
+| 2 | Confirm brief + scenarios first | Features, personas, CLI |
+| 3+ | Stay interactive | Auth, money, migrations |
 
-Repo-specific defaults live in `.omakaseagent/factory.md` after `learn`.
+Repo-specific examples: `.omakaseagent/factory.md`.
 
-## Gates (Omakase)
+---
+
+## Quality gates (Omakase rubric applied to the work)
 
 1. Context loaded (memory cited)  
-2. Spec/scenario clarity  
+2. Task/scenario clarity  
 3. Anti-slop critique  
-4. Verification (fresh evidence)  
+4. Verification (fresh command output, not "should work")  
 5. Memory update when durable  
-6. Checkpoint artifact exists  
+6. Checkpoint artifact exists (Class 2+)  
+
+---
 
 ## Commands
 
 ```bash
 npx omakase init    # memory + agents
-npx omakase learn   # factory layout for this repo
+npx omakase learn   # per-repo factory.md + starter scenarios
 npx omakase learn --dry-run
 ```
 
-Agent fallback: `@omakase-archivist` with `reference/learn.md` when CLI unavailable.
-
-Full research: `plans/OMAKASE-DARK-FACTORY-RESEARCH.md` in the omakaseagent repo.
+Research depth: `plans/OMAKASE-DARK-FACTORY-RESEARCH.md` (omakaseagent repo).
