@@ -12,7 +12,7 @@
     "verify:native-agents": "node scripts/verify-native-agents.js",
     "verify:learn": "node scripts/verify-learn.js",
     "verify:gate-reports": "node scripts/verify-gate-report.js",
-    "verify:learn": "node scripts/verify-learn.js",
+    "verify:pr-gate-diff": "node scripts/verify-pr-gate-diff.js",
     "skills:install": "node bin/omakase.js skills install",
     "prepare": "npm run build"
   },

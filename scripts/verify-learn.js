@@ -1,34 +1,30 @@
 #!/usr/bin/env node
-/** Smoke: omakase learn plans files for cwd (omakaseagent dev clone). */
+/** Smoke: omakase learn plans factory layout for this repo (CI-safe — no local .omakaseagent/). */
 
 const { planLearn } = require('./omakase-learn');
 const path = require('path');
-const fs = require('fs');
 
 const cwd = path.resolve(__dirname, '..');
-const memDir = path.join(cwd, '.omakaseagent');
+const plan = planLearn(cwd, { allowNoMem: true });
 
-if (!fs.existsSync(memDir)) {
-  console.error('verify:learn — run from repo with .omakaseagent/ (npx omakase init)');
-  process.exit(1);
-}
-
-const plan = planLearn(cwd, {});
 if (plan.error) {
   console.error('verify:learn —', plan.message);
   process.exit(1);
 }
 
-const onDisk = (sub) => fs.existsSync(path.join(memDir, sub));
 const mustPlan = (sub) => plan.files.some((f) => f.path.includes(sub));
 const checks = [
-  ['factory.md', mustPlan('factory.md') || onDisk('factory.md')],
+  ['factory.md planned', mustPlan('factory.md')],
   [
-    'scenarios',
+    'scenarios planned',
     mustPlan(path.join('scenarios', 'mechanical-build.md')) ||
-      onDisk(path.join('scenarios', 'mechanical-build.md')),
+      plan.scenarios.includes('mechanical-build'),
   ],
   ['stack detects Omakase', plan.stack.some((s) => s.includes('Omakase'))],
+  [
+    'mechanical checks include verify scripts',
+    plan.checks.some((c) => c.cmd.includes('verify:')),
+  ],
 ];
 
 let failed = false;

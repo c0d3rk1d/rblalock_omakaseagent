@@ -27,3 +27,9 @@ jobs:
 
       - name: Verify factory gate reports
         run: npm run verify:gate-reports
+
+      - name: Verify Class 2 PR gate diff
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          GITHUB_HEAD_SHA: ${{ github.sha }}
+        run: npm run verify:pr-gate-diff

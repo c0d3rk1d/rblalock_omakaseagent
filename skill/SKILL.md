@@ -95,12 +95,12 @@ Run this check **before** Setup step 4 or loading any `teams/*/lead.md`:
 | `engineer`               | If native `omakase-engineer` exists → redirect only (see precedence). Else load Engineering lead. | `teams/engineering/lead.md` |
 | `taste`                  | Read / query / update persistent taste memory.                           | `reference/taste.md`      |
 | `handoff`                | Produce clean, high-signal handoff notes + protocol.                     | `reference/handoff.md`    |
-| (anything else)          | Smart chef mode. Detect intent + domain. Apply appropriate standards + critique gate. | (dynamic) |
+| (anything else)          | Smart chef mode. Detect intent + domain. On **strong engineering signals**, apply Engineering factory contract (below) before general chef mode. | (dynamic) |
 
 ## Routing Logic (agentic)
 
 1. **Explicit command match** (`/omakase-router …`, or legacy `/omakase engineer` / `/omakase critique`) → apply native precedence for lead commands; else load the corresponding reference.
-2. **Strong engineering signals** → if native `omakase-engineer` exists, **redirect only** (see precedence). If native agents are absent, load `teams/engineering/lead.md` — do not embed Engineering lead charter in this router body.
+2. **Strong engineering signals** → if native `omakase-engineer` exists, **redirect only** (see precedence) and name factory orchestration for Class 2+ goals (`reference/factory-orchestration.md`). If native agents are absent, load `teams/engineering/lead.md` **plus** `reference/task-intake.md` and `reference/factory-orchestration.md` — same factory contract as `@omakase-engineer`.
 3. **Non-engineering or pure product/strategy/writing/process signals** (see expanded lists in `reference/critique.md` and `reference/plan.md`) → stay in smart general chef mode or load the command reference with **core standards only**. Explicitly avoid over-applying engineering extensions (code judo, file health, deslop in the code sense, etc.) when the work is high-level product strategy, GTM, narrative writing, process design, or exec-level planning. The "ask once" protocol in the critique and plan references takes precedence for borderline cases.
 4. **Otherwise / ambiguous** → smart general chef mode with domain detection as the first step. Still enforce all Core Laws, still run critique on non-trivial work (using core rubric with domain-appropriate interpretation of bullets like Pragmatic Craftsmanship and Structural Integrity), still explain taste, still consult memory. The chef decides the right depth and persona.
    - On the very first significant task (or first engineering-style task) in a project that has no `.omakaseagent/` yet: (a) explicitly surface in the output that memory was absent at start, (b) create a minimal seed *by default* (do not ask unless the request is ambiguous or the user has previously declined seeding), (c) the seed **must** contain at least three concrete, observable, task-derived entries in "What Good Looks Like Here" / "What We Reject" drawn directly from the current request or files being touched (e.g. "This utility previously used 4 top-level mutable lets for debounce state — we now reject scattered closure state in small utilities"), plus the adoption decision in decisions.md. Never deliver a rich engineering output with only a one-line placeholder seed. Reference/init.md defines the exact minimum structure and content checklist.
@@ -114,9 +114,14 @@ Run this check **before** Setup step 4 or loading any `teams/*/lead.md`:
    - A visible "Memory consulted" declaration (1 sentence) naming the exact taste.md bullets or decisions.md entries that were active for this output
    - For critique and plan commands: including a clear Domain Detection & Merge Declaration so it is always obvious whether engineering standards were correctly or incorrectly applied to the work.
 
-**Smart Default vs Explicit Parity (design goal, future enforcement)**: The long-term intent is that smart-default activation of the Engineering persona on strong engineering signals produces output of equivalent senior quality (same critique scores, same visible gate, same memory citation discipline, same deslop rigor) as an explicit `/omakase engineer` invocation on the identical request + context. 
+**Smart Default vs Explicit Parity (fallback router — hard contract when natives absent):** When this skill handles engineering work because native `omakase-engineer` is **not** installed, smart-default and explicit `/omakase engineer` **must** follow the same factory contract:
 
-This parity is a design goal, not a current hard contract. It will ultimately be enforced by a future layer of agent judges (as originally planned). Until that enforcement layer exists, the system should still strive for consistency, but gaps are expected during early development and should be treated as improvement opportunities rather than P0 violations. The persona should still attempt an internal quality pass before delivery.
+- Load `teams/engineering/lead.md`, `reference/task-intake.md`, and `reference/factory-orchestration.md`
+- Class **2+:** co-create task brief + scenarios (one confirm) before deep implementation
+- Class **2+:** close with gate file under `.omakaseagent/gates/` (or committed `examples/*/gates/` in this repo) — not chat-only "done"
+- Run mechanical commands from `factory.md` when present; cite memory in output
+
+When native `omakase-engineer` **is** installed, redirect once — natives already embed the same references. Parity gaps between router fallback and native agents are P1 improvement opportunities until scenario evals (Phase 4) enforce them mechanically.
 
 ## Setup (run this first on every significant task)
 
@@ -151,7 +156,7 @@ This parity is a design goal, not a current hard contract. It will ultimately be
 
 When native `omakase-engineer` is **not** installed and the command router selects `teams/engineering/lead.md`, load that lead file and follow it. Do not role-play The Engineer inside this skill when native agents exist.
 
-When engineering signals appear but natives exist, redirect to `@omakase-engineer` once and stop.
+When engineering signals appear but natives exist, redirect to `@omakase-engineer` once. For Class 2+ factory goals, say that orchestration follows `reference/factory-orchestration.md` (critic + gate + archivist when needed). Then stop — do not role-play the Engineer in this thread.
 
 ## Memory & State
 
