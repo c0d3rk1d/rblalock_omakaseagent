@@ -34,7 +34,7 @@ omakase learn --factory-only  # factory.md + scenarios, skip taste merge
 
 ## After learn
 
-Agents follow **`reference/task-intake.md`** — users state goals in plain language; Engineer co-writes the task brief and scenarios.
+Agents follow **`reference/task-intake.md`** (single tasks) and **`reference/factory-orchestration.md`** (Class 2+ team loop: Engineer → critic → gate → archivist when needed).
 
 - Class **0–1:** brief inline; mechanical checks; light checkpoint OK.  
 - Class **2+:** brief + scenarios (agent drafts); one confirm; gate file at end.  

@@ -100,4 +100,6 @@ npx omakase learn   # per-repo factory.md + starter scenarios
 npx omakase learn --dry-run
 ```
 
+**Team loop (Class 2+):** `reference/factory-orchestration.md`. Worked example: `examples/factory-e2e/`.
+
 Research depth: `plans/OMAKASE-DARK-FACTORY-RESEARCH.md` (omakaseagent repo).

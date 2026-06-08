@@ -167,6 +167,10 @@ function buildAgentBody(persona, harness, core) {
     '',
     fileInclude(skillBase, `teams/${persona.rel}`),
   ];
+  if (persona.meta.name === 'engineer') {
+    lines.push('', fileInclude(skillBase, 'reference/task-intake.md'));
+    lines.push('', fileInclude(skillBase, 'reference/factory-orchestration.md'));
+  }
   if (persona.isLead) lines.push(delegationSection(persona));
   return lines.join('\n');
 }
