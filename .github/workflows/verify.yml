@@ -33,3 +33,9 @@ jobs:
           GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
           GITHUB_HEAD_SHA: ${{ github.sha }}
         run: npm run verify:pr-gate-diff
+
+      - name: Verify scenario evals
+        run: npm run verify:scenario-evals
+
+      - name: Verify skill/dist drift
+        run: npm run verify:drift

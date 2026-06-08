@@ -475,6 +475,7 @@ function learnProject(options = {}) {
     dryRun: !!options.dryRun,
     memoryOnly: !!options.memoryOnly,
     factoryOnly: !!options.factoryOnly,
+    projectAgentsOnly: !!options.projectAgentsOnly,
   });
 
   if (result.error) {
@@ -488,23 +489,37 @@ function learnProject(options = {}) {
     log(`  checks:    ${result.checks.map((c) => c.cmd).join(', ')}`);
   }
   log(`  scenarios: ${result.scenarios.join(', ')}`);
+  if (result.projectAgents?.length) {
+    log(`  project:   ${result.projectAgents.join(', ')}`);
+  }
+  if (result.harnesses?.length) {
+    log(`  harness:   ${result.harnesses.join(', ')}`);
+  }
 
   if (result.dryRun) {
     log('  would write:');
     for (const p of result.planned) log(`    ${p}`);
+    if (result.emitted?.length) {
+      log('  would emit:');
+      for (const p of result.emitted) log(`    ${p}`);
+    }
     log('  (no files changed)');
     return;
   }
 
   log(`  wrote ${result.written.length} file(s):`);
   for (const p of result.written) log(`    ${p}`);
+  if (result.emitted?.length) {
+    log(`  emitted ${result.emitted.length} project agent stub(s):`);
+    for (const p of result.emitted) log(`    ${p}`);
+  }
 }
 
 function showHelp() {
   log(`omakase v${VERSION}`);
   log('');
   log('  omakase init [--test] [--global]');
-  log('  omakase learn [--dry-run] [--memory-only] [--factory-only]');
+  log('  omakase learn [--dry-run] [--memory-only] [--factory-only] [--project-agents-only]');
   log('  omakase skills install [cursor|claude|agents|grok|codex] [--test] [--global]');
   log('  omakase skills uninstall [harness] [--global] [--test]');
   log('');
@@ -519,11 +534,17 @@ const installOpts = { test: isTest, global: isGlobal, nativeAgents: !noNative };
 const isDryRun = flag('--dry-run');
 const isMemoryOnly = flag('--memory-only');
 const isFactoryOnly = flag('--factory-only');
+const isProjectAgentsOnly = flag('--project-agents-only');
 
 if (command === 'init') {
   initProject(installOpts);
 } else if (command === 'learn') {
-  learnProject({ dryRun: isDryRun, memoryOnly: isMemoryOnly, factoryOnly: isFactoryOnly });
+  learnProject({
+    dryRun: isDryRun,
+    memoryOnly: isMemoryOnly,
+    factoryOnly: isFactoryOnly,
+    projectAgentsOnly: isProjectAgentsOnly,
+  });
 } else if (command === 'skills' && sub === 'install') {
   const explicit = args[2] && !args[2].startsWith('-') ? args[2] : null;
   if (explicit) {

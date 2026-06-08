@@ -1,7 +1,7 @@
 # Omakase Teams Expansion — Research & Plan
 
 **Date:** 2026-06-03 (backlog updated 2026-06-04)  
-**Status:** Active backlog — Phases A–G below. Foundation (native agents, three-team MLP, build/CI, Engineering Rubric) is **archived** in [`archive/2026-06-04-shipped-foundation.md`](archive/2026-06-04-shipped-foundation.md).  
+**Status:** Active backlog — **Phases 4 (evals), E, G** (2026-06-08). Phases **A, B, F** deferred → [`archive/2026-06-08-deferred-expansion.md`](archive/2026-06-08-deferred-expansion.md). Foundation archived in [`archive/2026-06-04-shipped-foundation.md`](archive/2026-06-04-shipped-foundation.md).  
 **Audience:** Personal Omakase agent set (rblalock). Others may adopt; design optimizes for *you* — one entry point per team, hidden specialists, no skill shopping.
 
 **Sources researched:**
@@ -372,20 +372,26 @@ Extend `scripts/native-agents/generate.js` and `verify:native-agents` when addin
 
 ## 7. Implementation phases
 
-### Phase A — Sales team (highest user ask)
+### Phase A — Sales team *(deferred — see archive/2026-06-08-deferred-expansion.md)*
+
+<!--
 
 1. `skill/teams/sales/lead.md` + **all five** specialists: market-mapper, verifier, qualifier, **account-researcher**, **brief-writer**
 2. `skill/reference/client-research.md` — include **capability detection** (browser MCP, WebSearch, WebFetch, user-supplied list); agent picks best available path and states limitations in output
 3. Update `TEAMS.md`, `SKILL.md`, `AGENTS.md`, init messaging
 4. `scripts/native-agents/generate.js` — register `omakase-sales` + hidden specialists
 5. Dogfood one list run + one account dossier run; **Critic** pass on output
+-->
 
-### Phase B — Engineering ship/verify
+### Phase B — Engineering ship/verify *(deferred)*
+
+<!--
 
 1. `ship-specialist.md`, `verify-specialist.md`
 2. `reference/shipping.md`, `reference/verification-harness.md`
 3. Extend `engineering/lead.md` routing
 4. Regenerate dist + verify CI
+-->
 
 ### Phase C — Critics skill-judge (shipped 2026-06-04)
 
@@ -400,28 +406,25 @@ Shipped: `skill/reference/archivist-workflows.md`, Archives lead routing, memory
 1. ~~Add git-window recap + chat-mining guidance to Archivist~~ — done
 2. No new native agents — unchanged
 
-### Phase E — Harness-derived reference + drift (lightweight)
+### Phase E — Harness-derived reference + drift (shipped 2026-06-08)
 
-1. `skill/reference/team-architecture.md` — 6 patterns + Omakase mapping (1 page)
-2. Archivist: drift audit checklist (skill source vs dist agents)
-3. Pull trigger-eval + with/without-skill bullets into dark-factory / skill-judge persona
+1. ~~`skill/reference/team-architecture.md`~~ — shipped
+2. ~~Archivist drift audit~~ — `npm run verify:drift` + `archivist-workflows.md` § Drift audit
+3. ~~Trigger-eval bullets~~ — in `team-architecture.md` + `skill-judge.md`
 
-### Phase F — Dark factory alignment (optional, from other plan)
+### Phase F — Dark factory alignment *(deferred — see archive/2026-06-08-deferred-expansion.md)*
 
-- Scenario templates for Sales output + ship loop evidence
-- Mechanical CI checks for gate report headings when templates exist
+Sales/ship scenario templates — resume with Phase A/B.
 
-### Phase G — Project extension + `omakase learn` (Harness-inspired)
+### Phase G — Project extension + `omakase learn` (shipped 2026-06-08)
 
-**Partial (2026-06-05):** `omakase learn` + factory bootstrap shipped — see `skill/reference/learn.md`, `reference/dark-factory.md`, `examples/factory-dogfood/`. Project agents still open.
+**Shipped:** `omakase learn` factory bootstrap (2026-06-05) + project agents (2026-06-08).
 
-1. **`bin/omakase.js`:** ~~`learn` subcommand~~ + flags (`--dry-run`, `--memory-only`, `--factory-only`); **`--project-agents-only`** still open
-2. **`skill/reference/learn.md`** — shipped; **`reference/init.md`** — calls learn at end of init
-3. **`skill/SKILL.md` / router** — document `omakase learn` + `/omakase-router learn` fallback
-4. `.omakaseagent/project-agents/` canonical source; native generator emits namespaced agents on learn
-5. Archivist lead: “repo learn” is an Archivist-owned workflow; Engineer/Sales may *trigger* learn after major domain shifts
-6. skill-judge report on generated/changed bodies (report-only)
-7. Document impeccable-style parallel in `docs/` or `reference/init.md`
+1. ~~`learn` subcommand + flags~~ — includes `--project-agents-only`
+2. ~~`reference/learn.md`~~ — project agents section
+3. ~~`.omakaseagent/project-agents/`~~ — canonical source; emit to harness `agents/` on learn
+4. Archivist owns learn method; skill-judge on new bodies (report-only, documented)
+5. Example snapshot: `examples/factory-dogfood/.omakaseagent/project-agents/`
 
 ---
 
@@ -453,14 +456,15 @@ Shipped: `skill/reference/archivist-workflows.md`, Archives lead routing, memory
 
 ---
 
-## 10. Suggested implementation order
+## 10. Suggested implementation order (updated 2026-06-08)
 
-1. **Phase A** — Sales (full five specialists + capability-adaptive research)
-2. **Phase B** — ship + verify specialists
-3. **Phase D** — Archivist git/chat mining
-5. **Phase E** — team-architecture reference + drift
-6. **Phase G** — project extension at init (after core teams stable)
-7. **Phase F** — dark-factory templates (when ready)
+**Done:** C, D, E, G (partial→full), dark-factory Phases 0–3 + PR gate enforcement.
+
+**Active:** Dark-factory **Phase 4** scenario evals (`evals/`, `verify:scenario-evals`).
+
+**Deferred:** A (Sales), B (ship/verify), F — see `archive/2026-06-08-deferred-expansion.md`.
+
+**Next after Phase 4 stable:** Dark-factory Phase 5 (orchestration) only if manual gates become repetitive; or resume deferred A/B on user ask.
 
 **Command to start implementation:**  
 `Implement Phase A of plans/OMAKASE-TEAMS-EXPANSION-RESEARCH.md`

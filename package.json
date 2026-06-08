@@ -13,6 +13,8 @@
     "verify:learn": "node scripts/verify-learn.js",
     "verify:gate-reports": "node scripts/verify-gate-report.js",
     "verify:pr-gate-diff": "node scripts/verify-pr-gate-diff.js",
+    "verify:scenario-evals": "node scripts/verify-scenario-evals.js",
+    "verify:drift": "node scripts/verify-drift.js",
     "skills:install": "node bin/omakase.js skills install",
     "prepare": "npm run build"
   },

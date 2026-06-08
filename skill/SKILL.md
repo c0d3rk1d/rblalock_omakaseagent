@@ -121,7 +121,7 @@ Run this check **before** Setup step 4 or loading any `teams/*/lead.md`:
 - Class **2+:** close with gate file under `.omakaseagent/gates/` (or committed `examples/*/gates/` in this repo) — not chat-only "done"
 - Run mechanical commands from `factory.md` when present; cite memory in output
 
-When native `omakase-engineer` **is** installed, redirect once — natives already embed the same references. Parity gaps between router fallback and native agents are P1 improvement opportunities until scenario evals (Phase 4) enforce them mechanically.
+When native `omakase-engineer` **is** installed, redirect once — natives already embed the same references. Parity contracts are mechanically checked via `evals/*.eval.json` (`npm run verify:scenario-evals`).
 
 ## Setup (run this first on every significant task)
 

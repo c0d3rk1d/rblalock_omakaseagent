@@ -1,6 +1,6 @@
 # Omakase dark factory methodology playbook
 
-**Status (2026-06-04):** Active methodology reference. Shipped repo foundation (native agents, CI, AGENTS.md, three-team MLP) is archived in [`plans/archive/2026-06-04-shipped-foundation.md`](archive/2026-06-04-shipped-foundation.md). **Open backlog** here: mechanical gate-heading CI, scenario evals, deeper dogfood — not a runner or Level 5 autonomy. **Shipped (2026-06-05):** `omakase learn` factory bootstrap + `examples/factory-dogfood/` snapshot.
+**Status (2026-06-04):** Active methodology reference. Shipped repo foundation (native agents, CI, AGENTS.md, three-team MLP) is archived in [`plans/archive/2026-06-04-shipped-foundation.md`](archive/2026-06-04-shipped-foundation.md). **Open backlog** here: live with-skill eval runs (Phase 5), deeper dogfood — not a runner or Level 5 autonomy. **Shipped:** `omakase learn` + factory CI (2026-06-05); PR gate diff + scenario eval specs + drift (2026-06-08); project agents Phase G (2026-06-08).
 
 ## Short version
 

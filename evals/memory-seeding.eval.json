@@ -1,0 +1,18 @@
+{
+  "id": "memory-seeding",
+  "title": "First-task memory seeding — concrete, task-derived entries",
+  "seedPrompt": "Implement a debounce utility in a fresh repo with no .omakaseagent/ yet.",
+  "targets": [
+    {
+      "path": "skill/SKILL.md",
+      "mustMatch": ["three concrete, observable, task-derived", "Minimal Seed for First Task"]
+    },
+    {
+      "path": "skill/reference/init.md",
+      "mustMatch": ["Minimal Seed for First Task", "three concrete, observable, task-derived"]
+    }
+  ],
+  "requiredEvidence": ["Memory consulted", "decisions.md"],
+  "forbiddenFailures": ["one-line placeholder seed", "silently proceed while memory is absent"],
+  "criticRubric": ["Context Fidelity", "Audit Trail"]
+}

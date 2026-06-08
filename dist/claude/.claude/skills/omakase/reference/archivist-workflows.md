@@ -135,6 +135,42 @@ The lead may still run git or chat workflows alone when the ask is a recap or a 
 
 ---
 
+## 4. Drift audit (skill source vs dist vs TEAMS.md)
+
+**Goal:** Catch persona/router drift before it reaches users — especially after `skill/` edits without `npm run build`.
+
+### When to run
+
+| Trigger | Action |
+|---------|--------|
+| After merging Class 2 `skill/` or native generator changes | `npm run verify:drift` (CI runs this on main/PR) |
+| Weekly maintenance or “does dist match skill?” | Same + `npm run build` if drift found |
+| Before adding a new specialist | Check overlap per `reference/team-architecture.md` |
+
+### Mechanical check
+
+```bash
+npm run verify:drift
+```
+
+Validates: `TEAMS.md` lists core leads; `dist/*/agents/omakase-{engineer,critic,archivist}.md` include `teams/` bundles; persona tree under `skill/teams/` is non-empty.
+
+### Report shape (default: report only)
+
+```markdown
+## Drift audit (<date>)
+
+- **TEAMS.md:** pass | issues
+- **dist bundles:** pass | rebuild needed
+- **scenario evals:** `npm run verify:scenario-evals` pass | fail
+
+**Proposed decisions.md** (if structural drift found): …
+```
+
+Do not auto-edit `skill/` or `dist/` — propose rebuild or fix, human confirms.
+
+---
+
 ## Quality bar
 
 - Git recap must change how someone understands the week (themes + classification), not duplicate `git log`.
