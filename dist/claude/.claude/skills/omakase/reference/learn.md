@@ -20,6 +20,7 @@ omakase learn              # factory + memory markers
 omakase learn --dry-run    # list paths only
 omakase learn --memory-only   # taste/decisions only, no scenarios
 omakase learn --factory-only  # factory.md + scenarios, skip taste merge
+omakase learn --project-agents-only  # project-agents/ + native emit only
 ```
 
 **Precondition:** `.omakaseagent/` exists (`omakase init` first).
@@ -53,6 +54,13 @@ Agents follow **`reference/task-intake.md`** (single tasks) and **`reference/fac
 ## Risks / human decision
 ```
 
-## Project agents (future)
+## Project agents (Phase G)
 
-Optional `learn` step may propose ≤3 namespaced project agents (see expansion plan Phase G). Not required for factory v1.
+`learn` proposes up to **3** namespaced agents under `.omakaseagent/project-agents/` from repo signals (`skill/`, `bin/`, domain dirs). On learn, stubs emit to installed harness `agents/` dirs (e.g. `.cursor/agents/omakase-<pkg>-skill.md`).
+
+- **Canonical source:** `.omakaseagent/project-agents/*.md` — edit here, re-run learn
+- **Does not replace** core leads (`@omakase-engineer`, etc.)
+- **Gate:** skill-judge report on new/changed bodies (report-only; human decides)
+- **Refresh:** `omakase learn --project-agents-only` after editing project agent files
+
+See `reference/team-architecture.md` for delegation patterns.

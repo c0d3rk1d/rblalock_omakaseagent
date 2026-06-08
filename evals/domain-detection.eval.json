@@ -1,0 +1,22 @@
+{
+  "id": "domain-detection",
+  "title": "Plan and critique require Domain Detection & Merge Declaration",
+  "seedPrompt": "Write a GTM narrative for our launch — no code.",
+  "targets": [
+    {
+      "path": "skill/reference/plan.md",
+      "mustMatch": ["Domain Detection & Merge Declaration"]
+    },
+    {
+      "path": "skill/reference/critique.md",
+      "mustMatch": ["Domain Detection & Merge Declaration", "correctly avoided for pure non-engineering"]
+    },
+    {
+      "path": "skill/SKILL.md",
+      "mustMatch": ["Domain Detection & Merge Declaration"]
+    }
+  ],
+  "requiredEvidence": ["Domain Detection & Merge Declaration", "engineering extensions were correctly avoided"],
+  "forbiddenFailures": ["code judo on strategy doc", "deslop in the code sense on GTM"],
+  "criticRubric": ["Context Fidelity", "Senior Expertise"]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "visible-critique",
+  "title": "Leads require visible Internal Critique Pass",
+  "seedPrompt": "Refactor the native agent generator for clarity.",
+  "targets": [
+    {
+      "path": "skill/teams/engineering/lead.md",
+      "mustMatch": ["Internal Critique Pass"]
+    },
+    {
+      "path": "skill/teams/critics/lead.md",
+      "mustMatch": ["Internal Critique Pass"]
+    },
+    {
+      "path": "skill/teams/archives/lead.md",
+      "mustMatch": ["Internal Critique Pass"]
+    }
+  ],
+  "requiredEvidence": ["Internal Critique Pass", "P0", "P1"],
+  "forbiddenFailures": ["critique without visible pass"],
+  "criticRubric": ["Excellence Gate", "Zero AI Slop"]
+}

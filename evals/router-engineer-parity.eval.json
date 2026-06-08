@@ -1,0 +1,26 @@
+{
+  "id": "router-engineer-parity",
+  "title": "Router fallback and native engineer share factory contract",
+  "seedPrompt": "Add a verify script and wire it in CI (native @omakase-engineer installed).",
+  "targets": [
+    {
+      "path": "skill/SKILL.md",
+      "mustMatch": [
+        "reference/task-intake\\.md",
+        "reference/factory-orchestration\\.md",
+        "Smart Default vs Explicit Parity"
+      ]
+    },
+    {
+      "path": "skill/teams/engineering/lead.md",
+      "mustMatch": ["reference/task-intake\\.md", "reference/factory-orchestration\\.md"]
+    },
+    {
+      "path": "dist/cursor/.cursor/agents/omakase-engineer.md",
+      "mustMatch": ["task-intake", "factory-orchestration"]
+    }
+  ],
+  "requiredEvidence": ["task brief", "gate file", "mechanical evidence"],
+  "forbiddenFailures": ["chat-only done", "skip critic on Class 2\\+"],
+  "criticRubric": ["Structural Integrity", "Excellence Gate"]
+}

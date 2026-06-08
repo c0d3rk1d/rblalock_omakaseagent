@@ -25,6 +25,10 @@ const checks = [
     'mechanical checks include verify scripts',
     plan.checks.some((c) => c.cmd.includes('verify:')),
   ],
+  [
+    'mechanical checks include scenario evals',
+    plan.checks.some((c) => c.cmd.includes('verify:scenario-evals')),
+  ],
 ];
 
 let failed = false;

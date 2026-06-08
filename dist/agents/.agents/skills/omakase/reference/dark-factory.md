@@ -32,10 +32,16 @@ Industry "dark factory" often means full autonomy. **Omakase targets Level 4 (Da
 - Cite memory; propose memory updates when durable
 - Offer `omakase learn` when factory layout is missing
 
-**Automated later (repo/CI, not agent guesswork):**
+**Automated in CI (repo scripts):**
 
-- CI validates gate report headings exist on PRs (optional)
-- Scenario eval harness for skill/persona parity
+- Gate report headings — `npm run verify:gate-reports`
+- Class 2 PR gate discipline — `npm run verify:pr-gate-diff`
+- Scenario eval contracts — `npm run verify:scenario-evals` (`evals/*.eval.json`)
+- Skill/dist drift — `npm run verify:drift`
+
+**Automated later (live harness evals, Phase 5+):**
+
+- With-skill vs baseline runs on seed prompts
 - Narrow task classes may earn more autonomy **after** evidence history — still human accept
 
 **Never automate in v1:**

@@ -1,0 +1,14 @@
+{
+  "id": "critique-depth-adaptation",
+  "title": "Critique depth adaptation prevents output bloat",
+  "seedPrompt": "Critique this 40-line helper function.",
+  "targets": [
+    {
+      "path": "skill/reference/critique.md",
+      "mustMatch": ["Depth Adaptation", "short form to avoid bloat", "~150 lines"]
+    }
+  ],
+  "requiredEvidence": ["Summary verdict", "Top 3 Priority Issues"],
+  "forbiddenFailures": ["full 8-part structure on trivial target", "ceremonial critique"],
+  "criticRubric": ["Ruthless Simplicity", "Zero AI Slop"]
+}

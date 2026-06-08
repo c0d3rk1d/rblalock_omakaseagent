@@ -6,6 +6,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const {
+  planProjectAgents,
+  applyProjectAgentEmit,
+  buildAgentsProjectSection,
+  PROJECT_AGENTS_MARKER,
+} = require('./project-agents');
 
 const TASTE_MARKER = '<!-- omakase-learn:taste -->';
 const AGENTS_MARKER = '## Omakase Dark Factory';
@@ -223,7 +229,8 @@ ${bullets.map((b) => `- ${b}`).join('\n')}
 `;
 }
 
-function buildAgentsSection() {
+function buildAgentsSection(projectSlugs = []) {
+  const projectBlock = projectSlugs.length ? buildAgentsProjectSection(projectSlugs) : '';
   return `
 
 ${AGENTS_MARKER}
@@ -233,8 +240,9 @@ This repo uses **Level 4** Omakase: approve intent and scenarios; review gate ev
 - **Factory playbook:** \`.omakaseagent/factory.md\`
 - **Scenarios:** \`.omakaseagent/scenarios/\`
 - **Gate reports:** \`.omakaseagent/gates/\`
+- **Project agents:** \`.omakaseagent/project-agents/\` (≤3, emitted on learn)
 - **Refresh:** \`npx omakase learn\` (use \`--dry-run\` first)
-
+${projectBlock}
 `;
 }
 
@@ -257,12 +265,16 @@ function planLearn(cwd, options = {}) {
   const scenarios = buildScenarios(cwd, pkg, checks);
   const factoryMd = buildFactoryMd(cwd, pkg, stack, checks, risks);
   const tasteSection = buildTasteSection(pkg, stack, checks);
-  const agentsSection = buildAgentsSection();
+  const projectPlan = planProjectAgents(cwd, pkg, stack, options);
+  const agentsSection = buildAgentsSection(projectPlan.candidates);
   const today = new Date().toISOString().slice(0, 10);
 
   const files = [];
+  const projectAgentsOnly = !!options.projectAgentsOnly;
+  const skipFactory = options.memoryOnly || projectAgentsOnly;
+  const skipMemory = options.factoryOnly || projectAgentsOnly;
 
-  if (!options.memoryOnly) {
+  if (!skipFactory) {
     for (const dir of ['scenarios', 'gates', 'handoffs']) {
       files.push({
         path: path.join(memDir, dir, 'README.md'),
@@ -278,7 +290,7 @@ function planLearn(cwd, options = {}) {
     }
   }
 
-  if (!options.factoryOnly) {
+  if (!skipMemory) {
     const tastePath = path.join(memDir, 'taste.md');
     let taste = readSafe(tastePath) || '';
     if (!taste.includes(TASTE_MARKER)) {
@@ -300,6 +312,10 @@ function planLearn(cwd, options = {}) {
     }
   }
 
+  if (!options.memoryOnly) {
+    files.push(...projectPlan.files);
+  }
+
   const agentsPath = path.join(cwd, 'AGENTS.md');
   const agents = readSafe(agentsPath) || '';
   if (!agents.includes(AGENTS_MARKER)) {
@@ -307,9 +323,23 @@ function planLearn(cwd, options = {}) {
       path: agentsPath,
       content: agents.trimEnd() + agentsSection,
     });
+  } else if (!agents.includes(PROJECT_AGENTS_MARKER) && projectPlan.candidates.length) {
+    files.push({
+      path: agentsPath,
+      content: agents.trimEnd() + buildAgentsProjectSection(projectPlan.candidates),
+    });
   }
 
-  return { files, pkg, stack, checks, scenarios: scenarios.map((s) => s.slug) };
+  return {
+    files,
+    pkg,
+    stack,
+    checks,
+    scenarios: scenarios.map((s) => s.slug),
+    projectAgents: projectPlan.candidates,
+    emitPlan: projectPlan.emitPlan,
+    harnesses: projectPlan.harnesses,
+  };
 }
 
 function applyLearn(plan, options = {}) {
@@ -328,6 +358,7 @@ function runLearn(options = {}) {
   const plan = planLearn(cwd, {
     memoryOnly: options.memoryOnly,
     factoryOnly: options.factoryOnly,
+    projectAgentsOnly: options.projectAgentsOnly,
     allowNoMem: false,
   });
 
@@ -336,14 +367,18 @@ function runLearn(options = {}) {
   }
 
   const written = applyLearn(plan, { dryRun: options.dryRun });
+  const emitted = applyProjectAgentEmit(plan.emitPlan || [], { dryRun: options.dryRun });
 
   return {
     dryRun: !!options.dryRun,
     written,
+    emitted,
     planned: plan.files.map((f) => path.relative(cwd, f.path)),
     stack: plan.stack,
     checks: plan.checks,
     scenarios: plan.scenarios,
+    projectAgents: plan.projectAgents || [],
+    harnesses: plan.harnesses || [],
   };
 }
 

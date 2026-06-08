@@ -1,0 +1,22 @@
+{
+  "id": "non-engineering-deactivation",
+  "title": "Engineering persona deactivates on context shift",
+  "seedPrompt": "After fixing CI, help me draft positioning copy for the landing page.",
+  "targets": [
+    {
+      "path": "skill/teams/engineering/lead.md",
+      "mustMatch": ["Deactivate the Engineering persona", "General Chef \\(engineering de-activated"]
+    },
+    {
+      "path": "skill/reference/engineering.md",
+      "mustMatch": ["yield back to the general chef"]
+    },
+    {
+      "path": "skill/SKILL.md",
+      "mustMatch": ["Context shift is expected", "does not bleed into"]
+    }
+  ],
+  "requiredEvidence": ["Persona: General Chef", "engineering de-activated"],
+  "forbiddenFailures": ["code judo on narrative", "file health on GTM"],
+  "criticRubric": ["Context Fidelity", "Ruthless Simplicity"]
+}
