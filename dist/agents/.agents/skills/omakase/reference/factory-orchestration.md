@@ -45,7 +45,8 @@ flowchart LR
 
 - Delegate implementation when isolated context helps (`omakase-implementation-lead`).  
 - Handoff charter: brief excerpt + files in scope + mechanical commands to run.  
-- Save handoff: `.omakaseagent/handoffs/<date>-<slug>-to-implementation.md`.
+- **Backlog item:** charter = full `.omakaseagent/backlog/NNN-*.md`; executor runs drift check and STOP rules from the plan (`reference/execution-plan.md`).  
+- Save handoff: `.omakaseagent/handoffs/<date>-<slug>-to-implementation.md` (optional when backlog plan is the charter).
 
 ### Phase 3 — Mechanical evidence (Engineer)
 
@@ -107,6 +108,15 @@ Do not spawn separate user threads per step unless harness requires it.
 | Chat-only evidence | Gate file + mechanical output |
 
 ---
+
+## Backlog-driven work
+
+User: "Implement backlog/002" or Engineer proposes next item after audit.
+
+1. Read execution plan; drift check first.  
+2. Phases 1–7 unchanged — plan does not waive critic or gate.  
+3. Gate `## Seed` links backlog path; `## Mechanical evidence` includes plan done-criteria commands.  
+4. Update `backlog/README.md` status on close; reconcile on next audit (`reference/backlog-audit.md`).
 
 ## Reference E2E
 

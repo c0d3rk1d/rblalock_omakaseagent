@@ -45,8 +45,19 @@ Show the brief under a heading like **Task brief** (not "Seed" unless the user i
 | Class 2+, clear ask | Brief + propose 1–3 scenarios (new or link existing in `.omakaseagent/scenarios/`) → **one** confirm: "Proceed with this brief?" |
 | Ambiguous goal, conflicting constraints, Class 3+ | Ask clarifying questions before implementation |
 | User already gave a full spec | Brief is confirm-only or skip if redundant |
+| User points at `.omakaseagent/backlog/NNN-*.md` | Treat execution plan as charter; brief is plan summary + risk class; proceed to scenarios (Class 2+) then factory loop |
 
 Never ask the user to "create a seed file." You create the brief; they approve or correct.
+
+### Backlog execution plans
+
+When implementing from `.omakaseagent/backlog/`:
+
+1. Read the full execution plan (`reference/execution-plan.md` shape).
+2. Task brief = plan title + why + done criteria excerpt.
+3. Run drift check from plan header before editing source.
+4. Honor STOP conditions — escalate to user, do not improvise.
+5. Gate report must link the backlog plan path and record done-criteria results.
 
 ### 3. Scenarios (Class 2+)
 
