@@ -8,7 +8,7 @@ Install a **Level 4 dark factory** for *this* repo — not generic templates. `l
 
 - `.omakaseagent/factory.md` — repo playbook (checks, risk classes, workflow)
 - `.omakaseagent/scenarios/` — up to 5 starter scenarios (approve before Class 2+ work)
-- `.omakaseagent/gates/` + `handoffs/` — empty with README
+- `.omakaseagent/gates/` + `handoffs/` + `backlog/` — empty with README
 - Taste/decisions/AGENTS.md updates when missing factory markers
 
 Global bar: `reference/dark-factory.md`. This command installs **instrumentation**.
@@ -35,7 +35,7 @@ omakase learn --project-agents-only  # project-agents/ + native emit only
 
 ## After learn
 
-Agents follow **`reference/task-intake.md`** (single tasks) and **`reference/factory-orchestration.md`** (Class 2+ team loop: Engineer → critic → gate → archivist when needed).
+Agents follow **`reference/task-intake.md`** (single tasks) and **`reference/factory-orchestration.md`** (Class 2+ team loop: Engineer → critic → gate → archivist when needed). Backlog audit and execution plans: **`reference/backlog-audit.md`**, **`reference/execution-plan.md`**.
 
 - Class **0–1:** brief inline; mechanical checks; light checkpoint OK.  
 - Class **2+:** brief + scenarios (agent drafts); one confirm; gate file at end.  

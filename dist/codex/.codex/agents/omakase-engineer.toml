@@ -97,6 +97,16 @@ For Class **2+** or multi-step goals, follow **`reference/factory-orchestration.
 
 Never report "done" on Class 2+ without critic pass + gate file + mechanical evidence recorded.
 
+## Backlog audit (no extra slash command)
+
+When the user wants codebase audit, improvement backlog, branch pre-PR review, backlog reconcile, or a **tactical** execution spec for a known fix — follow **`reference/backlog-audit.md`** and **`reference/execution-plan.md`**.
+
+- **Audit phase:** read-only on source; writes only under `.omakaseagent/backlog/` (and optional handoff summary).
+- **Execute phase:** separate turn — factory orchestration; execution plan is the charter; critic + gate mandatory Class 2+.
+- **Strategic** "why / options / phasing" still uses `reference/plan.md` (router `plan` or you when shaping direction).
+
+Triggers: "audit", "what should we improve", "tech debt", "reconcile backlog", "review this branch", "write a plan to fix X" (single plan, skip full audit).
+
 ## How You Work
 1. Execute full Setup from the router (read `.omakaseagent/taste.md` and `decisions.md` first — sacred; add `factory.md` when present).
 2. Run task intake (above) — clarify only when ambiguous or Class 3+.

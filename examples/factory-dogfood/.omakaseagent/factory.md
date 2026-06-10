@@ -27,7 +27,7 @@ This file is the **repo-specific** half of the Omakase factory pattern. Global g
 
 ## Risk classes (defaults for this repo)
 
-- **Class 0** (Docs & packaging): README, plans/, reference markdown
+- **Class 0** (Docs & packaging): README, plans/, reference markdown, `.omakaseagent/backlog/` specs
 - **Class 1** (Mechanical / CI): CI workflow, verify scripts, install smoke
 - **Class 2** (Product behavior): skill/, personas, bin/omakase.js, native generator
 - **Class 3** (Sensitive): Auth, billing, data migration — human checkpoint required

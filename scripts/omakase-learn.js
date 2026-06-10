@@ -240,6 +240,7 @@ This repo uses **Level 4** Omakase: approve intent and scenarios; review gate ev
 - **Factory playbook:** \`.omakaseagent/factory.md\`
 - **Scenarios:** \`.omakaseagent/scenarios/\`
 - **Gate reports:** \`.omakaseagent/gates/\`
+- **Backlog:** \`.omakaseagent/backlog/\` — execution plans (\`reference/backlog-audit.md\`)
 - **Project agents:** \`.omakaseagent/project-agents/\` (≤3, emitted on learn)
 - **Refresh:** \`npx omakase learn\` (use \`--dry-run\` first)
 ${projectBlock}
@@ -250,6 +251,8 @@ const DIR_READMES = {
   scenarios: 'Human-approved behavior contracts. Approve before Class 2+ agent work.',
   gates: 'Evidence stacks + critic summary per checkpoint. One file per task/milestone.',
   handoffs: 'High-signal continuation notes between agents or humans.',
+  backlog:
+    'Execution plans from backlog audit (`reference/backlog-audit.md`). Implement via factory loop — not chat-only.',
 };
 
 function planLearn(cwd, options = {}) {
@@ -275,7 +278,7 @@ function planLearn(cwd, options = {}) {
   const skipMemory = options.factoryOnly || projectAgentsOnly;
 
   if (!skipFactory) {
-    for (const dir of ['scenarios', 'gates', 'handoffs']) {
+    for (const dir of ['scenarios', 'gates', 'handoffs', 'backlog']) {
       files.push({
         path: path.join(memDir, dir, 'README.md'),
         content: `# ${dir}\n\n${DIR_READMES[dir]}\n`,
@@ -300,7 +303,7 @@ function planLearn(cwd, options = {}) {
     const decisionRow = `
 ## ${today} — Dark factory bootstrapped
 **Context**: \`omakase learn\` on this repo.
-**Decision**: Adopt Level 4 layout (factory.md, scenarios, gates, handoffs). Class 2+ uses scenarios + gate reports.
+**Decision**: Adopt Level 4 layout (factory.md, scenarios, gates, handoffs, backlog). Class 2+ uses scenarios + gate reports.
 **Why**: Humans review intent and evidence, not every diff; Omakase principles already define the bar.
 **Revisit if**: Stack or CI changes materially — re-run \`omakase learn\`.
 
