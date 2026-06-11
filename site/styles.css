@@ -862,7 +862,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 .mb-col.isnot h3 { background: var(--paper-dim); }
 
 .mb-mark {
-  font-family: var(--display);
   flex: none;
   width: 1.7em;
   height: 1.7em;
@@ -873,7 +872,30 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
   font-size: 0.95rem;
 }
 
-.mb-col.is .mb-mark { color: var(--vermillion); border-color: var(--vermillion); }
+.mb-mark::before,
+.mb-mark::after {
+  content: "";
+  grid-area: 1 / 1;
+}
+
+.mb-col.is .mb-mark { border-color: var(--vermillion); }
+
+.mb-col.is .mb-mark::before {
+  width: 0.55em;
+  height: 0.55em;
+  border: 2px solid var(--vermillion);
+  border-radius: 50%;
+}
+
+.mb-col.isnot .mb-mark::before,
+.mb-col.isnot .mb-mark::after {
+  width: 0.85em;
+  height: 2px;
+  background: var(--ink);
+}
+
+.mb-col.isnot .mb-mark::before { rotate: 45deg; }
+.mb-col.isnot .mb-mark::after { rotate: -45deg; }
 
 .mb-col ul { list-style: none; padding: var(--s-4); }
 
