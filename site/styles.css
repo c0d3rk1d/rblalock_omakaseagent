@@ -363,10 +363,22 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 .course { border-bottom: var(--border); }
 
 .course-head {
-  display: flex;
-  align-items: baseline;
-  gap: var(--s-4);
   padding: clamp(var(--s-8), 5vw, var(--s-12)) clamp(var(--s-6), 4vw, var(--s-12)) var(--s-6);
+}
+
+.course-head .jp {
+  display: block;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.35em;
+  color: var(--vermillion-deep);
+  margin-bottom: var(--s-2);
+}
+
+.course-title {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
 }
 
 .course-num {
@@ -380,17 +392,7 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
   color: var(--paper);
   background: var(--vermillion);
   border: var(--border);
-  align-self: center;
   padding-bottom: 0.15em;
-}
-
-.course-head hgroup .jp {
-  display: block;
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.35em;
-  color: var(--vermillion-deep);
-  margin-bottom: var(--s-1);
 }
 
 .course-head h2 {
@@ -398,19 +400,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
   font-size: clamp(1.7rem, 4vw, 2.6rem);
   line-height: 1.15;
   text-wrap: balance;
-}
-
-.course-head .course-note {
-  margin-left: auto;
-  max-width: 30ch;
-  font-size: 0.9rem;
-  color: var(--ink-soft);
-  align-self: center;
-}
-
-@media (max-width: 720px) {
-  .course-head { flex-wrap: wrap; }
-  .course-head .course-note { margin-left: 0; max-width: 60ch; }
 }
 
 .course-body { padding: 0 clamp(var(--s-6), 4vw, var(--s-12)) clamp(var(--s-8), 5vw, var(--s-12)); }
@@ -604,10 +593,11 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 
 .course-gate { background: var(--ink); color: var(--paper); }
 
-.course-gate .course-head hgroup .jp { color: var(--blossom); }
+.course-gate .course-head .jp { color: var(--blossom); }
 .course-gate .course-num { background: var(--blossom); color: var(--ink); }
 
 .gate-grid {
+  list-style: none;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 0;
@@ -830,7 +820,7 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 
 .course-factory { background: var(--vermillion); color: var(--paper); }
 
-.course-factory .course-head hgroup .jp { color: var(--ink); }
+.course-factory .course-head .jp { color: var(--ink); }
 .course-factory .course-num { background: var(--ink); }
 
 .factory-quote {
