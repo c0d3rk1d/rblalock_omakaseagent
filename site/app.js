@@ -1,13 +1,13 @@
-// copy-to-clipboard chips
-document.querySelectorAll(".cmd-chip").forEach((chip) => {
-  chip.addEventListener("click", async () => {
+// copy-to-clipboard buttons
+document.querySelectorAll("[data-copy]").forEach((el) => {
+  el.addEventListener("click", async () => {
     try {
-      await navigator.clipboard.writeText(chip.dataset.copy);
-      const note = chip.querySelector(".copied-note");
+      await navigator.clipboard.writeText(el.dataset.copy);
+      const note = el.querySelector(".copied-note");
       note.hidden = false;
       setTimeout(() => (note.hidden = true), 1600);
     } catch {
-      /* clipboard unavailable; the command is visible anyway */
+      /* clipboard unavailable; the prompt is visible on the ticket anyway */
     }
   });
 });

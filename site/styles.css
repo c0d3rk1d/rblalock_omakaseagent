@@ -315,9 +315,16 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
   gap: var(--s-4);
 }
 
+.cta-note {
+  margin-top: var(--s-4);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
 .cmd-chip {
-  font-family: var(--mono);
+  font-family: var(--display);
   font-size: 0.95rem;
+  letter-spacing: 0.05em;
   display: inline-flex;
   align-items: center;
   gap: var(--s-3);
@@ -707,10 +714,30 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
   overflow-x: auto;
 }
 
+.ticket-prompt { white-space: pre-wrap; }
+
+.ticket-foot {
+  padding: 0 var(--s-6) var(--s-6);
+}
+
+.ticket-foot .copied-note {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 0.75rem;
+  margin-left: var(--s-2);
+}
+
 .ticket .c { color: oklch(0.95 0.025 90 / 0.5); }
 .ticket .dollar { color: var(--blossom); }
 
 .order-steps { display: flex; flex-direction: column; gap: var(--s-6); }
+
+.terminal-note {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  border-top: 2px dotted oklch(0.24 0.015 60 / 0.4);
+  padding-top: var(--s-4);
+}
 
 .order-step h3 {
   font-family: var(--display);

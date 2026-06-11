@@ -22,10 +22,18 @@ Generic, hedging, over-engineered output fails. Non-trivial work explains *why* 
 
 ## Quick start
 
-```bash
-npx omakaseagent init
-npx omakaseagent learn    # repo-specific Level 4 factory (scenarios, gates)
+Paste this into your agent (Claude Code, Cursor, wherever it lives) — the setup is agentic, not a script:
+
+```text
+Run `npx omakaseagent init` in this repo. Then read the AGENTS.md and Omakase
+skill it installs, and adopt the twelve rules and the critique gate for all
+work here from now on. Next, run `npx omakaseagent learn` and fill in
+.omakaseagent/factory.md with this repo's real build, test, and verify
+commands. When you're done, tell me what standard you're now working under
+and how I should hand you tasks.
 ```
+
+Prefer the terminal? `npx omakaseagent init` then `npx omakaseagent learn` — but the agent should be the one reading and adopting what gets installed.
 
 Reload your harness, then talk to a **lead** (not a menu of skills):
 
