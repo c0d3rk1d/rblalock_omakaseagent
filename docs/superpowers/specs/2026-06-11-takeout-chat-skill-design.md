@@ -16,7 +16,9 @@ Let non-technical people use the Omakase standard in chat apps (Claude web/deskt
 
 ## Components
 
-### 1. Chat skill source: `skill/chat/SKILL.md.tmpl` → built `SKILL.md`
+### 1. Chat skill source: `skill-chat/SKILL.md.tmpl` → built `SKILL.md`
+
+(Repo root, not inside `skill/`: the build copies `skill/` wholesale into every harness bundle, and the chat template must not ship there.)
 
 A single-file skill authored for chat contexts, assembled at build time so the rules and rubric are never hand-duplicated:
 
@@ -73,7 +75,7 @@ One short "No terminal?" paragraph under Install: download link (site URL), uplo
 ## Testing / verification
 
 - `npm run build` twice → `git status` clean the second time (determinism).
-- Unzip `dist/omakase-skill.zip` → exactly `omakase/SKILL.md`, frontmatter valid, injected sections present, no repo-machinery strings (`omakase learn`, `.omakaseagent/`, `Task`, lead names).
+- Unzip `dist/omakase-skill.zip` → exactly `omakase/SKILL.md`, frontmatter valid, injected sections present, no repo-machinery strings (`omakase learn`, `omakase-router`, `@omakase-*` lead names). The injected canonical Rule 5 may mention `.omakaseagent/` files; the "In chat" adaptation that follows handles it, so that string is not banned.
 - Site: Takeout block renders desktop + mobile; download link resolves in the Pages artifact layout.
 - Workflow: green run on main; site live; `/omakase-skill.zip` downloads.
 
