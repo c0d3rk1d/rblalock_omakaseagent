@@ -67,7 +67,7 @@ npx omakaseagent skills install cursor   # or: claude | agents | grok | codex
 Also on the skills ecosystem: `npx skills add rblalock/omakaseagent` ([skills.sh](https://skills.sh/rblalock/omakaseagent)).
 
 **No terminal?** Omakase works in chat apps. Download
-[omakase-skill.zip](https://rblalock.github.io/omakaseagent/omakase-skill.zip),
+[omakase-skill.zip](https://omakaseagent.com/omakase-skill.zip),
 then upload it in Claude (Customize → Skills → Upload skill) or ChatGPT
 (Skills → New skill → Upload from your computer). In chat
 you get the standard (rules + critique gate); the full kitchen (leads, project
