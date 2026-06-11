@@ -813,10 +813,9 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 .course-factory .course-num { background: var(--ink); }
 
 .factory-quote {
-  font-family: var(--serif);
-  font-weight: 700;
-  font-size: clamp(1.2rem, 2.6vw, 1.7rem);
-  line-height: 1.5;
+  font-family: var(--display);
+  font-size: clamp(1.05rem, 2vw, 1.4rem);
+  line-height: 1.55;
   max-width: 30ch;
   text-wrap: balance;
   margin-bottom: var(--s-8);
@@ -911,9 +910,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* topbar: the enso turns, imperceptibly */
-  .topbar .enso { animation: enso-turn 75s linear infinite; }
-
   /* hero: kana lanterns bob in sequence */
   .kana-circles span { animation: kana-bob 5s ease-in-out infinite; }
   .kana-circles span:nth-child(2) { animation-delay: 0.45s; }
@@ -972,10 +968,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
   .footer-sushi svg { animation: sushi-bob 6s ease-in-out infinite; }
   .footer-sushi svg:nth-child(2) { animation-delay: 0.7s; }
   .footer-sushi svg:nth-child(3) { animation-delay: 1.4s; }
-}
-
-@keyframes enso-turn {
-  to { transform: rotate(360deg); }
 }
 
 @keyframes kana-bob {
