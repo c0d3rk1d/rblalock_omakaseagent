@@ -783,6 +783,73 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 
 .harness-table tr:hover td { background: var(--paper-dim); }
 
+/* ---------- takeout (chat apps) ---------- */
+
+.takeout {
+  margin-top: var(--s-8);
+  border: var(--border);
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: minmax(260px, 1.1fr) 1.6fr;
+}
+
+.takeout-intro {
+  padding: var(--s-6);
+  border-right: 1px solid oklch(0.24 0.015 60 / 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-4);
+}
+
+.takeout-intro h3 {
+  font-family: var(--display);
+  font-size: 1.35rem;
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+}
+
+.takeout-intro h3 .jp-inline {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  color: var(--vermillion-deep);
+}
+
+.takeout-intro p { color: var(--ink-soft); font-size: 0.95rem; }
+
+.takeout-apps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.takeout-app { padding: var(--s-6); }
+
+.takeout-app + .takeout-app { border-left: 1px solid oklch(0.24 0.015 60 / 0.25); }
+
+.takeout-app h4 { font-family: var(--display); font-size: 1rem; margin-bottom: var(--s-3); }
+
+.takeout-app ol { padding-left: 1.2em; font-size: 0.92rem; color: var(--ink-soft); }
+
+.takeout-app li { padding-block: var(--s-1); }
+
+.takeout-app .plan-note {
+  margin-top: var(--s-3);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--vermillion-deep);
+}
+
+@media (max-width: 880px) {
+  .takeout { grid-template-columns: 1fr; }
+  .takeout-intro { border-right: none; border-bottom: 1px solid oklch(0.24 0.015 60 / 0.25); }
+  .takeout-app + .takeout-app { border-left: none; border-top: 1px solid oklch(0.24 0.015 60 / 0.25); }
+}
+
 /* ---------- memory strip ---------- */
 
 .memory-strip {
