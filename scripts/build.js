@@ -130,8 +130,7 @@ const codexMarker = path.join(distRoot, 'codex/.codex');
 fs.mkdirSync(codexMarker, { recursive: true });
 
 // Chat-app skill: rendered single-file SKILL.md + deterministic zip for
-// claude.ai / Claude Desktop / ChatGPT upload. Spec:
-// docs/superpowers/specs/2026-06-11-takeout-chat-skill-design.md
+// claude.ai / Claude Desktop / ChatGPT upload (served at omakaseagent.com).
 const { zipSync, strToU8 } = require('fflate');
 
 function buildChatSkill() {
