@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Omakase: The Chef's Standard for Agent Work</title>
-<meta name="description" content="Omakase is a portable quality standard for AI agent work: twelve rules, a critique rubric, and project memory. One skill. Senior taste. Zero AI slop.">
+<meta name="description" content="Omakase is a portable quality standard for AI agent work: twelve rules, a critique rubric, and project memory. One skill. Craftsman's taste. Zero AI slop.">
 <link rel="preload" href="fonts/rocknroll-one-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/shippori-mincho-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/shippori-mincho-700.woff2" as="font" type="font/woff2" crossorigin>
@@ -146,7 +146,7 @@
     </div>
 
     <div class="hero-tagline reveal">
-      <p class="lede">One skill. Senior taste. Zero AI slop.</p>
+      <p class="lede">One skill. Craftsman's taste. Zero AI slop.</p>
       <p class="sub">Omakase is a portable quality standard for AI agent work: twelve rules,
         a critique rubric, and project memory. Trust the chef: state the goal.
         Nothing mediocre reaches the table.</p>
@@ -411,6 +411,23 @@
 <span class="at">@omakase-critic</span>    review the auth module
 <span class="at">@omakase-archivist</span> what did I ship since Monday?</code></pre>
       </div>
+
+      <aside class="memory-strip reveal">
+        <svg class="scroll-icon" viewBox="0 0 80 80" aria-hidden="true">
+          <rect x="22" y="14" width="36" height="52" fill="#f3ead3" stroke="#2a221b" stroke-width="4"/>
+          <rect x="12" y="10" width="12" height="60" rx="5" fill="#d93a1f" stroke="#2a221b" stroke-width="4"/>
+          <rect x="56" y="10" width="12" height="60" rx="5" fill="#d93a1f" stroke="#2a221b" stroke-width="4"/>
+          <g stroke="#2a221b" stroke-width="3" stroke-linecap="round">
+            <path d="M30 28 h20"/><path d="M30 40 h16"/><path d="M30 52 h20"/>
+          </g>
+        </svg>
+        <div class="memory-text">
+          <strong>The house remembers.</strong>
+          <p><code>.omakaseagent/taste.md</code> holds project taste and rejections;
+             <code>decisions.md</code> holds key choices with context and reasoning.
+             Sacred files: read on every significant task, cited in every "why this approach."</p>
+        </div>
+      </aside>
     </div>
   </section>
 
@@ -487,11 +504,49 @@
     </div>
   </section>
 
-  <!-- 五 how to order -->
-  <section class="course" id="order">
+  <!-- 五 the trusted kitchen -->
+  <section class="course course-factory" id="factory">
     <header class="course-head">
       <div class="course-title">
         <span class="course-num" aria-hidden="true">五</span>
+        <h2>The Trusted Kitchen</h2>
+      </div>
+    </header>
+    <div class="course-body">
+      <blockquote class="factory-quote">
+        Humans approve what should be true.<br>
+        <em>Agents prove it became true.</em>
+      </blockquote>
+      <div class="marubatsu">
+        <div class="mb-col is reveal">
+          <h3>What it is</h3>
+          <ul>
+            <li>Longer agent runs without you reading every line of code</li>
+            <li>You approve what a change should do; the agent proves it did</li>
+            <li>The agent runs your build and tests itself, and shows the results</li>
+            <li>A short report with evidence instead of a wall of diffs</li>
+            <li>Routine changes need less of you; risky ones need more</li>
+          </ul>
+        </div>
+        <div class="mb-col isnot reveal">
+          <h3>What it is not</h3>
+          <ul>
+            <li>Merging, shipping, or deploying without your sign-off</li>
+            <li>A replacement for your CI</li>
+            <li>Taking "done" on faith</li>
+            <li>Letting scripts judge taste</li>
+            <li>Changing what you asked for without asking you</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 六 how to order -->
+  <section class="course" id="order">
+    <header class="course-head">
+      <div class="course-title">
+        <span class="course-num" aria-hidden="true">六</span>
         <h2>How to Order</h2>
       </div>
     </header>
@@ -549,7 +604,7 @@
 
       <div class="takeout reveal">
         <div class="takeout-intro">
-          <h3>Takeout <span class="jp-inline" lang="ja">お持ち帰り</span></h3>
+          <h3>Takeout</h3>
           <p>No terminal? Omakase works in chat apps too. You get the standard
              (the twelve rules and the critique gate) applied to whatever you
              bring: writing, plans, analysis, code. The full kitchen, with
@@ -561,10 +616,10 @@
             <h4>Claude, web or desktop</h4>
             <ol>
               <li>Download the skill above</li>
-              <li>Settings → Capabilities → Skills → Upload skill</li>
+              <li>Customize → Skills → Upload skill</li>
               <li>Toggle it on, then ask for work as usual</li>
             </ol>
-            <p class="plan-note">Pro, Max, Team, and Enterprise plans</p>
+            <p class="plan-note">Needs code execution enabled (Settings → Capabilities)</p>
           </div>
           <div class="takeout-app">
             <h4>ChatGPT</h4>
@@ -573,65 +628,11 @@
               <li>Skills → New skill → Upload from your computer</li>
               <li>Enable it, then ask for work as usual</li>
             </ol>
-            <p class="plan-note">Business, Enterprise, and Edu plans</p>
+            <p class="plan-note">Your workspace admin may need to turn skills on</p>
           </div>
         </div>
       </div>
 
-      <aside class="memory-strip reveal">
-        <svg class="scroll-icon" viewBox="0 0 80 80" aria-hidden="true">
-          <rect x="22" y="14" width="36" height="52" fill="#f3ead3" stroke="#2a221b" stroke-width="4"/>
-          <rect x="12" y="10" width="12" height="60" rx="5" fill="#d93a1f" stroke="#2a221b" stroke-width="4"/>
-          <rect x="56" y="10" width="12" height="60" rx="5" fill="#d93a1f" stroke="#2a221b" stroke-width="4"/>
-          <g stroke="#2a221b" stroke-width="3" stroke-linecap="round">
-            <path d="M30 28 h20"/><path d="M30 40 h16"/><path d="M30 52 h20"/>
-          </g>
-        </svg>
-        <div class="memory-text">
-          <strong>The house remembers.</strong>
-          <p><code>.omakaseagent/taste.md</code> holds project taste and rejections;
-             <code>decisions.md</code> holds key choices with context and reasoning.
-             Sacred files: read on every significant task, cited in every "why this approach."</p>
-        </div>
-      </aside>
-    </div>
-  </section>
-
-  <!-- 六 the trusted kitchen -->
-  <section class="course course-factory" id="factory">
-    <header class="course-head">
-      <div class="course-title">
-        <span class="course-num" aria-hidden="true">六</span>
-        <h2>The Trusted Kitchen</h2>
-      </div>
-    </header>
-    <div class="course-body">
-      <blockquote class="factory-quote">
-        Humans approve what should be true.<br>
-        <em>Agents prove it became true.</em>
-      </blockquote>
-      <div class="marubatsu">
-        <div class="mb-col is reveal">
-          <h3>What it is</h3>
-          <ul>
-            <li>Longer agent runs without you reading every line of code</li>
-            <li>You approve what a change should do; the agent proves it did</li>
-            <li>The agent runs your build and tests itself, and shows the results</li>
-            <li>A short report with evidence instead of a wall of diffs</li>
-            <li>Routine changes need less of you; risky ones need more</li>
-          </ul>
-        </div>
-        <div class="mb-col isnot reveal">
-          <h3>What it is not</h3>
-          <ul>
-            <li>Merging, shipping, or deploying without your sign-off</li>
-            <li>A replacement for your CI</li>
-            <li>Taking "done" on faith</li>
-            <li>Letting scripts judge taste</li>
-            <li>Changing what you asked for without asking you</li>
-          </ul>
-        </div>
-      </div>
     </div>
   </section>
 

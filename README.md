@@ -1,6 +1,6 @@
 # Omakase
 
-**The chef's standard.** One skill. Senior taste. Zero AI slop.
+**The chef's standard.** One skill. Craftsman's taste. Zero AI slop.
 
 [![skills.sh](https://skills.sh/b/rblalock/omakaseagent)](https://skills.sh/rblalock/omakaseagent)
 
@@ -68,8 +68,8 @@ Also on the skills ecosystem: `npx skills add rblalock/omakaseagent` ([skills.sh
 
 **No terminal?** Omakase works in chat apps. Download
 [omakase-skill.zip](https://rblalock.github.io/omakaseagent/omakase-skill.zip),
-then upload it in Claude (Settings → Capabilities → Skills; Pro/Max/Team) or
-ChatGPT (Skills → New skill → Upload; Business/Enterprise/Edu plans). In chat
+then upload it in Claude (Customize → Skills → Upload skill) or ChatGPT
+(Skills → New skill → Upload from your computer). In chat
 you get the standard (rules + critique gate); the full kitchen (leads, project
 memory) needs a coding harness.
 

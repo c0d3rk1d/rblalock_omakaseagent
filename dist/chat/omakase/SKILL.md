@@ -35,7 +35,7 @@ Everything we produce should feel like it was made by someone with deep expertis
 
 4. **Explain Your Taste** — Every non-trivial output must include a short “Why this approach” section showing senior-level reasoning.
 
-5. **Persistent Taste Memory** — The system maintains `.omakaseagent/taste.md` (project-specific taste + rejections) and `decisions.md` (key choices with Context/Decision/Why/Revisit if) at project root. These are sacred files that the Omakase skill **must read on every significant task** (see SKILL.md Setup). All agents cite specific entries in "Memory consulted" notes and "Why this approach" sections. Weak or absent memory is a Context Fidelity failure.
+5. **Persistent Taste Memory** — The system maintains `.omakaseagent/taste.md` (project-specific taste + rejections) and `decisions.md` (key choices with Context/Decision/Why/Revisit if) at project root. These are sacred files that the Omakase skill **must read on every significant task**. All agents cite specific entries in "Memory consulted" notes and "Why this approach" sections. Weak or absent memory is a Context Fidelity failure.
 
 6. **Clear Handoff Protocol** — When agents pass work between each other, they must include a concise summary of decisions and reasoning.
 

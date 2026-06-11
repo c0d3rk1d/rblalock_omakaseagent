@@ -156,6 +156,8 @@ function buildChatSkill() {
     console.error('\nBUILD FAILED: unresolved INJECT marker in chat skill');
     process.exit(1);
   }
+  // Rule 5 points at a Setup section that only exists in the harness skill.
+  rendered = rendered.replace(' (see SKILL.md Setup)', '');
   const banned = [
     'omakase learn',
     'omakase-router',
@@ -175,8 +177,10 @@ function buildChatSkill() {
   fs.writeFileSync(path.join(chatDir, 'SKILL.md'), rendered);
 
   // Deterministic zip: fixed mtime, single sorted entry, fixed compression.
+  // fflate encodes DOS time from LOCAL date components, so the constant must be
+  // built with the local-time constructor or the bytes vary by build timezone.
   const zipped = zipSync(
-    { 'omakase/SKILL.md': [strToU8(rendered), { mtime: new Date('2000-01-01T00:00:00Z') }] },
+    { 'omakase/SKILL.md': [strToU8(rendered), { mtime: new Date(2000, 0, 1) }] },
     { level: 9 }
   );
   fs.writeFileSync(path.join(distRoot, 'omakase-skill.zip'), Buffer.from(zipped));
