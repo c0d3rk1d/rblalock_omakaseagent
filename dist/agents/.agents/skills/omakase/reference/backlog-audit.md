@@ -160,7 +160,6 @@ No vibes-only findings.
 | `reference/execution-plan.md` | Tactical plan — how, steps, STOP, verify gates (backlog/) |
 | `reference/handoff.md` | Session continuity; audit summary can land in `handoffs/` |
 | `reference/factory-orchestration.md` | Mandatory loop after plan selection |
-| `plans/` (repo root) | Research / program docs — **not** execution backlog |
 
 ---
 

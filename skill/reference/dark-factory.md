@@ -108,6 +108,4 @@ npx omakase learn --dry-run
 
 **Team loop (Class 2+):** `reference/factory-orchestration.md`. Worked example: `examples/factory-e2e/`.
 
-**Backlog audit (Engineer, no extra command):** `reference/backlog-audit.md` — findings and execution plans in `.omakaseagent/backlog/`; factory loop unchanged for implementation. Repo-root `plans/` stays research/program docs.
-
-Research depth: `plans/OMAKASE-DARK-FACTORY-RESEARCH.md` (omakaseagent repo).
+**Backlog audit (Engineer, no extra command):** `reference/backlog-audit.md` — findings and execution plans in `.omakaseagent/backlog/`; factory loop unchanged for implementation.

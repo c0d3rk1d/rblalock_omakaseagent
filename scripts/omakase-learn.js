@@ -70,7 +70,7 @@ function riskGuide(cwd, stack) {
     {
       class: '0',
       label: 'Docs & packaging',
-      examples: isOmakaseRepo ? 'README, plans/, reference markdown' : 'README, docs, comments-only',
+      examples: isOmakaseRepo ? 'README, reference markdown' : 'README, docs, comments-only',
     },
     {
       class: '1',
