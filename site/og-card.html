@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face {
+    font-family: "RocknRoll One";
+    src: url("fonts/rocknroll-one-400.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Shippori Mincho";
+    font-weight: 700;
+    src: url("fonts/shippori-mincho-700.woff2") format("woff2");
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    width: 1280px;
+    height: 640px;
+    background: oklch(0.52 0.19 32);
+    padding: 24px;
+    font-family: "Shippori Mincho", serif;
+    color: oklch(0.24 0.015 60);
+  }
+  .frame {
+    height: 100%;
+    border: 4px solid oklch(0.24 0.015 60);
+    padding: 18px;
+    background:
+      repeating-conic-gradient(oklch(0.60 0.2 33) 0% 25%, oklch(0.95 0.025 90) 0% 50%)
+      0 0 / 22px 22px;
+  }
+  .page {
+    height: 100%;
+    background: oklch(0.95 0.025 90);
+    border: 4px solid oklch(0.24 0.015 60);
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    overflow: hidden;
+  }
+  .left {
+    padding: 52px 18px 52px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+  }
+  .kana { display: flex; gap: 12px; }
+  .kana span {
+    font-family: "RocknRoll One";
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    font-size: 19px;
+    background: oklch(0.76 0.11 350);
+    border: 3px solid oklch(0.24 0.015 60);
+    border-radius: 50%;
+    padding-bottom: 2px;
+  }
+  h1 {
+    font-family: "RocknRoll One";
+    font-size: 104px;
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+  }
+  .agent {
+    position: relative;
+    width: 360px; height: 52px;
+    display: grid; place-items: center;
+  }
+  .agent svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .agent b {
+    position: relative;
+    font-family: "RocknRoll One";
+    font-weight: 400;
+    font-size: 24px;
+    letter-spacing: 0.55em;
+    text-indent: 0.55em;
+    color: oklch(0.95 0.025 90);
+    rotate: -1.2deg;
+  }
+  .tagline { font-weight: 700; font-size: 27px; letter-spacing: 0.02em; }
+  .right { border-left: 4px solid oklch(0.24 0.015 60); }
+  .right svg { display: block; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="page">
+    <div class="left">
+      <div class="kana"><span>オ</span><span>マ</span><span>カ</span><span>セ</span></div>
+      <h1>OMAKASE</h1>
+      <div class="agent">
+        <svg viewBox="0 0 420 60" preserveAspectRatio="none">
+          <path d="M6 26 Q 210 8 414 16 L 412 46 Q 210 38 12 56 Z" fill="#d93a1f"/>
+        </svg>
+        <b>AGENT</b>
+      </div>
+      <p class="tagline">One skill. Craftsman's taste.<br>Zero AI slop.</p>
+    </div>
+    <div class="right">
+      <svg viewBox="40 60 540 400" preserveAspectRatio="xMidYMid slice">
+        <rect x="-20" y="-20" width="660" height="500" fill="#d93a1f"/>
+        <circle cx="310" cy="128" r="88" fill="#e393bd" opacity="0.3"/>
+        <circle cx="310" cy="128" r="74" fill="#e393bd" stroke="#2a221b" stroke-width="6"/>
+        <path d="M16 472 L272 168 Q310 128 348 168 L604 472 Z" fill="#2a221b" stroke="#2a221b" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M251 193 L272 168 Q310 128 348 168 L369 193
+                 L356 200 Q352 240 342 204 Q336 186 328 212 Q320 252 310 208
+                 Q304 186 296 216 Q288 250 280 206 Q276 188 268 204 Q262 218 264 202 Z"
+              fill="#f3ead3" stroke="#2a221b" stroke-width="6" stroke-linejoin="round"/>
+        <g stroke="#f3ead3" stroke-width="4" stroke-linecap="round" opacity="0.85">
+          <path d="M180 380 l14 -6"/><path d="M330 340 l12 6"/><path d="M150 430 l14 -4"/>
+          <path d="M300 300 l12 4"/><path d="M230 350 l12 8"/><path d="M390 380 l14 -6"/>
+          <path d="M250 430 l12 6"/><path d="M210 410 l12 4"/><path d="M480 415 l12 6"/>
+          <path d="M280 390 l14 -4"/><path d="M430 420 l12 6"/><path d="M350 425 l14 -6"/>
+          <path d="M260 310 l12 -4"/>
+        </g>
+        <g fill="#e393bd" stroke="#2a221b" stroke-width="6" stroke-linejoin="round">
+          <path d="M-40 240 L-10 240
+                   Q30 236 56 240 Q60 218 88 222 Q96 200 126 210 Q150 196 166 216
+                   Q190 214 188 238 Q196 258 168 264 Q148 278 120 268 Q88 280 60 268
+                   Q30 274 -10 266 L-40 266 Z"/>
+          <path d="M660 300 L630 300
+                   Q588 296 564 300 Q560 278 532 282 Q524 260 494 270 Q470 256 454 276
+                   Q430 274 432 298 Q424 318 452 324 Q472 338 500 328 Q532 340 560 328
+                   Q590 334 630 326 L660 326 Z"/>
+        </g>
+        <g stroke="#e393bd" stroke-width="6" stroke-linecap="round" fill="none">
+          <path d="M48 118 q40 -14 84 -2"/>
+          <path d="M478 96 q44 -12 86 2"/>
+          <path d="M512 160 q34 -10 66 0"/>
+          <path d="M70 180 q34 -10 66 0"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+</body>
+</html>
