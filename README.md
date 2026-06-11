@@ -1,8 +1,16 @@
-# Omakase
+<div align="center">
+
+<a href="https://omakaseagent.com"><img src="https://omakaseagent.com/og.png" alt="Omakase Agent: the chef's standard for AI agent work" width="720"></a>
 
 **The chef's standard.** One skill. Craftsman's taste. Zero AI slop.
 
+[omakaseagent.com](https://omakaseagent.com)
+
+[![npm](https://img.shields.io/npm/v/omakaseagent?color=d93a1f&label=npm)](https://www.npmjs.com/package/omakaseagent)
+[![license](https://img.shields.io/badge/license-Apache--2.0-2a221b)](LICENSE)
 [![skills.sh](https://skills.sh/b/rblalock/omakaseagent)](https://skills.sh/rblalock/omakaseagent)
+
+</div>
 
 Trust the chef — state the goal. Omakase applies the bar, remembers taste, and critiques before anything significant ships.
 
