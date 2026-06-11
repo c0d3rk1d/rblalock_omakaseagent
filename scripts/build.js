@@ -129,6 +129,62 @@ console.log(`\n✓ Native agents: ${native.count} personas → opencode, cursor,
 const codexMarker = path.join(distRoot, 'codex/.codex');
 fs.mkdirSync(codexMarker, { recursive: true });
 
+// Chat-app skill: rendered single-file SKILL.md + deterministic zip for
+// claude.ai / Claude Desktop / ChatGPT upload. Spec:
+// docs/superpowers/specs/2026-06-11-takeout-chat-skill-design.md
+const { zipSync, strToU8 } = require('fflate');
+
+function buildChatSkill() {
+  const tmplPath = path.join(root, 'skill-chat/SKILL.md.tmpl');
+  if (!fs.existsSync(tmplPath)) {
+    console.error('\nBUILD FAILED: skill-chat/SKILL.md.tmpl missing');
+    process.exit(1);
+  }
+  let rendered = fs.readFileSync(tmplPath, 'utf8').replace(
+    /<!-- INJECT:([A-Z\-]+\.md) -->/g,
+    (_, f) => {
+      const p = path.join(root, f);
+      if (!fs.existsSync(p)) {
+        console.error(`\nBUILD FAILED: chat skill injection source missing: ${f}`);
+        process.exit(1);
+      }
+      return fs.readFileSync(p, 'utf8').trim();
+    }
+  );
+
+  if (rendered.includes('<!-- INJECT:')) {
+    console.error('\nBUILD FAILED: unresolved INJECT marker in chat skill');
+    process.exit(1);
+  }
+  const banned = [
+    'omakase learn',
+    'omakase-router',
+    '@omakase-engineer',
+    '@omakase-critic',
+    '@omakase-archivist',
+  ];
+  const hit = banned.find(s => rendered.includes(s));
+  if (hit) {
+    console.error(`\nBUILD FAILED: repo machinery leaked into chat skill: "${hit}"`);
+    process.exit(1);
+  }
+
+  const chatDir = path.join(distRoot, 'chat/omakase');
+  rimraf(path.join(distRoot, 'chat'));
+  fs.mkdirSync(chatDir, { recursive: true });
+  fs.writeFileSync(path.join(chatDir, 'SKILL.md'), rendered);
+
+  // Deterministic zip: fixed mtime, single sorted entry, fixed compression.
+  const zipped = zipSync(
+    { 'omakase/SKILL.md': [strToU8(rendered), { mtime: new Date('2000-01-01T00:00:00Z') }] },
+    { level: 9 }
+  );
+  fs.writeFileSync(path.join(distRoot, 'omakase-skill.zip'), Buffer.from(zipped));
+  console.log(`✓ Chat skill → dist/chat/omakase/SKILL.md + dist/omakase-skill.zip (${zipped.length} bytes)`);
+}
+
+buildChatSkill();
+
 // Strict distribution guard: only the intended files may ship in bundles.
 // OMAKASE-SPEC.md (internal) + any stray files outside the three approved skill trees are rejected.
 const FORBIDDEN_IN_DIST = ['OMAKASE-SPEC.md', '.git', 'node_modules', '.DS_Store'];
@@ -142,6 +198,8 @@ const ALLOWED_PREFIXES = [
   'dist/grok/.grok/skills/omakase/',
   'dist/grok/.grok/agents/',
   'dist/codex/.codex/agents/',
+  'dist/chat/omakase/',
+  'dist/omakase-skill.zip',
 ];
 
 function isAllowedDistPath(rel) {
