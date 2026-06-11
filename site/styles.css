@@ -316,8 +316,9 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 }
 
 .cmd-chip {
-  font-family: var(--mono);
+  font-family: var(--display);
   font-size: 0.95rem;
+  letter-spacing: 0.05em;
   display: inline-flex;
   align-items: center;
   gap: var(--s-3);
@@ -707,10 +708,50 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
   overflow-x: auto;
 }
 
+.ticket-prompt { white-space: pre-wrap; }
+
+.ticket-foot {
+  padding: 0 var(--s-6) var(--s-6);
+}
+
+.ticket-foot .copied-note {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 0.75rem;
+  margin-left: var(--s-2);
+}
+
 .ticket .c { color: oklch(0.95 0.025 90 / 0.5); }
 .ticket .dollar { color: var(--blossom); }
 
 .order-steps { display: flex; flex-direction: column; gap: var(--s-6); }
+
+.terminal-note {
+  border: 1px solid oklch(0.24 0.015 60 / 0.35);
+  background: var(--paper-dim);
+  padding: var(--s-4) var(--s-6);
+}
+
+.terminal-note .tn-label {
+  display: block;
+  font-family: var(--display);
+  font-size: 0.85rem;
+  margin-bottom: var(--s-3);
+}
+
+.terminal-note .tn-cmds {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-2);
+}
+
+.terminal-note .tn-cmds code {
+  font-size: 0.8rem;
+  background: var(--paper);
+  border: 1px solid oklch(0.24 0.015 60 / 0.35);
+  padding: 0.15em 0.6em;
+}
 
 .order-step h3 {
   font-family: var(--display);
@@ -1094,11 +1135,77 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
   html.js .reveal.shown { opacity: 1; translate: 0 0; }
 }
 
-/* ---------- copy feedback ---------- */
+/* ---------- copy feedback: order toast + sushi burst ---------- */
 
-.cmd-chip .copied-note {
-  font-family: var(--serif);
-  font-weight: 700;
-  font-size: 0.75rem;
-  color: var(--blossom);
+.order-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  translate: -50%;
+  z-index: 50;
+  width: max-content;
+  max-width: min(440px, calc(100vw - 48px));
+  background: var(--paper);
+  border: var(--border);
+  box-shadow: var(--shadow);
+  padding: var(--s-4) var(--s-6);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
+
+.order-toast.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.order-toast .toast-head {
+  display: block;
+  font-family: var(--display);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vermillion-deep);
+  margin-bottom: var(--s-1);
+}
+
+.order-toast .toast-head [lang="ja"] {
+  font-family: var(--serif);
+  letter-spacing: 0.25em;
+  margin-left: var(--s-2);
+}
+
+.order-toast p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .order-toast {
+    translate: -50% 14px;
+    transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      translate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s 0.3s;
+  }
+  .order-toast.show {
+    translate: -50% 0;
+    transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      translate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s;
+  }
+}
+
+.sushi-burst {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  overflow: clip;
+}
+
+.sushi-burst .piece {
+  position: absolute;
+  will-change: transform, opacity;
+}
+
+.sushi-burst .piece svg { display: block; width: 100%; height: auto; }
