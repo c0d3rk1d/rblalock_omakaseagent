@@ -5,7 +5,7 @@ How Omakase registers team leads and specialists as first-class harness agents.
 ## Quick start
 
 ```bash
-npx omakase init
+npx omakaseagent init
 ```
 
 Use **`@omakase-engineer`**, **`@omakase-critic`**, or **`@omakase-archivist`** (or harness CLI below). Do **not** use the **`omakase-router`** skill for lead work — that skill is plan/taste/handoff only.

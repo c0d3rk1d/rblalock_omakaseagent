@@ -1,8 +1,8 @@
 {
-  "name": "omakase",
+  "name": "omakaseagent",
   "version": "0.1.0",
-  "description": "Omakase — the chef's standard. Portable senior-craftsmanship skill (markdown-first) + npx omakase skills install for Cursor/Claude/Agents. Enforces 12 Rules + Critique Rubric. Zero slop.",
-  "license": "MIT",
+  "description": "Omakase — the chef's standard. Portable senior-craftsmanship skill (markdown-first) + npx omakaseagent skills install for Cursor/Claude/Agents. Enforces 12 Rules + Critique Rubric. Zero slop.",
+  "license": "Apache-2.0",
   "author": "Omakase",
   "bin": {
     "omakase": "bin/omakase.js"

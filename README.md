@@ -15,8 +15,8 @@ Generic, hedging, over-engineered output fails. Non-trivial work explains *why* 
 ## Quick start
 
 ```bash
-npx omakase init
-npx omakase learn    # repo-specific Level 4 factory (scenarios, gates)
+npx omakaseagent init
+npx omakaseagent learn    # repo-specific Level 4 factory (scenarios, gates)
 ```
 
 Reload your harness, then talk to a **lead** (not a menu of skills):
@@ -54,14 +54,14 @@ Memory lives in `.omakaseagent/` after `init`.
 **New project:**
 
 ```bash
-npx omakase init
+npx omakaseagent init
 ```
 
 **Skill + agents only** (harness already configured):
 
 ```bash
-npx omakase skills install          # auto-detect harness
-npx omakase skills install cursor   # or: claude | agents | grok | codex
+npx omakaseagent skills install          # auto-detect harness
+npx omakaseagent skills install cursor   # or: claude | agents | grok | codex
 ```
 
 Also on the skills ecosystem: `npx skills add rblalock/omakaseagent` ([skills.sh](https://skills.sh/rblalock/omakaseagent)).
@@ -76,8 +76,8 @@ Source: `skill/`. Shipped bundles: `dist/` (committed — do not edit by hand).
 npm link              # local CLI
 npm run build
 npm run verify:native-agents
-npx omakase init      # dogfood in this clone
-npx omakase learn     # factory layout for this repo
+npx omakaseagent init      # dogfood in this clone
+npx omakaseagent learn     # factory layout for this repo
 ```
 
 Level 4 methodology: [skill/reference/dark-factory.md](skill/reference/dark-factory.md). Multi-agent E2E: [examples/factory-e2e/](examples/factory-e2e/). Learn snapshot: [examples/factory-dogfood/](examples/factory-dogfood/).
