@@ -216,6 +216,7 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 
 .fuji-scene .fuji-sun { translate: calc(var(--px, 0) * -14px) calc(var(--py, 0) * -8px); }
 .fuji-scene .fuji-mountain { translate: calc(var(--px, 0) * 8px) calc(var(--py, 0) * 4px); }
+.fuji-scene .fuji-snow { paint-order: stroke fill; }
 .fuji-scene .fuji-clouds { translate: calc(var(--px, 0) * 24px) calc(var(--py, 0) * 12px); }
 .fuji-scene .fuji-wind { translate: calc(var(--px, 0) * 32px) calc(var(--py, 0) * 16px); }
 
@@ -1010,13 +1011,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 
 /* ---------- section delights: tiny ambient touches ---------- */
 
-.ticket .cursor {
-  display: inline-block;
-  width: 0.55em;
-  height: 1em;
-  background: var(--blossom);
-}
-
 @media (prefers-reduced-motion: no-preference) {
   /* hero: kana lanterns bob in sequence */
   .kana-circles span { animation: kana-bob 5s ease-in-out infinite; }
@@ -1069,9 +1063,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
   .gate-item:nth-child(7) .g-num { animation-delay: 4.8s; }
   .gate-item:nth-child(8) .g-num { animation-delay: 5.6s; }
 
-  /* order: the terminal is live */
-  .ticket .cursor { animation: cursor-blink 1.1s steps(1) infinite; }
-
   /* footer: the kaiten belt */
   .footer-sushi svg { animation: sushi-bob 6s ease-in-out infinite; }
   .footer-sushi svg:nth-child(2) { animation-delay: 0.7s; }
@@ -1113,10 +1104,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 @keyframes gnum-glint {
   0%, 16%, 100% { color: var(--blossom); }
   8% { color: var(--paper); }
-}
-
-@keyframes cursor-blink {
-  50% { opacity: 0; }
 }
 
 @keyframes sushi-bob {
