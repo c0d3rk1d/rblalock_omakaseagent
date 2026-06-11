@@ -366,15 +366,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
   padding: clamp(var(--s-8), 5vw, var(--s-12)) clamp(var(--s-6), 4vw, var(--s-12)) var(--s-6);
 }
 
-.course-head .jp {
-  display: block;
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.35em;
-  color: var(--vermillion-deep);
-  margin-bottom: var(--s-2);
-}
-
 .course-title {
   display: flex;
   align-items: center;
@@ -593,7 +584,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 
 .course-gate { background: var(--ink); color: var(--paper); }
 
-.course-gate .course-head .jp { color: var(--blossom); }
 .course-gate .course-num { background: var(--blossom); color: var(--ink); }
 
 .gate-grid {
@@ -820,7 +810,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 
 .course-factory { background: var(--vermillion); color: var(--paper); }
 
-.course-factory .course-head .jp { color: var(--ink); }
 .course-factory .course-num { background: var(--ink); }
 
 .factory-quote {
