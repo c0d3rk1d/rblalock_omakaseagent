@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omakase: The Chef's Standard for Agent Work</title>
+<meta name="description" content="Omakase is a portable quality standard for AI agent work: twelve rules, a critique rubric, and project memory. One skill. Craftsman's taste. Zero AI slop.">
+<link rel="preload" href="fonts/rocknroll-one-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/shippori-mincho-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/shippori-mincho-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jetbrains-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add("js")</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%23d93a1f'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%23f3ead3'%3E%E5%90%88%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <filter id="brush" x="-10%" y="-60%" width="120%" height="220%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06 0.4" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="6"/>
+    </filter>
+    <filter id="brush-soft" x="-10%" y="-30%" width="120%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05 0.18" numOctaves="2" seed="11" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="frame">
+<div class="page">
+
+  <header class="topbar">
+    <svg class="enso" viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="24" cy="24" r="17" fill="none" stroke="#2a221b" stroke-width="5"
+        stroke-linecap="round" stroke-dasharray="92 15" transform="rotate(-60 24 24)" filter="url(#brush)"/>
+    </svg>
+    <a class="wordmark" href="#">OMAKASE</a>
+    <nav>
+      <a href="#rules">The Menu</a>
+      <a href="#leads">The Counter</a>
+      <a href="#order">Quick Start</a>
+      <a class="gh" href="https://github.com/rblalock/omakaseagent">GitHub</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-title">
+      <div class="kana-circles" aria-hidden="true">
+        <span>オ</span><span>マ</span><span>カ</span><span>セ</span>
+      </div>
+      <h1>OMAKASE<span class="sr-only"> Agent</span></h1>
+      <svg class="brush-under" viewBox="0 0 420 60" aria-hidden="true">
+        <path d="M6 28 Q 210 10 414 18 L 412 44 Q 210 36 12 54 Z" fill="#d93a1f" filter="url(#brush-soft)"/>
+        <text x="210" y="40" font-family="RocknRoll One" font-size="25" letter-spacing="13" text-anchor="middle" fill="#f3ead3" transform="rotate(-1.2 210 34)">AGENT</text>
+      </svg>
+    </div>
+
+    <div class="poster-grid">
+      <figure class="panel panel-fuji reveal">
+        <svg class="fuji-scene" viewBox="0 0 620 460" role="img" aria-label="Retro poster of Mount Fuji at sunrise">
+          <rect width="620" height="460" fill="#d93a1f"/>
+          <g class="fuji-sun">
+            <circle class="sun-halo" cx="310" cy="128" r="88" fill="#e393bd" opacity="0.3"/>
+            <circle class="sun-core" cx="310" cy="128" r="74" fill="#e393bd" stroke="#2a221b" stroke-width="6"/>
+          </g>
+          <g class="fuji-mountain">
+            <path d="M16 472 L272 168 Q310 128 348 168 L604 472 Z" fill="#2a221b" stroke="#2a221b" stroke-width="6" stroke-linejoin="round"/>
+            <path d="M251 193 L272 168 Q310 128 348 168 L369 193
+                     L356 200 Q352 240 342 204 Q336 186 328 212 Q320 252 310 208
+                     Q304 186 296 216 Q288 250 280 206 Q276 188 268 204 Q262 218 264 202 Z"
+                  fill="#f3ead3" stroke="#2a221b" stroke-width="6" stroke-linejoin="round"/>
+            <g class="speckles s1" stroke="#f3ead3" stroke-width="4" stroke-linecap="round" opacity="0.85">
+              <path d="M180 380 l14 -6"/><path d="M330 340 l12 6"/><path d="M150 430 l14 -4"/>
+              <path d="M300 300 l12 4"/><path d="M120 445 l12 -4"/>
+            </g>
+            <g class="speckles s2" stroke="#f3ead3" stroke-width="4" stroke-linecap="round" opacity="0.85">
+              <path d="M230 350 l12 8"/><path d="M390 380 l14 -6"/><path d="M250 430 l12 6"/>
+              <path d="M210 410 l12 4"/><path d="M480 415 l12 6"/>
+            </g>
+            <g class="speckles s3" stroke="#f3ead3" stroke-width="4" stroke-linecap="round" opacity="0.85">
+              <path d="M280 390 l14 -4"/><path d="M430 420 l12 6"/><path d="M350 425 l14 -6"/>
+              <path d="M450 440 l12 -4"/><path d="M260 310 l12 -4"/>
+            </g>
+          </g>
+          <g class="fuji-clouds" fill="#e393bd" stroke="#2a221b" stroke-width="6" stroke-linejoin="round">
+            <path class="cloud-l" d="M-40 240 L-10 240
+                     Q30 236 56 240 Q60 218 88 222 Q96 200 126 210 Q150 196 166 216
+                     Q190 214 188 238 Q196 258 168 264 Q148 278 120 268 Q88 280 60 268
+                     Q30 274 -10 266 L-40 266 Z"/>
+            <path class="cloud-r" d="M660 300 L630 300
+                     Q588 296 564 300 Q560 278 532 282 Q524 260 494 270 Q470 256 454 276
+                     Q430 274 432 298 Q424 318 452 324 Q472 338 500 328 Q532 340 560 328
+                     Q590 334 630 326 L660 326 Z"/>
+          </g>
+          <g class="fuji-wind" stroke="#e393bd" stroke-width="6" stroke-linecap="round" fill="none">
+            <path class="w1" d="M48 118 q40 -14 84 -2"/>
+            <path class="w2" d="M478 96 q44 -12 86 2"/>
+            <path class="w3" d="M512 160 q34 -10 66 0"/>
+            <path class="w4" d="M70 180 q34 -10 66 0"/>
+          </g>
+        </svg>
+      </figure>
+
+      <div class="panel panel-standard reveal">
+        <span class="tatebanko" lang="ja">板前の流儀</span>
+        <svg class="hanko" viewBox="0 0 80 80" role="img" aria-label="Hanko seal reading gō, approval">
+          <circle cx="40" cy="40" r="36" fill="#d93a1f"/>
+          <circle cx="40" cy="40" r="29" fill="none" stroke="#f3ead3" stroke-width="3"/>
+          <text x="40" y="54" font-family="RocknRoll One" font-size="34" text-anchor="middle" fill="#f3ead3">合</text>
+        </svg>
+      </div>
+
+      <figure class="panel panel-night reveal">
+        <svg viewBox="0 0 300 220" role="img" aria-label="Torii gate under a red moon">
+          <rect width="300" height="220" fill="#2a221b"/>
+          <g fill="#f3ead3">
+            <circle cx="40" cy="36" r="3"/><circle cx="92" cy="20" r="2.5"/><circle cx="262" cy="30" r="3"/>
+            <circle cx="226" cy="64" r="2.5"/><circle cx="64" cy="84" r="2.5"/><circle cx="284" cy="92" r="2.5"/>
+          </g>
+          <circle cx="236" cy="44" r="22" fill="#d93a1f"/>
+          <!-- city blocks -->
+          <g fill="#e393bd">
+            <rect x="16" y="140" width="44" height="80"/>
+            <rect x="240" y="130" width="44" height="90"/>
+          </g>
+          <g fill="#2a221b">
+            <rect x="24" y="148" width="8" height="8"/><rect x="42" y="148" width="8" height="8"/>
+            <rect x="24" y="166" width="8" height="8"/><rect x="42" y="166" width="8" height="8"/>
+            <rect x="24" y="184" width="8" height="8"/><rect x="42" y="184" width="8" height="8"/>
+            <rect x="248" y="140" width="8" height="8"/><rect x="266" y="140" width="8" height="8"/>
+            <rect x="248" y="158" width="8" height="8"/><rect x="266" y="158" width="8" height="8"/>
+            <rect x="248" y="176" width="8" height="8"/><rect x="266" y="176" width="8" height="8"/>
+          </g>
+          <!-- torii -->
+          <g fill="#d93a1f">
+            <path d="M76 84 Q150 70 224 84 L219 102 Q150 90 81 102 Z"/>
+            <rect x="96" y="112" width="108" height="11"/>
+            <rect x="104" y="100" width="15" height="120"/>
+            <rect x="181" y="100" width="15" height="120"/>
+            <rect x="143" y="112" width="14" height="26"/>
+          </g>
+        </svg>
+      </figure>
+    </div>
+
+    <div class="hero-tagline reveal">
+      <p class="lede">One skill. Craftsman's taste. Zero AI slop.</p>
+      <p class="sub">Omakase is a portable quality standard for AI agent work: twelve rules,
+        a critique rubric, and project memory. Trust the chef: state the goal.
+        Nothing mediocre reaches the table.</p>
+      <div class="hero-cta">
+        <button class="cmd-chip" data-copy="npx omakaseagent init" type="button">
+          <span class="dollar">$</span> npx omakaseagent init <span class="copied-note" hidden>copied</span>
+        </button>
+        <a class="btn" href="https://github.com/rblalock/omakaseagent">View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 壱 philosophy -->
+  <section class="course" id="philosophy">
+    <header class="course-head">
+      <div class="course-title">
+        <span class="course-num" aria-hidden="true">壱</span>
+        <h2>The Philosophy</h2>
+      </div>
+    </header>
+    <div class="course-body philosophy-grid">
+      <figure class="philosophy-art reveal">
+        <svg viewBox="0 0 400 400" role="img" aria-label="Ramen bowl with chopsticks lifting noodles">
+          <rect width="400" height="400" fill="#d93a1f"/>
+          <!-- steam -->
+          <g class="steam" fill="#f3ead3" opacity="0.9">
+            <circle cx="120" cy="70" r="4"/><circle cx="150" cy="46" r="3"/><circle cx="186" cy="64" r="4"/>
+            <circle cx="262" cy="40" r="3"/><circle cx="296" cy="66" r="4"/><circle cx="232" cy="84" r="3"/>
+          </g>
+          <!-- chopsticks -->
+          <g stroke="#2a221b" stroke-width="12" stroke-linecap="round">
+            <path d="M232 28 L296 196"/>
+            <path d="M268 22 L308 192"/>
+          </g>
+          <!-- noodles lifted -->
+          <g stroke="#f3ead3" stroke-width="9" fill="none" stroke-linecap="round">
+            <path d="M282 178 Q270 230 282 268"/>
+            <path d="M296 182 Q310 232 296 270"/>
+            <path d="M268 172 Q248 226 262 266"/>
+          </g>
+          <!-- bowl -->
+          <ellipse cx="200" cy="268" rx="148" ry="40" fill="#e393bd" stroke="#2a221b" stroke-width="7"/>
+          <path d="M52 268 Q60 372 200 372 Q340 372 348 268 Z" fill="#f3ead3" stroke="#2a221b" stroke-width="7"/>
+          <!-- bowl dot band -->
+          <g fill="#2a221b">
+            <circle cx="120" cy="330" r="5"/><circle cx="160" cy="342" r="5"/><circle cx="200" cy="346" r="5"/>
+            <circle cx="240" cy="342" r="5"/><circle cx="280" cy="330" r="5"/>
+          </g>
+          <!-- toppings -->
+          <circle cx="148" cy="258" r="20" fill="#d93a1f" stroke="#2a221b" stroke-width="6"/>
+          <circle cx="206" cy="266" r="14" fill="#f3ead3" stroke="#2a221b" stroke-width="6"/>
+        </svg>
+      </figure>
+      <ol class="principles">
+        <li>
+          <strong class="p-name">Trust the chef</strong>
+          <p>You state what you want. Omakase decides how to get it done.</p>
+        </li>
+        <li>
+          <strong class="p-name">Specialization beats generalization</strong>
+          <p>Every agent stays narrow and masterful at one thing.</p>
+        </li>
+        <li>
+          <strong class="p-name">Quality over speed</strong>
+          <p>Mediocre work is never acceptable.</p>
+        </li>
+        <li>
+          <strong class="p-name">Senior taste is non-negotiable</strong>
+          <p>Every output must feel like it came from a top-tier expert.</p>
+        </li>
+        <li>
+          <strong class="p-name">Anti-slop by design</strong>
+          <p>Generic AI patterns are aggressively rejected, in both code and communication.
+             If it looks, feels, or behaves like typical AI output, it has failed.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 弐 the twelve rules -->
+  <section class="course course-rules" id="rules">
+    <header class="course-head">
+      <div class="course-title">
+        <span class="course-num" aria-hidden="true">弐</span>
+        <h2>The Twelve Rules</h2>
+      </div>
+    </header>
+    <div class="course-body">
+      <ol class="menu-sheet reveal">
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Full Context First</span><span class="leader"></span><span class="num" lang="ja">一</span></div>
+          <p>Complete context before any work: project docs, conversation history, handoff notes.</p>
+        </li>
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Senior Craftsmanship</span><span class="leader"></span><span class="num" lang="ja">二</span></div>
+          <p>Clean, pragmatic output with senior-level taste. No AI-looking patterns anywhere.</p>
+        </li>
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Zero Slop Policy</span><span class="leader"></span><span class="num" lang="ja">三</span></div>
+          <p>Every major output is reviewed against a strict rubric before it is delivered.</p>
+        </li>
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Explain Your Taste</span><span class="leader"></span><span class="num" lang="ja">四</span></div>
+          <p>Non-trivial work ships with a short “why this approach” showing the reasoning.</p>
+        </li>
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Persistent Taste Memory</span><span class="leader"></span><span class="num" lang="ja">五</span></div>
+          <p>taste.md and decisions.md are sacred files, read on every significant task and cited in the work.</p>
+        </li>
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Clear Handoff Protocol</span><span class="leader"></span><span class="num" lang="ja">六</span></div>
+          <p>Agents pass work with a concise summary of decisions and reasoning, never just files.</p>
+        </li>
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Self-Awareness</span><span class="leader"></span><span class="num" lang="ja">七</span></div>
+          <p>An uncertain agent asks clarifying questions instead of guessing.</p>
+        </li>
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Excellence Gate</span><span class="leader"></span><span class="num" lang="ja">八</span></div>
+          <p>Nothing mediocre gets delivered. Work reaches you only after passing critique.</p>
+        </li>
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Ruthless Simplicity</span><span class="leader"></span><span class="num" lang="ja">九</span></div>
+          <p>Simple, direct solutions unless complexity is clearly justified.</p>
+        </li>
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Tone &amp; Voice Consistency</span><span class="leader"></span><span class="num" lang="ja">十</span></div>
+          <p>Output matches the intended brand voice with zero generic AI fluff.</p>
+        </li>
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Proactive Quality</span><span class="leader"></span><span class="num" lang="ja">十一</span></div>
+          <p>Agents flag potential issues and suggest meaningful improvements unprompted.</p>
+        </li>
+        <li class="menu-item">
+          <div class="menu-line"><span class="name">Audit Trail</span><span class="leader"></span><span class="num" lang="ja">十二</span></div>
+          <p>Every major change includes a brief log of what changed and why.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 参 the counter -->
+  <section class="course" id="leads">
+    <header class="course-head">
+      <div class="course-title">
+        <span class="course-num" aria-hidden="true">参</span>
+        <h2>The Counter</h2>
+      </div>
+    </header>
+    <div class="course-body">
+      <div class="leads-grid">
+        <article class="lead-card lead-engineer reveal">
+          <figure class="lead-art">
+            <svg viewBox="0 0 500 300" role="img" aria-label="Chef's knife and fish slice on a cutting board">
+              <rect width="500" height="300" fill="#d93a1f"/>
+              <rect x="60" y="190" width="380" height="56" rx="8" fill="#e393bd" stroke="#2a221b" stroke-width="7"/>
+              <!-- knife -->
+              <g class="knife-rock">
+                <g transform="rotate(-12 250 130)">
+                  <path d="M110 130 Q112 100 160 96 L368 96 Q374 96 374 104 L374 130 Q260 152 130 140 Z"
+                        fill="#f3ead3" stroke="#2a221b" stroke-width="7" stroke-linejoin="round"/>
+                  <rect x="370" y="92" width="96" height="30" rx="10" fill="#2a221b"/>
+                </g>
+              </g>
+              <!-- fish slices -->
+              <g fill="#e393bd" stroke="#2a221b" stroke-width="6">
+                <path d="M120 206 q26 -18 52 0 q-26 20 -52 0 Z"/>
+                <path d="M200 206 q26 -18 52 0 q-26 20 -52 0 Z"/>
+              </g>
+            </svg>
+          </figure>
+          <div class="lead-text">
+            <h3>The Engineer <span class="jp-inline" lang="ja">板前</span></h3>
+            <p>Implementation, architecture, refactoring, debugging. Runs the work through
+               the shokunin and hands you the finished result with the reasoning attached.</p>
+            <div class="shokunin">
+              <span class="shokunin-label">The shokunin <span lang="ja">職人</span></span>
+              <ul>
+                <li>The Implementation Lead</li>
+                <li>The Senior Reviewer</li>
+                <li>The Refactor Specialist</li>
+                <li>The Debugger</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="lead-card lead-critic reveal">
+          <figure class="lead-art">
+            <svg viewBox="0 0 500 300" role="img" aria-label="Hanko stamp pressing a seal of inspection">
+              <rect width="500" height="300" fill="#2a221b"/>
+              <g fill="#e393bd" opacity="0.5">
+                <circle cx="60" cy="50" r="3"/><circle cx="430" cy="70" r="3"/><circle cx="380" cy="30" r="3"/>
+                <circle cx="100" cy="250" r="3"/><circle cx="440" cy="240" r="3"/>
+              </g>
+              <!-- stamp handle: knob, neck, base -->
+              <g class="stamp-hand">
+                <circle cx="250" cy="48" r="20" fill="#e393bd" stroke="#f3ead3" stroke-width="5"/>
+                <path d="M238 62 Q244 96 232 110 L268 110 Q256 96 262 62 Z" fill="#e393bd" stroke="#f3ead3" stroke-width="5" stroke-linejoin="round"/>
+                <rect x="212" y="110" width="76" height="28" rx="6" fill="#f3ead3"/>
+              </g>
+              <!-- seal mark -->
+              <g transform="rotate(-6 250 215)">
+                <rect x="194" y="166" width="112" height="100" rx="10" fill="#d93a1f"/>
+                <rect x="203" y="175" width="94" height="82" rx="6" fill="none" stroke="#f3ead3" stroke-width="4"/>
+                <text x="250" y="243" font-family="RocknRoll One" font-size="54" text-anchor="middle" fill="#f3ead3">検</text>
+              </g>
+            </svg>
+          </figure>
+          <div class="lead-text">
+            <h3>The Critic <span class="jp-inline" lang="ja">目利き</span></h3>
+            <p>Independent quality enforcement. Harsh, evidence-based review against the
+               rubric. Nothing significant ships without passing this desk.</p>
+            <div class="shokunin">
+              <span class="shokunin-label">The shokunin <span lang="ja">職人</span></span>
+              <ul>
+                <li>The Deslop Critic</li>
+                <li>The Structural Critic</li>
+                <li>The Verification Critic</li>
+                <li>The Skill Judge</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="lead-card lead-archivist reveal">
+          <figure class="lead-art">
+            <svg viewBox="0 0 500 300" role="img" aria-label="An open scroll of records">
+              <rect width="500" height="300" fill="#e393bd"/>
+              <g fill="#2a221b" opacity="0.18">
+                <circle cx="50" cy="40" r="2.5"/><circle cx="120" cy="70" r="2.5"/><circle cx="440" cy="50" r="2.5"/>
+                <circle cx="400" cy="260" r="2.5"/><circle cx="70" cy="250" r="2.5"/>
+              </g>
+              <!-- scroll -->
+              <g class="scroll-sway">
+                <rect x="120" y="70" width="260" height="160" fill="#f3ead3" stroke="#2a221b" stroke-width="7"/>
+                <rect x="92" y="56" width="32" height="188" rx="14" fill="#d93a1f" stroke="#2a221b" stroke-width="7"/>
+                <rect x="376" y="56" width="32" height="188" rx="14" fill="#d93a1f" stroke="#2a221b" stroke-width="7"/>
+                <g stroke="#2a221b" stroke-width="6" stroke-linecap="round">
+                  <path d="M150 110 h160"/><path d="M150 140 h200"/><path d="M150 170 h130"/><path d="M150 200 h180"/>
+                </g>
+              </g>
+            </svg>
+          </figure>
+          <div class="lead-text">
+            <h3>The Archivist <span class="jp-inline" lang="ja">記録係</span></h3>
+            <p>Memory, decisions, and synthesis. Recaps what shipped, mines conversations for
+               durable preferences, and keeps the project's taste from evaporating between sessions.</p>
+            <div class="shokunin">
+              <span class="shokunin-label">The shokunin <span lang="ja">職人</span></span>
+              <ul>
+                <li>The Memory Synthesizer</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="ticket call-ticket reveal">
+        <div class="ticket-head"><span>CALLING THE COUNTER</span><span lang="ja">お声がけ</span></div>
+        <pre><code><span class="at">@omakase-engineer</span>  add rate limiting with backoff
+<span class="at">@omakase-critic</span>    review the auth module
+<span class="at">@omakase-archivist</span> what did I ship since Monday?</code></pre>
+      </div>
+
+      <aside class="memory-strip reveal">
+        <svg class="scroll-icon" viewBox="0 0 80 80" aria-hidden="true">
+          <rect x="22" y="14" width="36" height="52" fill="#f3ead3" stroke="#2a221b" stroke-width="4"/>
+          <rect x="12" y="10" width="12" height="60" rx="5" fill="#d93a1f" stroke="#2a221b" stroke-width="4"/>
+          <rect x="56" y="10" width="12" height="60" rx="5" fill="#d93a1f" stroke="#2a221b" stroke-width="4"/>
+          <g stroke="#2a221b" stroke-width="3" stroke-linecap="round">
+            <path d="M30 28 h20"/><path d="M30 40 h16"/><path d="M30 52 h20"/>
+          </g>
+        </svg>
+        <div class="memory-text">
+          <strong>The house remembers.</strong>
+          <p><code>.omakaseagent/taste.md</code> holds project taste and rejections;
+             <code>decisions.md</code> holds key choices with context and reasoning.
+             Sacred files: read on every significant task, cited in every "why this approach."</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 四 the gate -->
+  <section class="course course-gate" id="gate">
+    <header class="course-head">
+      <div class="course-title">
+        <span class="course-num" aria-hidden="true">四</span>
+        <h2>The Critique Rubric</h2>
+      </div>
+    </header>
+    <div class="course-body">
+      <ul class="gate-grid">
+        <li class="gate-item">
+          <span class="g-num">検一</span>
+          <h3>Senior Expertise</h3>
+          <p>Does this feel like it was made by a top-tier expert with years of real experience?</p>
+        </li>
+        <li class="gate-item">
+          <span class="g-num">検二</span>
+          <h3>Zero AI Slop</h3>
+          <p>Free of generic patterns, fluff, unnecessary comments, defensive code, synthetic tone?</p>
+        </li>
+        <li class="gate-item">
+          <span class="g-num">検三</span>
+          <h3>Ruthless Simplicity</h3>
+          <p>The simplest possible solution that works. No missed chance to reduce complexity?</p>
+        </li>
+        <li class="gate-item">
+          <span class="g-num">検四</span>
+          <h3>Context Fidelity</h3>
+          <p>Respects the project's context, design principles, existing style, and architecture?</p>
+        </li>
+        <li class="gate-item">
+          <span class="g-num">検五</span>
+          <h3>Pragmatic Craftsmanship</h3>
+          <p>Clean and maintainable, with no over-engineering or unnecessary abstraction?</p>
+        </li>
+        <li class="gate-item">
+          <span class="g-num">検六</span>
+          <h3>Taste &amp; Voice</h3>
+          <p>Writing, design, and copy match the exact intended tone and brand voice?</p>
+        </li>
+        <li class="gate-item">
+          <span class="g-num">検七</span>
+          <h3>Structural Integrity</h3>
+          <p>Improves the codebase, rather than adding bloat and scattered logic?</p>
+        </li>
+        <li class="gate-item">
+          <span class="g-num">検八</span>
+          <h3>Excellence Gate</h3>
+          <p>Would we be proud to ship this exactly as-is, with zero revisions?</p>
+        </li>
+      </ul>
+      <div class="gate-stamp-row">
+        <svg class="stamp" viewBox="0 0 134 134" role="img" aria-label="Seal of approval reading gōkaku, pass">
+          <g class="stamp-mark" filter="url(#brush-soft)">
+            <rect x="18" y="18" width="98" height="98" rx="12" fill="none" stroke="#d93a1f" stroke-width="6"/>
+            <text x="67" y="60" font-family="RocknRoll One" font-size="36" text-anchor="middle" fill="#d93a1f">合</text>
+            <text x="67" y="102" font-family="RocknRoll One" font-size="36" text-anchor="middle" fill="#d93a1f">格</text>
+          </g>
+          <g class="stamp-specks" fill="#d93a1f">
+            <circle cx="10" cy="34" r="2.6"/>
+            <circle cx="27" cy="8" r="1.8"/>
+            <circle cx="122" cy="14" r="2.2"/>
+            <circle cx="129" cy="74" r="2.8"/>
+            <circle cx="118" cy="126" r="2"/>
+            <circle cx="44" cy="129" r="2.4"/>
+            <circle cx="5" cy="96" r="1.7"/>
+          </g>
+        </svg>
+        <blockquote>Fail any check and the work goes back to the kitchen. It never reaches your table.</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- 五 the trusted kitchen -->
+  <section class="course course-factory" id="factory">
+    <header class="course-head">
+      <div class="course-title">
+        <span class="course-num" aria-hidden="true">五</span>
+        <h2>The Trusted Kitchen</h2>
+      </div>
+    </header>
+    <div class="course-body">
+      <blockquote class="factory-quote">
+        Humans approve what should be true.<br>
+        <em>Agents prove it became true.</em>
+      </blockquote>
+      <div class="marubatsu">
+        <div class="mb-col is reveal">
+          <h3>What it is</h3>
+          <ul>
+            <li>Longer agent runs without you reading every line of code</li>
+            <li>You approve what a change should do; the agent proves it did</li>
+            <li>The agent runs your build and tests itself, and shows the results</li>
+            <li>A short report with evidence instead of a wall of diffs</li>
+            <li>Routine changes need less of you; risky ones need more</li>
+          </ul>
+        </div>
+        <div class="mb-col isnot reveal">
+          <h3>What it is not</h3>
+          <ul>
+            <li>Merging, shipping, or deploying without your sign-off</li>
+            <li>A replacement for your CI</li>
+            <li>Taking "done" on faith</li>
+            <li>Letting scripts judge taste</li>
+            <li>Changing what you asked for without asking you</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 六 how to order -->
+  <section class="course" id="order">
+    <header class="course-head">
+      <div class="course-title">
+        <span class="course-num" aria-hidden="true">六</span>
+        <h2>How to Order</h2>
+      </div>
+    </header>
+    <div class="course-body">
+      <div class="order-grid">
+        <div class="ticket reveal">
+          <div class="ticket-head"><span>ORDER TICKET</span><span lang="ja">注文票</span></div>
+          <pre><code><span class="dollar">$</span> npx omakaseagent init
+<span class="c"># installs the standard and project memory</span>
+
+<span class="dollar">$</span> npx omakaseagent learn
+<span class="c"># teaches the kitchen your repo: its checks and standards</span>
+
+<span class="dollar">$</span> npx omakaseagent skills install cursor
+<span class="c"># or: claude | agents | grok | codex</span>
+
+<span class="dollar">$</span> npx skills add rblalock/omakaseagent
+<span class="c"># via the skills.sh ecosystem</span>
+
+<span class="dollar">$</span> <span class="cursor" aria-hidden="true"></span></code></pre>
+        </div>
+        <div class="order-steps">
+          <div class="order-step">
+            <h3><span class="step-no">1</span> Install the standard</h3>
+            <p><code class="inline">npx omakaseagent init</code> installs the standard into your
+               harness and creates project memory in <code class="inline">.omakaseagent/</code>.</p>
+          </div>
+          <div class="order-step">
+            <h3><span class="step-no">2</span> Teach it the house</h3>
+            <p><code class="inline">npx omakaseagent learn</code> studies your repo and writes the
+               house playbook: which checks to run and what proof to show before work is served.</p>
+          </div>
+          <div class="order-step">
+            <h3><span class="step-no">3</span> Talk to a lead</h3>
+            <p>Reload your harness and state the goal. The lead gathers context, delegates
+               to specialists, passes the critique gate, and serves the result.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="harness-table reveal">
+        <table>
+          <caption>Works in every kitchen</caption>
+          <thead>
+            <tr><th scope="col">Harness</th><th scope="col">Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Cursor / Claude IDE</td><td><code>@omakase-engineer add rate limiting with backoff</code></td></tr>
+            <tr><td>Claude CLI</td><td><code>claude -p --agent omakase-critic "review the auth module"</code></td></tr>
+            <tr><td>OpenCode</td><td><code>opencode run --agent omakase-engineer "add rate limiting…"</code></td></tr>
+            <tr><td>Grok</td><td><code>grok --agent omakase-engineer "…"</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="takeout reveal">
+        <div class="takeout-intro">
+          <h3>Takeout</h3>
+          <p>No terminal? Omakase works in chat apps too. You get the standard
+             (the twelve rules and the critique gate) applied to whatever you
+             bring: writing, plans, analysis, code. The full kitchen, with
+             leads and project memory, lives in a coding harness.</p>
+          <a class="btn" href="omakase-skill.zip" download>Download the skill</a>
+        </div>
+        <div class="takeout-apps">
+          <div class="takeout-app">
+            <h4>Claude, web or desktop</h4>
+            <ol>
+              <li>Download the skill above</li>
+              <li>Customize → Skills → Upload skill</li>
+              <li>Toggle it on, then ask for work as usual</li>
+            </ol>
+            <p class="plan-note">Needs code execution enabled (Settings → Capabilities)</p>
+          </div>
+          <div class="takeout-app">
+            <h4>ChatGPT</h4>
+            <ol>
+              <li>Download the skill above</li>
+              <li>Skills → New skill → Upload from your computer</li>
+              <li>Enable it, then ask for work as usual</li>
+            </ol>
+            <p class="plan-note">Your workspace admin may need to turn skills on</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="kanjo" id="check">
+    <div class="footer-sushi" aria-hidden="true">
+      <svg viewBox="0 0 100 70">
+        <ellipse cx="50" cy="52" rx="34" ry="14" fill="#f3ead3" stroke="#2a221b" stroke-width="4"/>
+        <path d="M16 44 Q50 14 84 44 Q50 60 16 44 Z" fill="#d93a1f" stroke="#2a221b" stroke-width="4"/>
+        <g stroke="#e393bd" stroke-width="4" stroke-linecap="round">
+          <path d="M34 36 q4 6 2 12"/><path d="M50 30 q4 7 2 14"/><path d="M66 36 q4 6 2 12"/>
+        </g>
+      </svg>
+      <svg viewBox="0 0 100 70">
+        <circle cx="50" cy="38" r="28" fill="#2a221b"/>
+        <circle cx="50" cy="38" r="20" fill="#f3ead3"/>
+        <circle cx="50" cy="38" r="9" fill="#d93a1f" stroke="#2a221b" stroke-width="3"/>
+      </svg>
+      <svg viewBox="0 0 100 70">
+        <ellipse cx="50" cy="52" rx="34" ry="14" fill="#f3ead3" stroke="#2a221b" stroke-width="4"/>
+        <path d="M18 46 Q48 12 84 40 L78 50 Q50 60 18 46 Z" fill="#e393bd" stroke="#2a221b" stroke-width="4"/>
+        <g stroke="#d93a1f" stroke-width="4" stroke-linecap="round">
+          <path d="M36 34 q4 6 2 12"/><path d="M54 28 q4 7 2 14"/><path d="M70 36 q3 5 2 10"/>
+        </g>
+      </svg>
+    </div>
+    <div class="footer-cta">
+      <h2>The kitchen is open.</h2>
+      <div class="hero-cta">
+        <button class="cmd-chip" data-copy="npx omakaseagent init" type="button">
+          <span class="dollar">$</span> npx omakaseagent init <span class="copied-note" hidden>copied</span>
+        </button>
+        <a class="btn" href="https://github.com/rblalock/omakaseagent">View on GitHub</a>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <span>Omakase Agent</span>
+      <nav>
+        <a href="https://github.com/rblalock/omakaseagent">GitHub</a>
+        <a href="https://skills.sh/rblalock/omakaseagent">skills.sh</a>
+        <a href="https://x.com/rblalock">X</a>
+      </nav>
+    </div>
+  </footer>
+
+</div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

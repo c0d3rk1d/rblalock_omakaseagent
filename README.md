@@ -1,6 +1,6 @@
 # Omakase
 
-**The chef's standard.** One skill. Senior taste. Zero AI slop.
+**The chef's standard.** One skill. Craftsman's taste. Zero AI slop.
 
 [![skills.sh](https://skills.sh/b/rblalock/omakaseagent)](https://skills.sh/rblalock/omakaseagent)
 
@@ -15,8 +15,8 @@ Generic, hedging, over-engineered output fails. Non-trivial work explains *why* 
 ## Quick start
 
 ```bash
-npx omakase init
-npx omakase learn    # repo-specific Level 4 factory (scenarios, gates)
+npx omakaseagent init
+npx omakaseagent learn    # repo-specific Level 4 factory (scenarios, gates)
 ```
 
 Reload your harness, then talk to a **lead** (not a menu of skills):
@@ -54,17 +54,24 @@ Memory lives in `.omakaseagent/` after `init`.
 **New project:**
 
 ```bash
-npx omakase init
+npx omakaseagent init
 ```
 
 **Skill + agents only** (harness already configured):
 
 ```bash
-npx omakase skills install          # auto-detect harness
-npx omakase skills install cursor   # or: claude | agents | grok | codex
+npx omakaseagent skills install          # auto-detect harness
+npx omakaseagent skills install cursor   # or: claude | agents | grok | codex
 ```
 
 Also on the skills ecosystem: `npx skills add rblalock/omakaseagent` ([skills.sh](https://skills.sh/rblalock/omakaseagent)).
+
+**No terminal?** Omakase works in chat apps. Download
+[omakase-skill.zip](https://rblalock.github.io/omakaseagent/omakase-skill.zip),
+then upload it in Claude (Customize → Skills → Upload skill) or ChatGPT
+(Skills → New skill → Upload from your computer). In chat
+you get the standard (rules + critique gate); the full kitchen (leads, project
+memory) needs a coding harness.
 
 Use `omakase skills install --no-native-agents` for skill-only. Verify artifacts: `npm run verify:native-agents`.
 
@@ -76,8 +83,8 @@ Source: `skill/`. Shipped bundles: `dist/` (committed — do not edit by hand).
 npm link              # local CLI
 npm run build
 npm run verify:native-agents
-npx omakase init      # dogfood in this clone
-npx omakase learn     # factory layout for this repo
+npx omakaseagent init      # dogfood in this clone
+npx omakaseagent learn     # factory layout for this repo
 ```
 
 Level 4 methodology: [skill/reference/dark-factory.md](skill/reference/dark-factory.md). Multi-agent E2E: [examples/factory-e2e/](examples/factory-e2e/). Learn snapshot: [examples/factory-dogfood/](examples/factory-dogfood/).

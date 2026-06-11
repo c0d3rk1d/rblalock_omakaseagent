@@ -19,6 +19,9 @@ jobs:
       - name: Build dist bundles
         run: npm run build
 
+      - name: Verify committed dist is fresh
+        run: git diff --exit-code -- dist
+
       - name: Verify native agents
         run: npm run verify:native-agents
 
