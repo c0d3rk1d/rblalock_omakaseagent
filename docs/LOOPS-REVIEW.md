@@ -52,8 +52,9 @@ The Salty Lesson becomes a house rule (the loop law in `reference/loops.md`): ev
 
 ## Deferred
 
-Recorded in the dogfood backlog (`examples/factory-dogfood/.omakaseagent/backlog/README.md`), not built:
+Recorded in the dogfood backlog (`examples/factory-dogfood/.omakaseagent/backlog/README.md`):
 
-- `omakase loop` / `omakase status` CLI affordances — BYO runner is enough until charter adoption proves otherwise.
+- ~~`omakase status`~~ — shipped after the agent-success review: eligibility and Stop-condition checks are deterministic computation, and our own operating rule says repeatable checks get encoded, not re-judged by an LLM each iteration. Read-only; exit codes double as the runner halt check.
+- `omakase loop` (a built-in runner) — still deferred; the loop motor stays BYO.
 - Automated upshift proposals from gate history — needs a gate-history ledger first.
 - L4 fleet spec — named as horizon only.

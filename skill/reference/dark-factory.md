@@ -106,6 +106,7 @@ Repo-specific examples: `.omakaseagent/factory.md`.
 npx omakase init    # memory + agents
 npx omakase learn   # per-repo factory.md + starter scenarios
 npx omakase learn --dry-run
+npx omakase status  # loop state: approval, Stop conditions, next eligible item
 ```
 
 **Team loop (Class 2+):** `reference/factory-orchestration.md`. Worked example: `examples/factory-e2e/`.

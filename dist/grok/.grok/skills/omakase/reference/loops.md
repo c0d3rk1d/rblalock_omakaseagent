@@ -117,8 +117,8 @@ An iteration that finds no eligible item flags anything it passed over (`SKIPPED
 
 The iteration is the **atomic unit**: one queue item, one gate, one ledger row.
 
-1. Read the charter, `factory.md`, `taste.md`, `decisions.md`. Charter Approval line says UNAPPROVED → halt. Check Stop conditions **before** picking work — if any hold, append a `HALT`/`EMPTY` ledger row and stop.
-2. Pick exactly **one** eligible queue item (status TODO, dependencies DONE, within risk ceiling).
+1. **Run `npx omakase status` first when the CLI is available.** It deterministically evaluates the approval line, every Stop condition, and the next eligible item — trust its output over your own parsing of the charter and queue (`HALT` → append the ledger row and stop; `NEXT` → that is your item). Without the CLI, derive the same answers by hand: read the charter, `factory.md`, `taste.md`, `decisions.md`; Approval line says UNAPPROVED → halt; check Stop conditions **before** picking work.
+2. Pick exactly **one** eligible queue item (status TODO, dependencies DONE, within risk ceiling) — `omakase status` already names it.
 3. Run the factory loop (`reference/factory-orchestration.md`). Scenarios must already exist or be covered by the charter — needing a new scenario mid-loop is a halt-for-human, not a question.
 4. Close the iteration — all four writes: gate file, queue status row, plan's **Gate** field, ledger row.
 5. **Attended:** return to step 1 and chain the next iteration. **Unattended:** exit — the runner starts the next fresh run.
@@ -132,7 +132,7 @@ One item per iteration — no "while I'm here." Where the interactive factory wo
 Omakase provides the loop body and the brakes; the runner is yours. Any runner qualifies if it:
 
 1. Starts each iteration as a **fresh agent run** with the fixed prompt below — no accumulated chat context.
-2. Checks halt state **mechanically** between iterations (last ledger row `HALT`/`EMPTY`, or no new gate file produced).
+2. Checks halt state **mechanically** between iterations — `omakase status --quiet` (exit 0 = work available, 2 = halted/empty); without the CLI, grep the last ledger row for `HALT`/`EMPTY`.
 3. Enforces the iteration cap even if the agent does not.
 4. Never merges, deploys, or auto-accepts gates — batch review stays human.
 
@@ -149,10 +149,10 @@ Write the gate file, append the ledger row, then stop.
 ```bash
 # bash + any headless agent CLI (opencode shown; claude/cursor-agent equivalent)
 PROMPT='Read .omakaseagent/loops/backlog-drain.md and .omakaseagent/factory.md. Execute exactly one iteration per reference/loops.md. Honor Stop conditions. Write the gate file, append the ledger row, then stop.'
-for i in 1 2 3 4 5; do
+while npx omakase status --quiet; do
   opencode run --agent omakase-engineer "$PROMPT" || break
-  tail -1 .omakaseagent/loops/backlog-drain.md | grep -qE 'HALT|EMPTY' && break
 done
+# no CLI? swap the condition for: tail -1 .omakaseagent/loops/backlog-drain.md | grep -qvE 'HALT|EMPTY'
 ```
 
 - **CI cron:** schedule the same single-iteration prompt; one iteration per workflow run; the branch/PR carries the gate for batch review.

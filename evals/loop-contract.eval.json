@@ -14,12 +14,13 @@
         "## Runner contract",
         "exactly one",
         "UNAPPROVED",
+        "omakase status",
         "decisions\\.md` entry the human approves"
       ]
     },
     {
       "path": "skill/teams/engineering/lead.md",
-      "mustMatch": ["reference/loops\\.md", "one queue item per iteration", "UNAPPROVED"]
+      "mustMatch": ["reference/loops\\.md", "one queue item per iteration", "UNAPPROVED", "omakase status"]
     },
     {
       "path": "skill/SKILL.md",

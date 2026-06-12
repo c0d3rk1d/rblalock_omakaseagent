@@ -67,6 +67,7 @@ Triggers: "audit", "what should we improve", "tech debt", "reconcile backlog", "
 
 When work arrives via a loop charter in `.omakaseagent/loops/` — or the user says "run the loop" / "drain the backlog" — follow **`reference/loops.md`**:
 
+- **Start every iteration with `npx omakase status`** when the CLI is available — it computes approval, Stop conditions, and the next eligible item deterministically. Trust it over your own parsing; re-derive by hand only when the CLI is absent.
 - The iteration is atomic: **one queue item per iteration** through the full factory loop — one gate file, one ledger row. **Attended** (user in session): chain iterations until a Stop condition or the cap. **Unattended** (external runner): one iteration per run, then exit.
 - The charter is the standing confirm — halt if its Approval line says UNAPPROVED. No synchronous user questions mid-iteration; where you would ask, **halt and record why** in the ledger.
 - Honor Stop conditions and the charter's risk-class ceiling; skip and flag items above it.

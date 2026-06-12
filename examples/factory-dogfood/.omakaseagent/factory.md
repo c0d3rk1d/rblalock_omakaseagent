@@ -24,6 +24,7 @@ This file is the **repo-specific** half of the Omakase factory pattern. Global g
 - `npm run verify:pr-gate-diff` — Verify: pr-gate-diff
 - `npm run verify:scenario-evals` — Verify: scenario-evals
 - `npm run verify:drift` — Verify: drift
+- `npm run verify:status` — Verify: status
 
 ## Risk classes (defaults for this repo)
 

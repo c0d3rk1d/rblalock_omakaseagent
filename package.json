@@ -15,6 +15,7 @@
     "verify:pr-gate-diff": "node scripts/verify-pr-gate-diff.js",
     "verify:scenario-evals": "node scripts/verify-scenario-evals.js",
     "verify:drift": "node scripts/verify-drift.js",
+    "verify:status": "node scripts/verify-status.js",
     "skills:install": "node bin/omakase.js skills install",
     "site": "node scripts/serve-site.js",
     "prepare": "npm run build"
@@ -22,6 +23,10 @@
   "files": [
     "dist",
     "bin",
+    "scripts/omakase-learn.js",
+    "scripts/omakase-status.js",
+    "scripts/project-agents.js",
+    "scripts/native-agents/generate.js",
     "OMAKASE-PRINCIPLES.md",
     "OMAKASE-RULES.md",
     "OMAKASE-CRITIQUE.md",

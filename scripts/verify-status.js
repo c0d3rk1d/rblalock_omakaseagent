@@ -1,0 +1,140 @@
+#!/usr/bin/env node
+/** Mechanical check: omakase status computes loop state correctly on fixtures. */
+
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const { computeStatus } = require('./omakase-status');
+
+const APPROVED = '**Approval:** Approved by tester on 2026-06-12.';
+const UNAPPROVED = '**Approval:** UNAPPROVED — a human replaces this line before any unattended run.';
+
+function charter({ approval = APPROVED, ceiling = 2, cap = 5, ledgerRows = [] } = {}) {
+  return `# Loop: backlog-drain
+
+## Intent
+
+Drain the backlog.
+
+${approval}
+
+## Scope
+
+- **Queue:** \`.omakaseagent/backlog/README.md\`
+- **Risk class ceiling:** ${ceiling}
+
+## Stop
+
+- Queue empty
+- Iteration cap: ${cap}
+
+## Ledger
+
+| # | Date | Item | Gate | Result |
+|---|------|------|------|--------|
+${ledgerRows.map((r, i) => `| ${i + 1} | 2026-06-12 | ${r.item || 'backlog/00x.md'} | ${r.gate || '—'} | ${r.result} |`).join('\n')}
+`;
+}
+
+function queueIndex(rows) {
+  return `# Backlog — execution plans
+
+## Execution order & status
+
+| Plan | Title | Priority | Effort | Risk | Depends on | Status |
+|------|-------|----------|--------|------|------------|--------|
+${rows.map((r) => `| ${r.plan} | ${r.title} | P1 | S | ${r.risk} | ${r.deps || '—'} | ${r.status} |`).join('\n')}
+`;
+}
+
+function fixture(charterMd, queueMd) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'omakase-status-'));
+  fs.mkdirSync(path.join(dir, '.omakaseagent', 'loops'), { recursive: true });
+  fs.mkdirSync(path.join(dir, '.omakaseagent', 'backlog'), { recursive: true });
+  fs.writeFileSync(path.join(dir, '.omakaseagent', 'loops', 'backlog-drain.md'), charterMd);
+  if (queueMd !== null) {
+    fs.writeFileSync(path.join(dir, '.omakaseagent', 'backlog', 'README.md'), queueMd);
+  }
+  return dir;
+}
+
+const BASE_QUEUE = [
+  { plan: '001', title: 'Add multiply', risk: 2, status: 'TODO' },
+  { plan: '002', title: 'Add divide', risk: 2, deps: '001', status: 'TODO' },
+  { plan: '003', title: 'Rotate keys', risk: 3, status: 'TODO' },
+];
+
+const cases = [
+  {
+    name: 'approved charter picks first eligible item, flags over-ceiling',
+    dir: () => fixture(charter(), queueIndex(BASE_QUEUE)),
+    expect: (l) => !l.halt && l.next?.plan === '001' && l.flagged.length === 1 && l.flagged[0].plan === '003' && l.waiting.length === 1,
+  },
+  {
+    name: 'dependency unlocks after DONE',
+    dir: () =>
+      fixture(
+        charter({ ledgerRows: [{ result: 'DONE' }] }),
+        queueIndex([{ ...BASE_QUEUE[0], status: 'DONE' }, BASE_QUEUE[1], BASE_QUEUE[2]])
+      ),
+    expect: (l) => !l.halt && l.next?.plan === '002' && l.waiting.length === 0,
+  },
+  {
+    name: 'UNAPPROVED charter halts',
+    dir: () => fixture(charter({ approval: UNAPPROVED }), queueIndex(BASE_QUEUE)),
+    expect: (l) => l.halt && l.halt.includes('UNAPPROVED') && !l.next,
+  },
+  {
+    name: 'missing Approval line halts',
+    dir: () => fixture(charter({ approval: '' }), queueIndex(BASE_QUEUE)),
+    expect: (l) => l.halt && l.halt.includes('no Approval line'),
+  },
+  {
+    name: 'iteration cap halts',
+    dir: () =>
+      fixture(
+        charter({ cap: 3, ledgerRows: [{ result: 'DONE' }, { result: 'DONE' }, { result: 'SKIPPED (over ceiling)' }] }),
+        queueIndex(BASE_QUEUE)
+      ),
+    expect: (l) => l.halt && l.halt.includes('cap'),
+  },
+  {
+    name: 'EMPTY ledger row halts',
+    dir: () => fixture(charter({ ledgerRows: [{ result: 'DONE' }, { result: 'EMPTY (no eligible items remain)' }] }), queueIndex(BASE_QUEUE)),
+    expect: (l) => l.halt && l.halt.includes('EMPTY'),
+  },
+  {
+    name: 'two consecutive FAILED halts',
+    dir: () => fixture(charter({ ledgerRows: [{ result: 'FAILED' }, { result: 'FAILED' }] }), queueIndex(BASE_QUEUE)),
+    expect: (l) => l.halt && l.halt.includes('consecutive'),
+  },
+  {
+    name: 'drained queue reports none + EMPTY advice',
+    dir: () => fixture(charter(), queueIndex(BASE_QUEUE.map((r) => ({ ...r, status: r.plan === '003' ? 'BLOCKED (ceiling)' : 'DONE' })))),
+    expect: (l) => !l.halt && !l.next && l.flagged.length === 0,
+  },
+  {
+    name: 'missing queue table reported, no work',
+    dir: () => fixture(charter(), null),
+    expect: (l) => !l.halt && !l.next && l.queueError,
+  },
+];
+
+let failed = false;
+for (const c of cases) {
+  const dir = c.dir();
+  const result = computeStatus(dir);
+  const loop = result.loops?.[0];
+  const ok = loop && c.expect(loop);
+  if (!ok) {
+    console.error(`✗ ${c.name}`);
+    console.error('    got:', JSON.stringify(loop, null, 2).slice(0, 600));
+    failed = true;
+  } else {
+    console.log(`✓ ${c.name}`);
+  }
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
+if (failed) process.exit(1);
+console.log(`All ${cases.length} status checks passed.`);
