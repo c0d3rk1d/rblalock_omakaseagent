@@ -4,7 +4,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { computeStatus } = require('./omakase-status');
+const { computeStatus, listPendingGates } = require('./omakase-status');
 
 const APPROVED = '**Approval:** Approved by tester on 2026-06-12.';
 const UNAPPROVED = '**Approval:** UNAPPROVED — a human replaces this line before any unattended run.';
@@ -206,5 +206,20 @@ for (const c of cases) {
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
+{
+  const dir = fixture(charter(), queueIndex(BASE_QUEUE), {
+    '2026-06-12-a-gate.md': '# Gate: a\n\n**Review:** PENDING\n\n## Seed\n',
+    '2026-06-12-b-gate.md': '# Gate: b\n\n**Review:** accepted by tester 2026-06-12\n\n## Seed\n',
+  });
+  const pending = listPendingGates(path.join(dir, '.omakaseagent'));
+  if (pending.length !== 1 || !pending[0].rel.includes('a-gate')) {
+    console.error('✗ listPendingGates returns only pending gates');
+    failed = true;
+  } else {
+    console.log('✓ listPendingGates returns only pending gates');
+  }
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
 if (failed) process.exit(1);
-console.log(`All ${cases.length} status checks passed.`);
+console.log(`All ${cases.length + 1} status checks passed.`);

@@ -101,8 +101,10 @@ Do not spawn separate user threads per step unless harness requires it.
 
 When work arrives via `.omakaseagent/loops/<slug>.md` instead of a live user (`reference/loops.md`):
 
-- Start each iteration with `npx omakase status` when the CLI is available — approval, mechanical Stop conditions, next eligible item; trust it over hand-parsing.
-- The charter **is** the user confirm (halt if its Approval line says UNAPPROVED) — no synchronous approval mid-iteration. Where a phase would ask, **halt and record why** in the ledger instead.
+- **Setup:** UNAPPROVED charter → show and wait (agents never edit Approval). Empty backlog → interview human for loop scope, draft queue + plans, one confirm before any iteration (`reference/loops.md`).
+- Start each iteration with `npx omakaseagent status` when the CLI is available — approval, mechanical Stop conditions, next eligible item; trust it over hand-parsing.
+- The charter **is** the user confirm (halt if its Approval line says UNAPPROVED) — no synchronous approval mid-iteration.
+- On halt: `npx omakaseagent status --gates` + ledger summary for batch review. Where a phase would ask, **halt and record why** in the ledger instead.
 - Scenarios must pre-exist or be covered by the charter. A gap is a halt-for-human, not an invented scenario (Class 2+).
 - Phases 1–7 otherwise unchanged: one queue item per iteration, critic mandatory Class 2+, one gate file per iteration.
 - Phase 7 becomes **batch review**: the human reads accumulated gates later; merge stays human.

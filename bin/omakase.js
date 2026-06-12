@@ -524,7 +524,7 @@ function showHelp() {
   log('');
   log('  omakase init [--test] [--global]');
   log('  omakase learn [--dry-run] [--memory-only] [--factory-only] [--project-agents-only]');
-  log('  omakase status [loop] [--quiet]   # loop state: approval, Stop conditions, next item');
+  log('  omakase status [loop] [--quiet] [--gates]   # loop state; --gates lists pending review paths');
   log('  omakase skills install [cursor|claude|agents|grok|codex] [--test] [--global]');
   log('  omakase skills uninstall [harness] [--global] [--test]');
   log('');
@@ -554,6 +554,7 @@ if (command === 'init') {
   runStatus({
     loop: sub && !sub.startsWith('-') ? sub : null,
     quiet: flag('--quiet') || flag('-q'),
+    gates: flag('--gates') || flag('-g'),
   });
 } else if (command === 'skills' && sub === 'install') {
   const explicit = args[2] && !args[2].startsWith('-') ? args[2] : null;

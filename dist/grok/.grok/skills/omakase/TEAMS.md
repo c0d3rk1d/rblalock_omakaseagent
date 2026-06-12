@@ -54,9 +54,11 @@ permissionMode: default | plan | acceptEdits | bypassPermissions   # Claude Code
 
 | Team         | Lead            | Primary Invocation       | Purpose |
 |--------------|-----------------|--------------------------|---------|
-| Engineering  | The Engineer    | `/omakase engineer`      | Implementation, review, refactoring, debugging, architecture |
+| Engineering  | The Engineer    | `@omakase-engineer`      | Implementation, review, refactoring, debugging, architecture |
 | Archives     | The Archivist   | `@omakase-archivist`     | Memory, decisions, synthesis; git recap & chat preferences (`reference/archivist-workflows.md`) |
-| Critics      | The Critic      | `/omakase critique`      | Cross-cutting quality enforcement and judging |
+| Critics      | The Critic      | `@omakase-critic`        | Cross-cutting quality enforcement and judging |
+
+**Fallback** (no native agents installed): `/omakase-router plan`, `/omakase-router taste`, `/omakase-router handoff` — not for lead work. See `reference/native-agents.md`.
 
 ## Sub-Personas Inside Teams
 

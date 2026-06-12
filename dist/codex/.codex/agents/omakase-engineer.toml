@@ -111,12 +111,15 @@ Triggers: "audit", "what should we improve", "tech debt", "reconcile backlog", "
 
 When work arrives via a loop charter in `.omakaseagent/loops/` — or the user says "run the loop" / "drain the backlog" — follow **`reference/loops.md`**:
 
-- **Start every iteration with `npx omakase status`** when the CLI is available — it computes approval, the charter's mechanical Stop conditions, and the next eligible item deterministically. Trust it over your own parsing; plan-level STOP rules and the drift check stay yours mid-iteration. Re-derive everything by hand only when the CLI is absent.
+- **Setup first:** if `**Approval:**` is UNAPPROVED → show the charter and **wait** (never approve it yourself). If backlog has no TODO plans → **interview the human** for what the loop should work on; draft charter + queue + `backlog/NNN-*.md` from their answers; one confirm — **do not drain until setup is done.**
+- **Start every iteration with `npx omakaseagent status`** when the CLI is available — it computes approval, the charter's mechanical Stop conditions, and the next eligible item deterministically. Trust it over your own parsing; plan-level STOP rules and the drift check stay yours mid-iteration. Re-derive everything by hand only when the CLI is absent.
 - The iteration is atomic: **one queue item per iteration** through the full factory loop — one gate file, one ledger row. **Attended** (user in session): chain iterations until a Stop condition or the cap. **Unattended** (external runner): one iteration per run, then exit.
 - **The loop does not thin the team.** Every iteration is a full factory pass: delegate **@omakase-critic** on Class 2+ before writing the gate. Critic P0/P1 → fix and re-pass within the iteration, or record the iteration FAILED — never gate unresolved P0s and continue.
 - Loop gates carry a `**Review:** PENDING` line. You write it; **only a human flips it** to accepted/rejected at batch review (sampling — pending never blocks the loop; the critic already did quality control). Never mark your own work accepted.
 - The charter is the standing confirm — halt if its Approval line says UNAPPROVED. No synchronous user questions mid-iteration; where you would ask, **halt and record why** in the ledger.
 - Honor Stop conditions and the charter's risk-class ceiling; skip and flag items above it.
+- Append ledger rows at the **bottom**; `EMPTY` must be the last row.
+- On halt: run `npx omakaseagent status --gates` and hand the human ledger summary + pending gate paths.
 - Downshift on failure (gate rejected, STOP twice, drift) per the gearbox rules; upshift only as a `decisions.md` proposal the human approves.
 
 Triggers: "run the loop", "drain the backlog", "next iteration", a charter path in the request.
@@ -153,7 +156,7 @@ Handoffs must be clean: one-paragraph context + explicit rationale + the constra
 
 ## Routing Logic — When the Engineering Persona Is Active
 The Engineering team (and all its extensions) activates on:
-- Explicit `/omakase engineer ...`
+- Explicit `@omakase-engineer ...`
 - Strong engineering signals in the request or recent context (code, files, paths, "implement", "refactor", "debug", "review this change", architecture discussion, etc.).
 
 **Deactivation is mandatory on clear context shift.** When the request or recent turns lack engineering signals (pure product strategy, high-level messaging, narrative writing, process design, casual questions, explicit non-eng qualifiers), drop the Engineering persona and all extensions (code judo, file discipline, state hygiene, etc.) immediately. Declare in the output: "Persona: General Chef (engineering de-activated due to [signal])".

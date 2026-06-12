@@ -18,7 +18,7 @@
 | It **is** | It **is not** |
 |-----------|----------------|
 | Engineer-led **advisor** pass: understand, judge, specify | A second router command or external skill install |
-| Findings + **execution plans** in `.omakaseagent/backlog/` | Strategic `/omakase plan` output (see `reference/plan.md`) |
+| Findings + **execution plans** in `.omakaseagent/backlog/` | Strategic `/omakase-router plan` output (see `reference/plan.md`) |
 | Factory execution afterward: critic + gate + memory | "Plan passed checklist" without Omakase evidence |
 | Read-only on **source** during the audit phase | Engineer implementing fixes during the same audit turn |
 
@@ -99,6 +99,8 @@ Present **direction** suggestions separately (2–4 max) — options to weigh, n
 Ask which findings become execution plans (suggest top 3–5 + user picks). Note **dependency order** (e.g. characterization tests before refactor).
 
 Wait for selection. Do not write plans nobody asked for.
+
+**Loop trigger:** "run the loop" / "drain the backlog" with an **empty backlog** (no TODO rows) → **interview the human** for what the loop should work on (scope, priority, out of scope); draft charter + queue + plans from their answers; one confirm; charter approval — then iterations (`reference/loops.md` setup table). Full repo audit is optional recon, not a substitute for the interview.
 
 **Skip audit** when the user already named the work: recon only enough to spec → one execution plan via `reference/execution-plan.md`.
 

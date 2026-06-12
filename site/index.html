@@ -636,7 +636,7 @@
       </figure>
 
       <p class="kaiten-lede">A loop is the kitchen serving iteration after iteration without
-         you managing each one. You approve a <strong>standing order</strong> once — what to
+         you managing each one. You approve a <strong>standing order</strong> once: what to
          work on, what never to touch, when to stop. The kitchen works one iteration at a
          time: each item arrives with its proof, and the stack of plates is your record.
          <em>Manage the outcome, not the kitchen crew.</em></p>
@@ -649,15 +649,15 @@
         </div>
         <div class="kt-col reveal">
           <h3>One plate at a time <span lang="ja">一皿</span></h3>
-          <p>Each pass picks one item, completes it, proves it, and logs it — and the
+          <p>Each pass picks one item, completes it, proves it, and logs it. The
              critic inspects every plate before it reaches the belt. When the kitchen
              would have to guess, it stops and tells you why.</p>
         </div>
         <div class="kt-col reveal">
           <h3>Count the plates <span lang="ja">勘定</span></h3>
-          <p>Review the evidence in a stack, on your time. Autonomy is earned: a clean
-             track record unlocks longer runs, a rejected result reins them in — and every
-             change in trust is written down for you to approve.</p>
+          <p>Review the evidence in a stack, on your time. A clean track record can
+             earn longer runs; a rejected plate reins them in. Autonomy is earned the
+             more it's used.</p>
         </div>
       </div>
     </div>
@@ -695,23 +695,22 @@ under and how I should hand you tasks.</code></pre>
           </div>
 
           <div class="ticket ticket-order reveal">
-            <div class="ticket-head"><span>LONG-RUNNING WORK</span><span lang="ja">回転</span></div>
-            <pre class="ticket-prompt"><code>Read <span class="at">.omakaseagent/loops/backlog-drain.md</span> and
-<span class="at">.omakaseagent/factory.md</span>.
+            <div class="ticket-head"><span>LOOP SETUP</span><span lang="ja">準備</span></div>
+            <pre class="ticket-prompt"><code>Run <span class="at">npx omakaseagent init</span> and
+<span class="at">npx omakaseagent learn</span> if this repo has no factory yet.
 
-If the charter says UNAPPROVED, show it to me and wait —
-do not run. If the backlog is empty, audit the repo first
-and propose plans for my pick.
+Read <span class="at">.omakaseagent/loops/backlog-drain.md</span> and
+<span class="at">.omakaseagent/factory.md</span>. Do not approve the
+charter yourself.
 
-Otherwise run the loop: one backlog item per iteration —
-factory loop, gate report, ledger row — and keep going
-until a Stop condition fires. Never merge or deploy.
-
-When you stop, hand me the check: a ledger summary and
-the gate paths to review.</code></pre>
+If the backlog is empty, interview me: what should this loop work on,
+what is out of scope, and what order makes sense. Draft the charter,
+queue, and <span class="at">backlog/NNN-*.md</span> from my answers.
+Ask me to confirm once. I approve the charter when the standing order
+is right. Then run the loop from the charter.</code></pre>
             <div class="ticket-foot">
-              <button class="btn" type="button" data-copy="Read `.omakaseagent/loops/backlog-drain.md` and `.omakaseagent/factory.md`. If the charter says UNAPPROVED, show it to me and wait — do not run. If the backlog is empty, audit the repo first and propose plans for my pick. Otherwise run the loop: one backlog item per iteration — factory loop, gate report, ledger row — and keep going until a Stop condition fires. Never merge or deploy. When you stop, hand me the check: a ledger summary and the gate paths to review.">
-                Copy the loop order
+              <button class="btn" type="button" data-copy="Run `npx omakaseagent init` and `npx omakaseagent learn` if this repo has no factory yet. Read `.omakaseagent/loops/backlog-drain.md` and `.omakaseagent/factory.md`. Do not approve the charter yourself. If the backlog is empty, interview me: what should this loop work on, what is out of scope, and what order makes sense. Draft the charter, queue, and `backlog/NNN-*.md` from my answers. Ask me to confirm once. I approve the charter when the standing order is right. Then run the loop from the charter.">
+                Copy loop setup
               </button>
             </div>
           </div>
@@ -735,10 +734,10 @@ the gate paths to review.</code></pre>
                the shokunin to work, passes the critique gate, and serves the result.</p>
           </div>
           <div class="order-step">
-            <h3><span class="step-no">4</span> Queue up long-running work</h3>
-            <p>Once the kitchen has earned it, stop managing task by task. Approve the
-               standing order and the loop works through the backlog — one item, one proof
-               at a time. Come back to the evidence and the check.</p>
+            <h3><span class="step-no">4</span> Set up a standing loop</h3>
+            <p>For work that keeps coming back, use the omakase loop.
+               State what should be true. The chef proposes the standing order and
+               queue; you approve it once. Then the kitchen runs until it stops.</p>
           </div>
           <div class="terminal-note">
             <span class="tn-label">Prefer the terminal?</span>
@@ -748,8 +747,6 @@ the gate paths to review.</code></pre>
               <code>npx omakaseagent status</code>
               <code>npx skills add rblalock/omakaseagent</code>
             </div>
-            <p class="tn-night">Night shift: any cron or script can re-run the standing
-               order — the loop's state lives in the repo, not the chat.</p>
           </div>
         </div>
       </div>

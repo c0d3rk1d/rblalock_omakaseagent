@@ -69,7 +69,7 @@ For any non-trivial critique:
 5. **What's working** (2-4 specific strengths with evidence)
 6. **Priority issues** (P0–P3, with "What", "Why it matters", "Suggested fix")
 7. **"Why this approach" / taste reasoning** (for the critique itself when the target was substantial)
-8. **Recommended next actions** (specific commands the user can run, e.g. `/omakase engineer fix the state management in X` or `/omakase critique the revised GTM narrative`)
+8. **Recommended next actions** (specific commands the user can run, e.g. `@omakase-engineer fix the state management in X` or `@omakase-critic review the revised GTM narrative`)
 
 **Depth Adaptation (mandatory for ruthless simplicity)**: The full 8-part structure with complete score table is the default for substantial, ambiguous, or borderline targets. For small targets (< ~150 lines or with immediately obvious P0 structural/spaghetti issues), use the short form to avoid bloat: Summary verdict (2 sentences) + Domain Detection & Merge Declaration + Standards applied (one line) + Top 3 Priority Issues (full P0-P2 fields) + "Why this approach" (for the critique) + Recommended next actions. When the target is a previous critique output, the final Recommended next actions **must** include an explicit self-application step ("Now run the full merged critique on this critique document").
 

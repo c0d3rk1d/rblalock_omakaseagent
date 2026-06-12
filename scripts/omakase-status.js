@@ -216,6 +216,30 @@ function computeStatus(cwd, options = {}) {
   return { loops, workAvailable: loops.some((l) => l.next) };
 }
 
+function listPendingGates(memDir) {
+  const gatesDir = path.join(memDir, 'gates');
+  if (!fs.existsSync(gatesDir)) return [];
+  const pending = [];
+  for (const f of fs.readdirSync(gatesDir)) {
+    if (!f.endsWith('.md') || f === 'README.md') continue;
+    const rel = `.omakaseagent/gates/${f}`;
+    const rv = gateReview(memDir, rel);
+    if (rv && (rv.state === 'pending' || rv.state === 'missing')) {
+      pending.push({ rel, state: rv.state });
+    }
+  }
+  return pending.sort((a, b) => a.rel.localeCompare(b.rel));
+}
+
+function formatGates(pending) {
+  if (pending.length === 0) return ['  gates:      none awaiting review'];
+  const lines = [`  gates:      ${pending.length} awaiting review`];
+  for (const g of pending) {
+    lines.push(`    ${g.rel}${g.state === 'missing' ? ' (missing file)' : ''}`);
+  }
+  return lines;
+}
+
 function formatLoop(l) {
   const lines = [`loop: ${l.slug}`];
   lines.push(`  charter:    ${l.charterPath}`);
@@ -253,21 +277,42 @@ function formatLoop(l) {
 }
 
 function runStatus(options = {}) {
-  const result = computeStatus(process.cwd(), options);
+  const cwd = process.cwd();
+  const result = computeStatus(cwd, options);
   if (result.error) {
     console.log(`error: ${result.message}`);
     process.exit(1);
   }
+  const pending = options.gates ? listPendingGates(path.join(cwd, '.omakaseagent')) : [];
+
+  if (options.gates && options.quiet) {
+    for (const g of pending) console.log(g.rel);
+    process.exit(0);
+  }
+
   for (const l of result.loops) {
     if (options.quiet) {
       console.log(
         l.halt ? `${l.slug}: HALT — ${l.halt}` : l.next ? `${l.slug}: NEXT ${l.next.plan} ${l.next.title}` : `${l.slug}: EMPTY`
       );
     } else {
-      console.log(formatLoop(l).join('\n'));
+      const lines = formatLoop(l);
+      if (options.gates) lines.push(...formatGates(pending));
+      console.log(lines.join('\n'));
     }
+  }
+  if (options.gates && !options.quiet && result.loops.length === 0) {
+    console.log(formatGates(pending).join('\n'));
   }
   process.exit(result.workAvailable ? 0 : 2);
 }
 
-module.exports = { computeStatus, parseCharter, parseQueue, evaluate, formatLoop, runStatus };
+module.exports = {
+  computeStatus,
+  parseCharter,
+  parseQueue,
+  evaluate,
+  formatLoop,
+  listPendingGates,
+  runStatus,
+};

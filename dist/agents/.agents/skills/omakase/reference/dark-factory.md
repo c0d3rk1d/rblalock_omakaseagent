@@ -103,10 +103,11 @@ Repo-specific examples: `.omakaseagent/factory.md`.
 ## Commands
 
 ```bash
-npx omakase init    # memory + agents
-npx omakase learn   # per-repo factory.md + starter scenarios
-npx omakase learn --dry-run
-npx omakase status  # loop state: approval, Stop conditions, next eligible item
+npx omakaseagent init    # memory + agents
+npx omakaseagent learn   # per-repo factory.md + starter scenarios
+npx omakaseagent learn --dry-run
+npx omakaseagent status  # loop state: approval, Stop conditions, next eligible item
+npx omakaseagent status --gates  # pending gate paths for batch review
 ```
 
 **Team loop (Class 2+):** `reference/factory-orchestration.md`. Worked example: `examples/factory-e2e/`.

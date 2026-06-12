@@ -3,15 +3,15 @@
 **Preferred (deterministic):** run the CLI from the project root:
 
 ```bash
-npx omakase init
+npx omakaseagent init
 # or, in the omakase repo: node bin/omakase.js init
 ```
 
 This creates `.omakaseagent/`, updates `AGENTS.md`, installs the skill bundle, and registers **native agents** (`omakase-engineer`, `omakase-critic`, `omakase-archivist`, plus hidden/internal specialists) for OpenCode, Cursor, Claude Code, and Codex.
 
-**Next:** `npx omakase learn` — bootstrap Level 4 factory for this repo (`factory.md`, scenarios, gates). See `reference/learn.md`.
+**Next:** `npx omakaseagent learn` — bootstrap Level 4 factory for this repo (`factory.md`, scenarios, gates). See `reference/learn.md`.
 
-**Skill fallback:** `/omakase init` in a harness chat follows the steps below when the CLI cannot be run — but the CLI path is strongly preferred so native agents are actually on disk.
+**Skill fallback:** `/omakase-router init` in a harness chat follows the steps below when the CLI cannot be run — but the CLI path is strongly preferred so native agents are actually on disk.
 
 `omakase init` creates the persistent memory layer and sets the project up to use the standard.
 
@@ -64,12 +64,12 @@ Optionally (when the project justifies it):
      - Archives (lead: The Archivist) — memory, decisions, and knowledge management
      - Critics (lead: The Critic) — cross-cutting quality enforcement
 
-     Use `/omakase engineer`, `/omakase critique`, etc. once the skill is installed.
+     Use `@omakase-engineer`, `@omakase-critic`, and `@omakase-archivist` once native agents are installed.
      See the installed Omakase skill for the full 12 Rules and Critique Rubric.
      ```
 
 6. **Offer the obvious next step.**
-   - Usually: "Now you can say `/omakase engineer <task>` or just describe what you want built/reviewed/planned."
+   - Usually: "Now you can say `@omakase-engineer <task>` or just describe what you want built/reviewed/planned."
    - If the project has no prior standards, this is often the moment to do a light first critique or shape a small piece of work so the taste memory gets its first real data point.
 
 **Minimal Seed for First Task (used by SKILL.md when no .omakaseagent/ exists on first significant engineering work, and user elects to proceed without full /omakase init):**

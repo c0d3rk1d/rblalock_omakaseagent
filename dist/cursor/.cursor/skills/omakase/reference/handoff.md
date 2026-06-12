@@ -22,7 +22,7 @@ Every handoff must include:
 
 ## When to Produce a Handoff
 
-- Explicit `/omakase handoff`
+- Explicit `/omakase-router handoff`
 - Before switching to a different persona or sub-agent
 - At natural phase boundaries (plan → implement, research → build, etc.)
 - When the current agent is stopping and expects another to continue

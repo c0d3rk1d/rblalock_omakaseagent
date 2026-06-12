@@ -5,7 +5,7 @@
 This directory is the **recorded run** for that goal on omakaseagent (2026-06-06). Reproduce:
 
 ```bash
-npx omakase init && npx omakase learn
+npx omakaseagent init && npx omakaseagent learn
 # User to @omakase-engineer:
 # "Make factory gate reports mechanically verifiable in CI so checkpoints can't be faked."
 ```

@@ -50,11 +50,11 @@ The Salty Lesson becomes a house rule (the loop law in `reference/loops.md`): ev
 - `.omakaseagent/loops/` — standing charters, scaffolded by `omakase learn` with a `backlog-drain.md` default.
 - Engineer lead, router, intake, and orchestration references wired to loop mode; `loop-charter` starter scenario; `evals/loop-contract.eval.json` keeps the contract mechanical.
 
-## Deferred
+## Still open (horizon / BYO)
 
-Recorded in the dogfood backlog (`examples/factory-dogfood/.omakaseagent/backlog/README.md`):
+| Item | Status |
+|------|--------|
+| Built-in `omakase loop` runner | Deferred — loop motor stays BYO (`reference/loops.md`) |
+| L4 fleet loop spec | Horizon only — not specified in v1 |
 
-- ~~`omakase status`~~ — shipped after the agent-success review: eligibility and Stop-condition checks are deterministic computation, and our own operating rule says repeatable checks get encoded, not re-judged by an LLM each iteration. Read-only; exit codes double as the runner halt check.
-- ~~Automated upshift proposals from gate history~~ — shipped via gate `**Review:**` markers (agent writes PENDING, human flips to accepted/rejected): `status` halts on rejection and reports upshift eligibility at 5 accepted in a row. The trust verbs now live on disk, not in chat.
-- `omakase loop` (a built-in runner) — still deferred; the loop motor stays BYO.
-- L4 fleet spec — named as horizon only.
+Shipped since this review: `npx omakaseagent status` (read-only loop state), gate `**Review:**` trust ledger + upshift streak reporting. See `decisions.md` (2026-06-12) and `examples/factory-e2e/gates/2026-06-12-omakase-status-gate.md`.

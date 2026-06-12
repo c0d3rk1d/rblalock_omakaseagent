@@ -23,5 +23,11 @@ This repo uses **Level 4** Omakase: approve intent and scenarios; review gate ev
 - **Scenarios:** `.omakaseagent/scenarios/`
 - **Gate reports:** `.omakaseagent/gates/`
 - **Loops:** `.omakaseagent/loops/` — standing charters for unattended runs (`reference/loops.md`)
-- **Refresh:** `npx omakase learn` (use `--dry-run` first)
+- **Refresh:** `npx omakaseagent learn` (use `--dry-run` first)
 
+<!-- omakase-learn:project-agents -->
+
+**Project agents** (≤3, repo-specific):
+
+- `.omakaseagent/project-agents/skill-maintainer.md` → emitted on learn
+- `.omakaseagent/project-agents/cli-maintainer.md` → emitted on learn

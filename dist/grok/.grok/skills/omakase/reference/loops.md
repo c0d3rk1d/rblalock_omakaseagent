@@ -56,13 +56,13 @@ L1 is `reference/factory-orchestration.md` unchanged. L2 and L3 are L1 stacked u
 
 | Trigger | Shift |
 |---------|-------|
-| Gate rejected at batch review (flip the gate's `**Review:**` line to `rejected — <reason>`; `omakase status` halts the loop on it) | That task class drops to L1 until its next accepted gate |
+| Gate rejected at batch review (flip the gate's `**Review:**` line to `rejected — <reason>`; `npx omakaseagent status` halts the loop on it) | That task class drops to L1 until its next accepted gate |
 | Same STOP condition fires twice | Drop to L1; fix the plan or scenario before resuming |
 | Drift check fails | Halt the loop; plans are stale — re-audit |
 | Item exceeds charter risk ceiling or touches Class 3+ | Skip and flag; that item is handled interactively (L0/L1) |
 | Two consecutive failed iterations | Halt the loop and report |
 
-**Upshift (leverage).** Proposal-only: after **5 consecutive accepted gates** in a task class with zero critic P0/P1 findings, the agent may propose promoting that class one level up — as a `decisions.md` entry the human approves. Autonomy is earned and recorded, never assumed. The streak is mechanical, not remembered: `omakase status` counts accepted `**Review:**` lines and reports when the threshold is met. Status counts the streak only — before proposing, the **agent** confirms the other two conditions (same task class, zero critic P0/P1 in those gates).
+**Upshift (leverage).** Proposal-only: after **5 consecutive accepted gates** in a task class with zero critic P0/P1 findings, the agent may propose promoting that class one level up — as a `decisions.md` entry the human approves. Autonomy is earned and recorded, never assumed. The streak is mechanical, not remembered: `npx omakaseagent status` counts accepted `**Review:**` lines and reports when the threshold is met. Status counts the streak only — before proposing, the **agent** confirms the other two conditions (same task class, zero critic P0/P1 in those gates).
 
 **Two reviews per plate (do not conflate them):**
 
@@ -111,7 +111,7 @@ plan, mechanical checks, critic, gate, queue status update, ledger row.
 ## Checkpoint policy
 - Gates reviewed in batch — no synchronous confirm per iteration
 - Batch review = flip each gate's **Review:** line to accepted/rejected;
-  `omakase status` reads it (rejected halts the loop; agents never flip it)
+  `npx omakaseagent status` reads it (rejected halts the loop; agents never flip it)
 - Halt for human immediately when: risk ceiling would be exceeded, drift check
   fails, or work needs a scenario the charter does not cover
 
@@ -126,15 +126,33 @@ An iteration that finds no eligible item flags anything it passed over (`SKIPPED
 
 ---
 
+## Before the first iteration (setup — not part of the belt)
+
+| Step | Who | Action |
+|------|-----|--------|
+| 1 | Human | Approve the charter — replace `**Approval:** UNAPPROVED` with `Approved by <name> on <date>`. **Agents must show UNAPPROVED and wait; never edit this line.** |
+| 2 | Agent + human | If backlog has no TODO plans: **interview the human** — what the loop should work on, out of scope, priority/order. Draft charter + queue + `backlog/NNN-*.md` from their answers (repo recon only to inform proposals, not to drive the queue). **Do not start the drain loop until plans exist.** |
+| 3 | Human | Confirm the proposed queue once. Approve the charter. Then say "run the loop." |
+
+Empty backlog + "run the loop" = **setup phase only** — interview, propose backlog, one confirm, charter approval — then the belt runs.
+
+## Agent NEVER (loop mode)
+
+- **NEVER** replace `UNAPPROVED` on the charter Approval line — only a human may approve a standing order.
+- **NEVER** skip the setup interview + human confirm when the backlog has no TODO items (unless the user already pointed at specific `backlog/NNN-*.md` files).
+- **NEVER** prepend ledger rows — append at the **bottom** of the ledger table; `EMPTY` must be the **last** row.
+- **NEVER** flip a gate's `**Review:**` line — write `PENDING` only; humans accept/reject at batch review.
+
 ## One iteration — agent contract
 
 The iteration is the **atomic unit**: one queue item, one gate, one ledger row.
 
-1. **Run `npx omakase status` first when the CLI is available.** It deterministically evaluates the approval line, the charter's **mechanical** Stop conditions (ledger HALT/EMPTY, iteration cap, double-FAILED, rejected gate reviews, stuck IN PROGRESS items), and the next eligible item — trust its output over your own parsing of the charter and queue (`HALT` → append the ledger row and stop; `NEXT` → that is your item). Plan-level STOP rules and the drift check remain **your** job during the iteration. Without the CLI, derive all of it by hand: read the charter, `factory.md`, `taste.md`, `decisions.md`; Approval line says UNAPPROVED → halt; check Stop conditions **before** picking work.
-2. Pick exactly **one** eligible queue item (status TODO, dependencies DONE, within risk ceiling) — `omakase status` already names it.
+1. **Run `npx omakaseagent status` first when the CLI is available.** It deterministically evaluates the approval line, the charter's **mechanical** Stop conditions (ledger HALT/EMPTY, iteration cap, double-FAILED, rejected gate reviews, stuck IN PROGRESS items), and the next eligible item — trust its output over your own parsing of the charter and queue (`HALT` → append the ledger row and stop; `NEXT` → that is your item). Plan-level STOP rules and the drift check remain **your** job during the iteration. Without the CLI, derive all of it by hand: read the charter, `factory.md`, `taste.md`, `decisions.md`; Approval line says UNAPPROVED → halt; check Stop conditions **before** picking work.
+2. Pick exactly **one** eligible queue item (status TODO, dependencies DONE, within risk ceiling) — `npx omakaseagent status` already names it.
 3. Run the **full** factory loop (`reference/factory-orchestration.md`) — including `@omakase-critic` on Class 2+ before the gate is written. Critic P0/P1 → fix and re-pass within the iteration, or record FAILED; never carry unresolved P0s into a gate. Scenarios must already exist or be covered by the charter — needing a new scenario mid-loop is a halt-for-human, not a question.
 4. Close the iteration — all four writes: gate file (including its `**Review:** PENDING` line — flipping it is human-only), queue status row, plan's **Gate** field, ledger row.
 5. **Attended:** return to step 1 and chain the next iteration. **Unattended:** exit — the runner starts the next fresh run.
+6. **On halt:** run `npx omakaseagent status --gates` and hand the human a ledger summary plus pending gate paths.
 
 One item per iteration — no "while I'm here." Where the interactive factory would ask the user, a loop **stops and records why**. No synchronous confirm mid-iteration, no scope improvisation, no merge/deploy.
 
@@ -145,7 +163,7 @@ One item per iteration — no "while I'm here." Where the interactive factory wo
 Omakase provides the loop body and the brakes; the runner is yours. Any runner qualifies if it:
 
 1. Starts each iteration as a **fresh agent run** with the fixed prompt below — no accumulated chat context.
-2. Checks halt state **mechanically** between iterations — `omakase status --quiet` (exit 0 = work available, 2 = halted/empty); without the CLI, grep the last ledger row for `HALT`/`EMPTY`.
+2. Checks halt state **mechanically** between iterations — `npx omakaseagent status --quiet` (exit 0 = work available, 2 = halted/empty); without the CLI, grep the last ledger row for `HALT`/`EMPTY`.
 3. Enforces the iteration cap even if the agent does not.
 4. Never merges, deploys, or auto-accepts gates — batch review stays human.
 
@@ -162,7 +180,7 @@ Write the gate file, append the ledger row, then stop.
 ```bash
 # bash + any headless agent CLI (opencode shown; claude/cursor-agent equivalent)
 PROMPT='Read .omakaseagent/loops/backlog-drain.md and .omakaseagent/factory.md. Execute exactly one iteration per reference/loops.md. Honor Stop conditions. Write the gate file, append the ledger row, then stop.'
-while npx omakase status --quiet; do
+while npx omakaseagent status --quiet; do
   opencode run --agent omakase-engineer "$PROMPT" || break
 done
 # no CLI? swap the condition for: tail -1 .omakaseagent/loops/backlog-drain.md | grep -qvE 'HALT|EMPTY'

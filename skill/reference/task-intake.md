@@ -15,7 +15,7 @@ The factory pattern (see `reference/dark-factory.md`) tries to **replace routine
 On first significant task in a repo without `factory.md`:
 
 1. Tell the user briefly: Omakase works best with a one-time repo setup.  
-2. Prefer CLI: `npx omakase init` then `npx omakase learn` (or `learn --dry-run`).  
+2. Prefer CLI: `npx omakaseagent init` then `npx omakaseagent learn` (or `learn --dry-run`).  
 3. If CLI unavailable: `@omakase-archivist` or router `learn` per `reference/learn.md` — propose artifacts, confirm before write.  
 4. **Do not block Class 0–1 trivia** (typo in README) on full factory — still cite memory if present.
 

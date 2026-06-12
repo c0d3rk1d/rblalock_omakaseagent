@@ -71,7 +71,7 @@ When the plan is substantial, consider also producing a crisp handoff document (
 | | Strategic (`reference/plan.md`) | Execution (`.omakaseagent/backlog/`) |
 |---|--------------------------------|--------------------------------------|
 | **Purpose** | Why, options, trade-offs, phasing | How — steps, excerpts, verify gates |
-| **Trigger** | `/omakase plan`, shaping direction | Backlog audit selection, "fix X" spec |
+| **Trigger** | `/omakase-router plan`, shaping direction | Backlog audit selection, "fix X" spec |
 | **Audience** | Human + Engineer deciding shape | `omakase-implementation-lead` with zero session context |
 | **Template** | Required elements in this file | `reference/execution-plan.md` |
 | **Close** | Handoff to Engineer | Factory loop: critic + gate |

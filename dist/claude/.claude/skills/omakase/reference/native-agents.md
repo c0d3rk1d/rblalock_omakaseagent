@@ -5,7 +5,7 @@ Portable reference (shipped with the skill). Full doc: `docs/NATIVE-SUBAGENTS.md
 ## Install
 
 ```bash
-npx omakase init
+npx omakaseagent init
 ```
 
 ## User-facing leads
