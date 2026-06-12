@@ -6,18 +6,20 @@
     {
       "path": "skill/reference/loops.md",
       "mustMatch": [
+        "## Two ways to run the same loop",
         "## Loop ladder",
         "## Gearbox",
         "## Loop charter",
         "## One iteration",
         "## Runner contract",
         "exactly one",
+        "UNAPPROVED",
         "decisions\\.md` entry the human approves"
       ]
     },
     {
       "path": "skill/teams/engineering/lead.md",
-      "mustMatch": ["reference/loops\\.md", "one iteration per run"]
+      "mustMatch": ["reference/loops\\.md", "one queue item per iteration", "UNAPPROVED"]
     },
     {
       "path": "skill/SKILL.md",

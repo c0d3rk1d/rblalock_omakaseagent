@@ -28,6 +28,18 @@ npm run verify:scenario-evals  # 7 evals incl. loop-contract
 npm run verify:drift           # TEAMS.md + dist lead bundles aligned
 ```
 
+**E2E loop run (tmp repo, 2026-06-12):** `omakase init` + `learn` on a fresh non-omakase Node repo; backlog seeded with 3 plans (two Class 2, one Class 3); 4 loop iterations executed under the generated charter:
+
+```
+iter 1  backlog/001-add-multiply.md  → gate + ledger row, DONE
+iter 2  backlog/002-add-divide.md    → gate + ledger row, DONE (dependency on 001 honored)
+iter 3  backlog/003-rotate-api-keys  → SKIPPED (risk class 3 > ceiling 2), queue flagged BLOCKED
+iter 4  —                            → EMPTY appended; runner halt grep fires
+node scripts/verify-gate-report.js .omakaseagent/gates  → 2/2 loop gates pass
+re-run `omakase learn`             → only factory.md rewritten; queue/ledger/gates preserved
+fresh repo charter                 → Approval line UNAPPROVED; agent halt rule grep-verifiable
+```
+
 ## Critic
 
 Internal critique pass (rubric + engineering extensions): no P0/P1.
@@ -36,6 +48,13 @@ Internal critique pass (rubric + engineering extensions): no P0/P1.
 - No runner shipped (honors the v1 "no orchestration engine" decision); the runner contract + fixed prompt make any external loop safe to drive.
 - Charter risk ceiling defaults to Class 2; Class 3+ items are skipped and flagged, consistent with `dark-factory.md` risk classes.
 - P2 noted: ledger halt-check in the bash example greps the charter's last line — adequate for an example, brittle as tooling. Resolved by deferral: `omakase status` is a recorded backlog deferral, not built speculatively.
+
+E2E dogfood found and fixed (second pass):
+
+- **P1:** re-running `omakase learn` clobbered `backlog/README.md` — the live queue index loops depend on. Directory READMEs now write only on first learn.
+- **P2:** generated charters had no approval marker, so agents could not tell approved from unapproved. Charters now generate with an explicit `Approval: UNAPPROVED` line; agents halt on it (loops.md step 1, engineer lead, orchestration loop mode, loop-contract eval).
+- **P2:** docs over-fit the unattended runner — "one iteration per run" implied a live user asking "drain the backlog" gets one item then must re-ask. Loops are now explicitly dual-mode: attended (agent chains iterations in-session until Stop/cap) and unattended (fresh run per iteration); the iteration stays atomic either way.
+- **P3:** generic repos inherited the omakase-specific "Build dist bundles" label in factory.md; ledger semantics for skip-then-empty were unspecified (EMPTY must be the last row so runners halt).
 
 ## Memory consulted
 

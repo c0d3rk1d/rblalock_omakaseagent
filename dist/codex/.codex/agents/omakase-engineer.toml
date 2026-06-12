@@ -111,8 +111,8 @@ Triggers: "audit", "what should we improve", "tech debt", "reconcile backlog", "
 
 When work arrives via a loop charter in `.omakaseagent/loops/` — or the user says "run the loop" / "drain the backlog" — follow **`reference/loops.md`**:
 
-- Execute exactly **one iteration per run**: one queue item through the full factory loop, one gate file, one ledger row.
-- The charter is the standing confirm. No synchronous user questions mid-iteration — where you would ask, **halt and record why** in the ledger.
+- The iteration is atomic: **one queue item per iteration** through the full factory loop — one gate file, one ledger row. **Attended** (user in session): chain iterations until a Stop condition or the cap. **Unattended** (external runner): one iteration per run, then exit.
+- The charter is the standing confirm — halt if its Approval line says UNAPPROVED. No synchronous user questions mid-iteration; where you would ask, **halt and record why** in the ledger.
 - Honor Stop conditions and the charter's risk-class ceiling; skip and flag items above it.
 - Downshift on failure (gate rejected, STOP twice, drift) per the gearbox rules; upshift only as a `decisions.md` proposal the human approves.
 

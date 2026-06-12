@@ -17,7 +17,7 @@ This file is the **repo-specific** half of the Omakase factory pattern. Global g
 
 ## Mechanical evidence (run before checkpoint)
 
-- `npm run build` — Build dist bundles
+- `npm run build` — Build
 - `npm run verify:gate-reports` — Verify: gate-reports
 - `npm run verify:learn` — Verify: learn
 - `npm run verify:native-agents` — Verify: native-agents

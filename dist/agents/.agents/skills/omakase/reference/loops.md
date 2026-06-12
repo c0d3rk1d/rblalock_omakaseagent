@@ -4,6 +4,15 @@
 
 A **loop** is the factory run repeatedly without a human prompting each iteration. The human approves a **standing charter** once, then reviews gate evidence in batch. Level 4 holds: the human leaves the **iteration**, not the system.
 
+## Two ways to run the same loop
+
+| Mode | Motor | When |
+|------|-------|------|
+| **Attended** (default) | The agent itself — user says "run the loop" / "drain the backlog" and the agent **chains iterations in-session** until a Stop condition or the cap | Any harness, user present but not prompting per task |
+| **Unattended** | An external runner (bash `while`, CI cron, cloud agent schedule) restarts a **fresh run per iteration** with the fixed prompt below | Overnight / scheduled drains; fresh context per iteration resists context rot |
+
+Same charter, same ledger, same gates either way. **Omakase is the loop discipline, not the loop motor** — all loop state lives on disk in `.omakaseagent/`, so any harness or human can pick up where any other left off.
+
 ---
 
 ## What this is (and is not)
@@ -67,7 +76,10 @@ L1 is `reference/factory-orchestration.md` unchanged. L2 and L3 are L1 stacked u
 # Loop: <slug>
 
 ## Intent
-What this loop drains or improves, in one paragraph. Approved by <who> on <date>.
+What this loop drains or improves, in one paragraph.
+
+**Approval:** Approved by <name> on <date>. (Generated charters say UNAPPROVED —
+agents halt until a human replaces the line.)
 
 ## Scope
 - **Queue:** `.omakaseagent/backlog/` in dependency order (or another mechanical source)
@@ -95,25 +107,27 @@ plan, mechanical checks, critic, gate, queue status update, ledger row.
 |---|------|------|------|--------|
 ```
 
-Ledger **Result** is one of: `DONE`, `FAILED`, `SKIPPED (reason)`, `HALT (stop condition)`, `EMPTY` (queue drained). The ledger is append-only and is the mechanical surface runners check between iterations.
+Ledger **Result** is one of: `DONE`, `FAILED`, `SKIPPED (reason)`, `HALT (stop condition)`, `EMPTY` (no eligible items remain). The ledger is append-only and is the mechanical surface runners check between iterations.
+
+An iteration that finds no eligible item flags anything it passed over (`SKIPPED` row per item, mark it in the queue index) and then appends an `EMPTY` row — `EMPTY` must be the **last** row so runners halt on it.
 
 ---
 
 ## One iteration — agent contract
 
-Each iteration is a **fresh agent run**:
+The iteration is the **atomic unit**: one queue item, one gate, one ledger row.
 
-1. Read the charter, `factory.md`, `taste.md`, `decisions.md`. Check Stop conditions **before** picking work — if any hold, append a `HALT`/`EMPTY` ledger row and exit.
+1. Read the charter, `factory.md`, `taste.md`, `decisions.md`. Charter Approval line says UNAPPROVED → halt. Check Stop conditions **before** picking work — if any hold, append a `HALT`/`EMPTY` ledger row and stop.
 2. Pick exactly **one** eligible queue item (status TODO, dependencies DONE, within risk ceiling).
 3. Run the factory loop (`reference/factory-orchestration.md`). Scenarios must already exist or be covered by the charter — needing a new scenario mid-loop is a halt-for-human, not a question.
-4. Write the gate file, update queue status, append the ledger row.
-5. Exit. One item per iteration — no "while I'm here."
+4. Close the iteration — all four writes: gate file, queue status row, plan's **Gate** field, ledger row.
+5. **Attended:** return to step 1 and chain the next iteration. **Unattended:** exit — the runner starts the next fresh run.
 
-Where the interactive factory would ask the user, a loop **stops and records why**. No synchronous confirm mid-iteration, no scope improvisation, no merge/deploy.
+One item per iteration — no "while I'm here." Where the interactive factory would ask the user, a loop **stops and records why**. No synchronous confirm mid-iteration, no scope improvisation, no merge/deploy.
 
 ---
 
-## Runner contract — bring your own loop
+## Runner contract — bring your own loop (unattended mode)
 
 Omakase provides the loop body and the brakes; the runner is yours. Any runner qualifies if it:
 
