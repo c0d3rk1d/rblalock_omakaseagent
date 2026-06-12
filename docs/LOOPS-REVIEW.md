@@ -55,6 +55,6 @@ The Salty Lesson becomes a house rule (the loop law in `reference/loops.md`): ev
 Recorded in the dogfood backlog (`examples/factory-dogfood/.omakaseagent/backlog/README.md`):
 
 - ~~`omakase status`~~ — shipped after the agent-success review: eligibility and Stop-condition checks are deterministic computation, and our own operating rule says repeatable checks get encoded, not re-judged by an LLM each iteration. Read-only; exit codes double as the runner halt check.
+- ~~Automated upshift proposals from gate history~~ — shipped via gate `**Review:**` markers (agent writes PENDING, human flips to accepted/rejected): `status` halts on rejection and reports upshift eligibility at 5 accepted in a row. The trust verbs now live on disk, not in chat.
 - `omakase loop` (a built-in runner) — still deferred; the loop motor stays BYO.
-- Automated upshift proposals from gate history — needs a gate-history ledger first.
 - L4 fleet spec — named as horizon only.

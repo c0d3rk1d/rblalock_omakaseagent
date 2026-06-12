@@ -9,6 +9,10 @@ const { computeStatus } = require('./omakase-status');
 const APPROVED = '**Approval:** Approved by tester on 2026-06-12.';
 const UNAPPROVED = '**Approval:** UNAPPROVED — a human replaces this line before any unattended run.';
 
+function gateFile(review) {
+  return `# Gate: fixture\n\n**Review:** ${review}\n\n## Seed\n`;
+}
+
 function charter({ approval = APPROVED, ceiling = 2, cap = 5, ledgerRows = [] } = {}) {
   return `# Loop: backlog-drain
 
@@ -47,13 +51,17 @@ ${rows.map((r) => `| ${r.plan} | ${r.title} | P1 | S | ${r.risk} | ${r.deps || '
 `;
 }
 
-function fixture(charterMd, queueMd) {
+function fixture(charterMd, queueMd, gates = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'omakase-status-'));
   fs.mkdirSync(path.join(dir, '.omakaseagent', 'loops'), { recursive: true });
   fs.mkdirSync(path.join(dir, '.omakaseagent', 'backlog'), { recursive: true });
+  fs.mkdirSync(path.join(dir, '.omakaseagent', 'gates'), { recursive: true });
   fs.writeFileSync(path.join(dir, '.omakaseagent', 'loops', 'backlog-drain.md'), charterMd);
   if (queueMd !== null) {
     fs.writeFileSync(path.join(dir, '.omakaseagent', 'backlog', 'README.md'), queueMd);
+  }
+  for (const [name, content] of Object.entries(gates)) {
+    fs.writeFileSync(path.join(dir, '.omakaseagent', 'gates', name), content);
   }
   return dir;
 }
@@ -117,6 +125,49 @@ const cases = [
     name: 'missing queue table reported, no work',
     dir: () => fixture(charter(), null),
     expect: (l) => !l.halt && !l.next && l.queueError,
+  },
+  {
+    name: 'rejected gate review halts the loop',
+    dir: () =>
+      fixture(
+        charter({ ledgerRows: [{ result: 'DONE', gate: 'gates/g1.md' }, { result: 'DONE', gate: 'gates/g2.md' }] }),
+        queueIndex(BASE_QUEUE),
+        { 'g1.md': gateFile('accepted by tester 2026-06-12'), 'g2.md': gateFile('rejected — wrong shape') }
+      ),
+    expect: (l) => l.halt && l.halt.includes('rejected') && l.halt.includes('g2.md') && !l.next,
+  },
+  {
+    name: 'pending reviews counted, no halt',
+    dir: () =>
+      fixture(
+        charter({ ledgerRows: [{ result: 'DONE', gate: 'gates/g1.md' }] }),
+        queueIndex(BASE_QUEUE),
+        { 'g1.md': gateFile('PENDING — human flips at batch review') }
+      ),
+    expect: (l) => !l.halt && l.reviews.pending === 1 && l.next?.plan === '001' && l.acceptedStreak === 0,
+  },
+  {
+    name: 'gate file without Review line counts as pending',
+    dir: () =>
+      fixture(
+        charter({ ledgerRows: [{ result: 'DONE', gate: 'gates/g1.md' }] }),
+        queueIndex(BASE_QUEUE),
+        { 'g1.md': '# Gate: fixture\n\n## Seed\n' }
+      ),
+    expect: (l) => !l.halt && l.reviews.pending === 1,
+  },
+  {
+    name: 'five accepted gates in a row flags upshift eligibility',
+    dir: () =>
+      fixture(
+        charter({
+          cap: 10,
+          ledgerRows: [1, 2, 3, 4, 5].map((n) => ({ result: 'DONE', gate: `gates/g${n}.md` })),
+        }),
+        queueIndex(BASE_QUEUE),
+        Object.fromEntries([1, 2, 3, 4, 5].map((n) => [`g${n}.md`, gateFile(`accepted by tester (gate ${n})`)]))
+      ),
+    expect: (l) => !l.halt && l.acceptedStreak === 5 && l.upshiftEligible && l.next?.plan === '001',
   },
 ];
 

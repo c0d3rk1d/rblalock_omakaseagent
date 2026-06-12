@@ -31,6 +31,8 @@ critic, gate, queue status update, ledger row.
 ## Checkpoint policy
 
 - Gates reviewed in batch — no synchronous confirm per iteration
+- Batch review = flip each gate's **Review:** line to accepted/rejected;
+  `omakase status` reads it (rejected halts the loop; agents never flip it)
 - Halt for human immediately when: risk ceiling would be exceeded, drift check
   fails, or work needs a scenario this charter does not cover
 

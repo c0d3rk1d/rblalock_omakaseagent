@@ -1,6 +1,6 @@
 # Gate: omakase status — deterministic loop state for agents
 
-**Date:** 2026-06-12  
+**Date:** 2026-06-12 (amended same day: gate review markers)  
 **Risk class:** 2 (bin/omakase.js, scripts/, skill/ loop contract)  
 **Orchestration:** Engineer implementation → self-critic → this gate
 
@@ -8,10 +8,12 @@
 
 Agents in a loop were re-deriving approval, Stop conditions, and queue eligibility from markdown every iteration — the most failure-prone judgment in the loop, and exactly the kind of repeatable check the factory's own operating rule says to encode. Ship a **read-only** `omakase status` so the least capable agent in the loop picks the same item the most careful one would. The loop motor stays BYO (`omakase loop` remains deferred).
 
+**Amendment (same day): gate review markers.** Gate acceptance and rejection — the verbs the gearbox pivots on — had no on-disk artifact, so "rejected gate → downshift" and the 5-accepted-gate upshift streak were conversational. Loop gates now carry `**Review:** PENDING` (agent-written, human-flipped to `accepted by <name> <date>` / `rejected — <reason>`); `status` halts on any rejection, counts pending reviews, and reports upshift eligibility when the accepted streak reaches 5. Missing Review line fails safe as pending; agents are contractually barred from flipping their own line (eval-pinned).
+
 ## Scenarios
 
 - `loop-charter` updated in spirit: iteration step 1 is now "run `omakase status` when available; trust it over hand-parsing"
-- Eligibility, halt, and exit-code behavior pinned by `npm run verify:status` (9 fixture cases: eligible pick, dependency unlock, UNAPPROVED halt, missing-approval halt, cap halt, EMPTY halt, double-FAILED halt, drained queue, missing queue table)
+- Eligibility, halt, and exit-code behavior pinned by `npm run verify:status` (13 fixture cases: eligible pick, dependency unlock, UNAPPROVED halt, missing-approval halt, cap halt, EMPTY halt, double-FAILED halt, drained queue, missing queue table, rejected-gate halt, pending-review count, missing-Review-line-as-pending, 5-accepted upshift flag)
 - Contract patterns held by `evals/loop-contract.eval.json` (`omakase status` required in loops.md + engineer lead)
 
 ## Mechanical evidence
@@ -19,7 +21,7 @@ Agents in a loop were re-deriving approval, Stop conditions, and queue eligibili
 All exit 0 at this revision:
 
 ```
-npm run verify:status          # 9 fixture cases
+npm run verify:status          # 13 fixture cases
 npm run build
 npm run verify:native-agents
 npm run verify:learn

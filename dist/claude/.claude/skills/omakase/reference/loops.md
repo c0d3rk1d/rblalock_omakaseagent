@@ -56,13 +56,15 @@ L1 is `reference/factory-orchestration.md` unchanged. L2 and L3 are L1 stacked u
 
 | Trigger | Shift |
 |---------|-------|
-| Gate rejected at batch review | That task class drops to L1 until its next accepted gate |
+| Gate rejected at batch review (flip the gate's `**Review:**` line to `rejected — <reason>`; `omakase status` halts the loop on it) | That task class drops to L1 until its next accepted gate |
 | Same STOP condition fires twice | Drop to L1; fix the plan or scenario before resuming |
 | Drift check fails | Halt the loop; plans are stale — re-audit |
 | Item exceeds charter risk ceiling or touches Class 3+ | Skip and flag; that item is handled interactively (L0/L1) |
 | Two consecutive failed iterations | Halt the loop and report |
 
-**Upshift (leverage).** Proposal-only: after **5 consecutive accepted gates** in a task class with zero critic P0/P1 findings, the agent may propose promoting that class one level up — as a `decisions.md` entry the human approves. Autonomy is earned and recorded, never assumed.
+**Upshift (leverage).** Proposal-only: after **5 consecutive accepted gates** in a task class with zero critic P0/P1 findings, the agent may propose promoting that class one level up — as a `decisions.md` entry the human approves. Autonomy is earned and recorded, never assumed. The streak is mechanical, not remembered: `omakase status` counts accepted `**Review:**` lines and reports when the threshold is met.
+
+**Gate review protocol (the trust verbs, on disk):** every loop gate carries a `**Review:** PENDING` line the agent writes at gate creation and **never flips itself**. At batch review the human replaces it — `accepted by <name> <date>` or `rejected — <reason>`. A gate with no Review line counts as pending. This is what makes "a clean track record unlocks longer runs, a rejected result reins them in" mechanically true rather than conversational.
 
 **Loop law (the Salty Lesson as house rule):** every manual human intervention mid-loop must leave behind a scenario, mechanical check, or memory entry that makes the next intervention unnecessary. An intervention that leaves nothing behind is a bug in the loop, not just in the code.
 
@@ -99,6 +101,8 @@ plan, mechanical checks, critic, gate, queue status update, ledger row.
 
 ## Checkpoint policy
 - Gates reviewed in batch — no synchronous confirm per iteration
+- Batch review = flip each gate's **Review:** line to accepted/rejected;
+  `omakase status` reads it (rejected halts the loop; agents never flip it)
 - Halt for human immediately when: risk ceiling would be exceeded, drift check
   fails, or work needs a scenario the charter does not cover
 
@@ -120,7 +124,7 @@ The iteration is the **atomic unit**: one queue item, one gate, one ledger row.
 1. **Run `npx omakase status` first when the CLI is available.** It deterministically evaluates the approval line, every Stop condition, and the next eligible item — trust its output over your own parsing of the charter and queue (`HALT` → append the ledger row and stop; `NEXT` → that is your item). Without the CLI, derive the same answers by hand: read the charter, `factory.md`, `taste.md`, `decisions.md`; Approval line says UNAPPROVED → halt; check Stop conditions **before** picking work.
 2. Pick exactly **one** eligible queue item (status TODO, dependencies DONE, within risk ceiling) — `omakase status` already names it.
 3. Run the factory loop (`reference/factory-orchestration.md`). Scenarios must already exist or be covered by the charter — needing a new scenario mid-loop is a halt-for-human, not a question.
-4. Close the iteration — all four writes: gate file, queue status row, plan's **Gate** field, ledger row.
+4. Close the iteration — all four writes: gate file (including its `**Review:** PENDING` line — flipping it is human-only), queue status row, plan's **Gate** field, ledger row.
 5. **Attended:** return to step 1 and chain the next iteration. **Unattended:** exit — the runner starts the next fresh run.
 
 One item per iteration — no "while I'm here." Where the interactive factory would ask the user, a loop **stops and records why**. No synchronous confirm mid-iteration, no scope improvisation, no merge/deploy.

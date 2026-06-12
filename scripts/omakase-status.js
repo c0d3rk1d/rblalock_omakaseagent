@@ -57,6 +57,20 @@ function splitRow(line) {
   return cells;
 }
 
+/** Gate review marker: humans flip `**Review:**` to accepted/rejected at batch review. */
+function gateReview(memDir, gateCell) {
+  if (!gateCell || /^[—\-\s]*$/.test(gateCell)) return null; // no gate on this row
+  const rel = gateCell.replace(/^\.omakaseagent\//, '').replace(/^`|`$/g, '');
+  const content = readSafe(path.join(memDir, rel));
+  if (content === null) return { rel, state: 'missing' };
+  const line = content.split('\n').find((l) => l.includes('**Review:**'));
+  if (!line) return { rel, state: 'pending' };
+  const t = line.toLowerCase();
+  if (t.includes('rejected')) return { rel, state: 'rejected' };
+  if (t.includes('accepted')) return { rel, state: 'accepted' };
+  return { rel, state: 'pending' };
+}
+
 /** Queue index columns: Plan | Title | Priority | Effort | Risk | Depends on | Status */
 function parseQueue(content) {
   const items = [];
@@ -75,10 +89,25 @@ function parseQueue(content) {
   return items;
 }
 
-function evaluate(charter, queue) {
+const UPSHIFT_STREAK = 5; // accepted gates in a row before an upshift proposal (reference/loops.md gearbox)
+
+function evaluate(charter, queue, memDir) {
   const iterations = charter.ledger.filter((r) => r.result !== 'EMPTY' && !r.result.startsWith('EMPTY'));
   const last = charter.ledger[charter.ledger.length - 1] || null;
   const resultWord = (r) => (r ? r.result.split(/[\s(]/)[0] : '');
+
+  const reviews = charter.ledger.map((r) => gateReview(memDir, r.gate));
+  const rejected = reviews.find((rv) => rv && rv.state === 'rejected') || null;
+  const accepted = reviews.filter((rv) => rv && rv.state === 'accepted').length;
+  const pending = reviews.filter((rv) => rv && (rv.state === 'pending' || rv.state === 'missing')).length;
+
+  let acceptedStreak = 0;
+  for (let i = charter.ledger.length - 1; i >= 0; i--) {
+    const row = charter.ledger[i];
+    if (resultWord(row) === 'EMPTY' || resultWord(row) === 'SKIPPED') continue;
+    if (resultWord(row) === 'DONE' && reviews[i] && reviews[i].state === 'accepted') acceptedStreak++;
+    else break;
+  }
 
   let halt = null;
   if (!charter.approvalLine) {
@@ -87,6 +116,8 @@ function evaluate(charter, queue) {
     halt = 'charter UNAPPROVED — human approval required before any run';
   } else if (charter.ceiling === null) {
     halt = 'charter has no risk class ceiling — fix the Scope section';
+  } else if (rejected) {
+    halt = `gate rejected at review (${rejected.rel}) — downshift; fix and get human re-accept before looping`;
   } else if (last && resultWord(last) === 'HALT') {
     halt = `ledger shows HALT (${last.result})`;
   } else if (last && resultWord(last) === 'EMPTY') {
@@ -121,7 +152,18 @@ function evaluate(charter, queue) {
   const counts = {};
   for (const item of queue) counts[item.status] = (counts[item.status] || 0) + 1;
 
-  return { halt, next: halt ? null : next, flagged, waiting, counts, iterations: iterations.length, last };
+  return {
+    halt,
+    next: halt ? null : next,
+    flagged,
+    waiting,
+    counts,
+    iterations: iterations.length,
+    last,
+    reviews: { accepted, pending, total: reviews.filter(Boolean).length },
+    acceptedStreak,
+    upshiftEligible: acceptedStreak >= UPSHIFT_STREAK,
+  };
 }
 
 function computeStatus(cwd, options = {}) {
@@ -159,7 +201,7 @@ function computeStatus(cwd, options = {}) {
   const loops = slugs.map((slug) => {
     const charterPath = path.join(loopsDir, `${slug}.md`);
     const charter = parseCharter(readSafe(charterPath) || '');
-    return { slug, charterPath: path.relative(cwd, charterPath), charter, queueError, ...evaluate(charter, queue) };
+    return { slug, charterPath: path.relative(cwd, charterPath), charter, queueError, ...evaluate(charter, queue, memDir) };
   });
 
   return { loops, workAvailable: loops.some((l) => l.next) };
@@ -172,7 +214,13 @@ function formatLoop(l) {
   lines.push(
     `  iterations: ${l.iterations}${l.charter.cap !== null ? ` of cap ${l.charter.cap}` : ''}${l.last ? ` (last: ${l.last.result})` : ''}`
   );
+  if (l.reviews.total > 0) {
+    lines.push(`  review:     ${l.reviews.accepted} accepted / ${l.reviews.pending} awaiting human review`);
+  }
   lines.push(`  stop:       ${l.halt ? `HALT — ${l.halt}` : 'CLEAR'}`);
+  if (l.upshiftEligible) {
+    lines.push(`  upshift:    ${l.acceptedStreak} accepted gates in a row — propose promotion via decisions.md (human approves)`);
+  }
   if (!l.halt) {
     if (l.next) {
       lines.push(`  next:       ${l.next.plan} ${l.next.title} (risk ${l.next.risk} <= ceiling ${l.charter.ceiling})`);

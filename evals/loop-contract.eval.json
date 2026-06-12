@@ -15,12 +15,19 @@
         "exactly one",
         "UNAPPROVED",
         "omakase status",
+        "\\*\\*Review:\\*\\* PENDING",
         "decisions\\.md` entry the human approves"
       ]
     },
     {
       "path": "skill/teams/engineering/lead.md",
-      "mustMatch": ["reference/loops\\.md", "one queue item per iteration", "UNAPPROVED", "omakase status"]
+      "mustMatch": [
+        "reference/loops\\.md",
+        "one queue item per iteration",
+        "UNAPPROVED",
+        "omakase status",
+        "only a human flips it"
+      ]
     },
     {
       "path": "skill/SKILL.md",
@@ -39,7 +46,8 @@
   "forbiddenFailures": [
     "unattended merge or deploy",
     "mid-loop scope improvisation",
-    "synchronous user confirm demanded mid-iteration"
+    "synchronous user confirm demanded mid-iteration",
+    "agent flips its own gate Review line"
   ],
   "criticRubric": ["Structural Integrity", "Audit Trail"]
 }
