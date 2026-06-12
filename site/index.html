@@ -561,19 +561,122 @@
     </div>
   </section>
 
-  <!-- 六 how to order -->
-  <section class="course" id="order">
+  <!-- 六 the conveyor -->
+  <section class="course course-kaiten" id="loop">
     <header class="course-head">
       <div class="course-title">
         <span class="course-num" aria-hidden="true">六</span>
+        <h2>The Conveyor</h2>
+      </div>
+    </header>
+    <div class="course-body">
+      <figure class="kaiten-belt reveal">
+        <svg viewBox="0 50 1200 150" role="img" aria-label="Conveyor belt carrying sushi plates and a stamped gate report past the counter">
+          <defs>
+            <g id="kz-plate">
+              <ellipse cx="60" cy="120" rx="54" ry="14" fill="#f3ead3" stroke="#2a221b" stroke-width="5"/>
+            </g>
+            <g id="kz-tuna">
+              <use href="#kz-plate"/>
+              <ellipse cx="60" cy="104" rx="30" ry="12" fill="#f3ead3" stroke="#2a221b" stroke-width="4"/>
+              <path d="M30 98 Q60 72 90 98 Q60 112 30 98 Z" fill="#d93a1f" stroke="#2a221b" stroke-width="4"/>
+            </g>
+            <g id="kz-maki">
+              <use href="#kz-plate"/>
+              <circle cx="60" cy="92" r="24" fill="#2a221b"/>
+              <circle cx="60" cy="92" r="16" fill="#f3ead3"/>
+              <circle cx="60" cy="92" r="7" fill="#d93a1f" stroke="#2a221b" stroke-width="3"/>
+            </g>
+            <g id="kz-gate">
+              <use href="#kz-plate"/>
+              <g transform="rotate(-5 60 88)">
+                <rect x="32" y="62" width="56" height="48" fill="#f3ead3" stroke="#2a221b" stroke-width="4"/>
+                <g stroke="#2a221b" stroke-width="3" stroke-linecap="round">
+                  <path d="M41 76 h30"/><path d="M41 87 h22"/>
+                </g>
+                <circle cx="74" cy="99" r="8" fill="#d93a1f"/>
+              </g>
+            </g>
+            <g id="kz-saka">
+              <use href="#kz-plate"/>
+              <ellipse cx="60" cy="104" rx="30" ry="12" fill="#f3ead3" stroke="#2a221b" stroke-width="4"/>
+              <path d="M32 100 Q58 70 90 94 L86 102 Q58 112 32 100 Z" fill="#e393bd" stroke="#2a221b" stroke-width="4"/>
+            </g>
+          </defs>
+
+          <rect x="-8" y="132" width="1216" height="42" fill="#2a221b"/>
+          <g class="belt-train">
+            <g stroke="#f3ead3" stroke-width="5" opacity="0.2">
+              <path d="M20 140 v26"/><path d="M140 140 v26"/><path d="M260 140 v26"/><path d="M380 140 v26"/>
+              <path d="M500 140 v26"/><path d="M620 140 v26"/><path d="M740 140 v26"/><path d="M860 140 v26"/>
+              <path d="M980 140 v26"/><path d="M1100 140 v26"/><path d="M1220 140 v26"/><path d="M1340 140 v26"/>
+              <path d="M1460 140 v26"/><path d="M1580 140 v26"/><path d="M1700 140 v26"/><path d="M1820 140 v26"/>
+              <path d="M1940 140 v26"/><path d="M2060 140 v26"/><path d="M2180 140 v26"/><path d="M2300 140 v26"/>
+              <path d="M2420 140 v26"/><path d="M2540 140 v26"/><path d="M2660 140 v26"/><path d="M2780 140 v26"/>
+            </g>
+            <use href="#kz-tuna" x="0"/>
+            <use href="#kz-maki" x="240"/>
+            <use href="#kz-gate" x="480"/>
+            <use href="#kz-saka" x="720"/>
+            <use href="#kz-tuna" x="960"/>
+            <use href="#kz-maki" x="1200"/>
+            <use href="#kz-tuna" x="1440"/>
+            <use href="#kz-maki" x="1680"/>
+            <use href="#kz-gate" x="1920"/>
+            <use href="#kz-saka" x="2160"/>
+            <use href="#kz-tuna" x="2400"/>
+            <use href="#kz-maki" x="2640"/>
+          </g>
+          <g fill="#2a221b">
+            <rect x="150" y="174" width="18" height="18"/>
+            <rect x="591" y="174" width="18" height="18"/>
+            <rect x="1032" y="174" width="18" height="18"/>
+          </g>
+        </svg>
+      </figure>
+
+      <p class="kaiten-lede">A loop is the kitchen serving iteration after iteration without
+         you managing each one. You approve a <strong>standing order</strong> once — what to
+         work on, what never to touch, when to stop. The kitchen works one iteration at a
+         time: each item arrives with its proof, and the stack of plates is your record.
+         <em>Manage the outcome, not the kitchen crew.</em></p>
+
+      <div class="kaiten-grid">
+        <div class="kt-col reveal">
+          <h3>The standing order <span lang="ja">注文</span></h3>
+          <p>A one-page charter: what is in scope, how risky it may get, when to stop.
+             Nothing runs unattended until you have signed it.</p>
+        </div>
+        <div class="kt-col reveal">
+          <h3>One plate at a time <span lang="ja">一皿</span></h3>
+          <p>Each pass picks one item, completes it, proves it, and logs it — and the
+             critic inspects every plate before it reaches the belt. When the kitchen
+             would have to guess, it stops and tells you why.</p>
+        </div>
+        <div class="kt-col reveal">
+          <h3>Count the plates <span lang="ja">勘定</span></h3>
+          <p>Review the evidence in a stack, on your time. Autonomy is earned: a clean
+             track record unlocks longer runs, a rejected result reins them in — and every
+             change in trust is written down for you to approve.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 七 how to order -->
+  <section class="course" id="order">
+    <header class="course-head">
+      <div class="course-title">
+        <span class="course-num" aria-hidden="true">七</span>
         <h2>How to Order</h2>
       </div>
     </header>
     <div class="course-body">
       <div class="order-grid">
-        <div class="ticket ticket-order reveal">
-          <div class="ticket-head"><span>ORDER TICKET</span><span lang="ja">注文票</span></div>
-          <pre class="ticket-prompt"><code>Run <span class="at">npx omakaseagent init</span> in this repo. Then read the
+        <div class="ticket-stack">
+          <div class="ticket ticket-order reveal">
+            <div class="ticket-head"><span>ORDER TICKET</span><span lang="ja">注文票</span></div>
+            <pre class="ticket-prompt"><code>Run <span class="at">npx omakaseagent init</span> in this repo. Then read the
 AGENTS.md and Omakase skill it installs, and adopt the
 twelve rules and the critique gate for all work here from
 now on.
@@ -584,10 +687,33 @@ and verify commands.
 
 When you're done, tell me what standard you're now working
 under and how I should hand you tasks.</code></pre>
-          <div class="ticket-foot">
-            <button class="btn" type="button" data-copy="Run `npx omakaseagent init` in this repo. Then read the AGENTS.md and Omakase skill it installs, and adopt the twelve rules and the critique gate for all work here from now on. Next, run `npx omakaseagent learn` and fill in .omakaseagent/factory.md with this repo's real build, test, and verify commands. When you're done, tell me what standard you're now working under and how I should hand you tasks.">
-              Copy the order
-            </button>
+            <div class="ticket-foot">
+              <button class="btn" type="button" data-copy="Run `npx omakaseagent init` in this repo. Then read the AGENTS.md and Omakase skill it installs, and adopt the twelve rules and the critique gate for all work here from now on. Next, run `npx omakaseagent learn` and fill in .omakaseagent/factory.md with this repo's real build, test, and verify commands. When you're done, tell me what standard you're now working under and how I should hand you tasks.">
+                Copy the order
+              </button>
+            </div>
+          </div>
+
+          <div class="ticket ticket-order reveal">
+            <div class="ticket-head"><span>LONG-RUNNING WORK</span><span lang="ja">回転</span></div>
+            <pre class="ticket-prompt"><code>Read <span class="at">.omakaseagent/loops/backlog-drain.md</span> and
+<span class="at">.omakaseagent/factory.md</span>.
+
+If the charter says UNAPPROVED, show it to me and wait —
+do not run. If the backlog is empty, audit the repo first
+and propose plans for my pick.
+
+Otherwise run the loop: one backlog item per iteration —
+factory loop, gate report, ledger row — and keep going
+until a Stop condition fires. Never merge or deploy.
+
+When you stop, hand me the check: a ledger summary and
+the gate paths to review.</code></pre>
+            <div class="ticket-foot">
+              <button class="btn" type="button" data-copy="Read `.omakaseagent/loops/backlog-drain.md` and `.omakaseagent/factory.md`. If the charter says UNAPPROVED, show it to me and wait — do not run. If the backlog is empty, audit the repo first and propose plans for my pick. Otherwise run the loop: one backlog item per iteration — factory loop, gate report, ledger row — and keep going until a Stop condition fires. Never merge or deploy. When you stop, hand me the check: a ledger summary and the gate paths to review.">
+                Copy the loop order
+              </button>
+            </div>
           </div>
         </div>
         <div class="order-steps">
@@ -608,13 +734,22 @@ under and how I should hand you tasks.</code></pre>
             <p>State the goal in plain words. A lead craftsman gathers context, sets
                the shokunin to work, passes the critique gate, and serves the result.</p>
           </div>
+          <div class="order-step">
+            <h3><span class="step-no">4</span> Queue up long-running work</h3>
+            <p>Once the kitchen has earned it, stop managing task by task. Approve the
+               standing order and the loop works through the backlog — one item, one proof
+               at a time. Come back to the evidence and the check.</p>
+          </div>
           <div class="terminal-note">
             <span class="tn-label">Prefer the terminal?</span>
             <div class="tn-cmds">
               <code>npx omakaseagent init</code>
               <code>npx omakaseagent learn</code>
+              <code>npx omakaseagent status</code>
               <code>npx skills add rblalock/omakaseagent</code>
             </div>
+            <p class="tn-night">Night shift: any cron or script can re-run the standing
+               order — the loop's state lives in the repo, not the chat.</p>
           </div>
         </div>
       </div>

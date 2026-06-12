@@ -72,6 +72,8 @@ Industry "dark factory" often means full autonomy. **Omakase targets Level 4 (Da
 4. **Evidence** — scenarios + mechanical + critic + memory  
 5. **Checkpoint** — gate file; human reviews evidence stack  
 
+**Stacking loops** (running this unattended under a standing charter, L0–L4 ladder, runner contract): `reference/loops.md`.
+
 ---
 
 ## Risk classes
@@ -104,8 +106,11 @@ Repo-specific examples: `.omakaseagent/factory.md`.
 npx omakase init    # memory + agents
 npx omakase learn   # per-repo factory.md + starter scenarios
 npx omakase learn --dry-run
+npx omakase status  # loop state: approval, Stop conditions, next eligible item
 ```
 
 **Team loop (Class 2+):** `reference/factory-orchestration.md`. Worked example: `examples/factory-e2e/`.
 
 **Backlog audit (Engineer, no extra command):** `reference/backlog-audit.md` — findings and execution plans in `.omakaseagent/backlog/`; factory loop unchanged for implementation.
+
+**Standing loops (charters in `.omakaseagent/loops/`):** `reference/loops.md` — drain the backlog without per-task prompting; gates reviewed in batch.

@@ -95,6 +95,7 @@ for (const h of harnesses) {
     'reference/init.md',
     'reference/taste.md',
     'reference/handoff.md',
+    'reference/loops.md',
     'reference/native-agents.md',
     'OMAKASE-PRINCIPLES.md',
     'OMAKASE-RULES.md',

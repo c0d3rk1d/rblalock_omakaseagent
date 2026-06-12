@@ -20,5 +20,6 @@
 ## Dark factory (omakase learn)
 - Level 4: Class 2+ needs approved scenarios before long agent runs
 - Checkpoint = gate report under `.omakaseagent/gates/`, not chat-only "done"
+- Loops run only under an approved charter in `.omakaseagent/loops/` — one gate per iteration (`reference/loops.md`)
 - Never edit `dist/` by hand — `npm run build` only
 - Native agent changes require `npm run verify:native-agents`

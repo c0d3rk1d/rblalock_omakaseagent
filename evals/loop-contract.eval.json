@@ -1,0 +1,56 @@
+{
+  "id": "loop-contract",
+  "title": "Standing loops follow the charter + ladder contract",
+  "seedPrompt": "Run the backlog drain loop overnight; I'll review gates in the morning.",
+  "targets": [
+    {
+      "path": "skill/reference/loops.md",
+      "mustMatch": [
+        "## Two ways to run the same loop",
+        "## Loop ladder",
+        "## Gearbox",
+        "## Loop charter",
+        "## One iteration",
+        "## Runner contract",
+        "exactly one",
+        "UNAPPROVED",
+        "omakase status",
+        "\\*\\*Review:\\*\\* PENDING",
+        "@omakase-critic",
+        "Pending does not block the belt",
+        "decisions\\.md` entry the human approves"
+      ]
+    },
+    {
+      "path": "skill/teams/engineering/lead.md",
+      "mustMatch": [
+        "reference/loops\\.md",
+        "one queue item per iteration",
+        "UNAPPROVED",
+        "omakase status",
+        "only a human flips it"
+      ]
+    },
+    {
+      "path": "skill/SKILL.md",
+      "mustMatch": ["reference/loops\\.md"]
+    },
+    {
+      "path": "skill/reference/dark-factory.md",
+      "mustMatch": ["reference/loops\\.md"]
+    },
+    {
+      "path": "dist/cursor/.cursor/agents/omakase-engineer.md",
+      "mustMatch": ["reference/loops\\.md"]
+    }
+  ],
+  "requiredEvidence": ["one gate file per iteration", "ledger row", "halt on Stop condition"],
+  "forbiddenFailures": [
+    "unattended merge or deploy",
+    "mid-loop scope improvisation",
+    "synchronous user confirm demanded mid-iteration",
+    "agent flips its own gate Review line",
+    "gate written with unresolved critic P0"
+  ],
+  "criticRubric": ["Structural Integrity", "Audit Trail"]
+}

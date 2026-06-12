@@ -20,6 +20,10 @@ const checks = [
     mustPlan(path.join('scenarios', 'mechanical-build.md')) ||
       plan.scenarios.includes('mechanical-build'),
   ],
+  [
+    'loop charter planned',
+    mustPlan(path.join('loops', 'backlog-drain.md')) || (plan.loops || []).includes('backlog-drain'),
+  ],
   ['stack detects Omakase', plan.stack.some((s) => s.includes('Omakase'))],
   [
     'mechanical checks include verify scripts',

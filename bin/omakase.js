@@ -18,6 +18,7 @@ const pkg = require(path.join(root, 'package.json'));
 const VERSION = pkg.version;
 const { LEAD_IDS } = require(path.join(root, 'scripts/native-agents/generate'));
 const { runLearn } = require(path.join(root, 'scripts/omakase-learn'));
+const { runStatus } = require(path.join(root, 'scripts/omakase-status'));
 
 const LEAD_AGENT_FILES = [...LEAD_IDS].map((id) => `${id}.md`);
 
@@ -489,6 +490,9 @@ function learnProject(options = {}) {
     log(`  checks:    ${result.checks.map((c) => c.cmd).join(', ')}`);
   }
   log(`  scenarios: ${result.scenarios.join(', ')}`);
+  if (result.loops?.length) {
+    log(`  loops:     ${result.loops.join(', ')}`);
+  }
   if (result.projectAgents?.length) {
     log(`  project:   ${result.projectAgents.join(', ')}`);
   }
@@ -520,6 +524,7 @@ function showHelp() {
   log('');
   log('  omakase init [--test] [--global]');
   log('  omakase learn [--dry-run] [--memory-only] [--factory-only] [--project-agents-only]');
+  log('  omakase status [loop] [--quiet]   # loop state: approval, Stop conditions, next item');
   log('  omakase skills install [cursor|claude|agents|grok|codex] [--test] [--global]');
   log('  omakase skills uninstall [harness] [--global] [--test]');
   log('');
@@ -544,6 +549,11 @@ if (command === 'init') {
     memoryOnly: isMemoryOnly,
     factoryOnly: isFactoryOnly,
     projectAgentsOnly: isProjectAgentsOnly,
+  });
+} else if (command === 'status') {
+  runStatus({
+    loop: sub && !sub.startsWith('-') ? sub : null,
+    quiet: flag('--quiet') || flag('-q'),
   });
 } else if (command === 'skills' && sub === 'install') {
   const explicit = args[2] && !args[2].startsWith('-') ? args[2] : null;

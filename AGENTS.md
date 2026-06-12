@@ -22,5 +22,6 @@ This repo uses **Level 4** Omakase: approve intent and scenarios; review gate ev
 - **Factory playbook:** `.omakaseagent/factory.md`
 - **Scenarios:** `.omakaseagent/scenarios/`
 - **Gate reports:** `.omakaseagent/gates/`
+- **Loops:** `.omakaseagent/loops/` — standing charters for unattended runs (`reference/loops.md`)
 - **Refresh:** `npx omakase learn` (use `--dry-run` first)
 

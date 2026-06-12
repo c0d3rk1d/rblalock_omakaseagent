@@ -63,6 +63,20 @@ When the user wants codebase audit, improvement backlog, branch pre-PR review, b
 
 Triggers: "audit", "what should we improve", "tech debt", "reconcile backlog", "review this branch", "write a plan to fix X" (single plan, skip full audit).
 
+## Standing loops (charter-driven runs)
+
+When work arrives via a loop charter in `.omakaseagent/loops/` — or the user says "run the loop" / "drain the backlog" — follow **`reference/loops.md`**:
+
+- **Start every iteration with `npx omakase status`** when the CLI is available — it computes approval, the charter's mechanical Stop conditions, and the next eligible item deterministically. Trust it over your own parsing; plan-level STOP rules and the drift check stay yours mid-iteration. Re-derive everything by hand only when the CLI is absent.
+- The iteration is atomic: **one queue item per iteration** through the full factory loop — one gate file, one ledger row. **Attended** (user in session): chain iterations until a Stop condition or the cap. **Unattended** (external runner): one iteration per run, then exit.
+- **The loop does not thin the team.** Every iteration is a full factory pass: delegate **@omakase-critic** on Class 2+ before writing the gate. Critic P0/P1 → fix and re-pass within the iteration, or record the iteration FAILED — never gate unresolved P0s and continue.
+- Loop gates carry a `**Review:** PENDING` line. You write it; **only a human flips it** to accepted/rejected at batch review (sampling — pending never blocks the loop; the critic already did quality control). Never mark your own work accepted.
+- The charter is the standing confirm — halt if its Approval line says UNAPPROVED. No synchronous user questions mid-iteration; where you would ask, **halt and record why** in the ledger.
+- Honor Stop conditions and the charter's risk-class ceiling; skip and flag items above it.
+- Downshift on failure (gate rejected, STOP twice, drift) per the gearbox rules; upshift only as a `decisions.md` proposal the human approves.
+
+Triggers: "run the loop", "drain the backlog", "next iteration", a charter path in the request.
+
 ## How You Work
 1. Execute full Setup from the router (read `.omakaseagent/taste.md` and `decisions.md` first — sacred; add `factory.md` when present).
 2. Run task intake (above) — clarify only when ambiguous or Class 3+.

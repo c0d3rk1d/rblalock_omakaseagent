@@ -46,6 +46,7 @@ Show the brief under a heading like **Task brief** (not "Seed" unless the user i
 | Ambiguous goal, conflicting constraints, Class 3+ | Ask clarifying questions before implementation |
 | User already gave a full spec | Brief is confirm-only or skip if redundant |
 | User points at `.omakaseagent/backlog/NNN-*.md` | Treat execution plan as charter; brief is plan summary + risk class; proceed to scenarios (Class 2+) then factory loop |
+| Run arrives via `.omakaseagent/loops/<slug>.md` | Standing intent — no per-iteration confirm; execute exactly one iteration per `reference/loops.md`; halt and record instead of asking |
 
 Never ask the user to "create a seed file." You create the brief; they approve or correct.
 

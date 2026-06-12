@@ -9,6 +9,7 @@ Install a **Level 4 dark factory** for *this* repo — not generic templates. `l
 - `.omakaseagent/factory.md` — repo playbook (checks, risk classes, workflow)
 - `.omakaseagent/scenarios/` — up to 5 starter scenarios (approve before Class 2+ work)
 - `.omakaseagent/gates/` + `handoffs/` + `backlog/` — empty with README
+- `.omakaseagent/loops/` — `backlog-drain.md` starter charter (approve before unattended runs — `reference/loops.md`)
 - Taste/decisions/AGENTS.md updates when missing factory markers
 
 Global bar: `reference/dark-factory.md`. This command installs **instrumentation**.
@@ -35,7 +36,7 @@ omakase learn --project-agents-only  # project-agents/ + native emit only
 
 ## After learn
 
-Agents follow **`reference/task-intake.md`** (single tasks) and **`reference/factory-orchestration.md`** (Class 2+ team loop: Engineer → critic → gate → archivist when needed). Backlog audit and execution plans: **`reference/backlog-audit.md`**, **`reference/execution-plan.md`**.
+Agents follow **`reference/task-intake.md`** (single tasks) and **`reference/factory-orchestration.md`** (Class 2+ team loop: Engineer → critic → gate → archivist when needed). Backlog audit and execution plans: **`reference/backlog-audit.md`**, **`reference/execution-plan.md`**. Standing loops: **`reference/loops.md`**.
 
 - Class **0–1:** brief inline; mechanical checks; light checkpoint OK.  
 - Class **2+:** brief + scenarios (agent drafts); one confirm; gate file at end.  
@@ -53,6 +54,8 @@ Agents follow **`reference/task-intake.md`** (single tasks) and **`reference/fac
 ## Memory consulted
 ## Risks / human decision
 ```
+
+Gates produced by a **loop iteration** also carry a `**Review:** PENDING` line (agent-written; only a human flips it to accepted/rejected — `reference/loops.md`).
 
 ## Project agents (Phase G)
 
