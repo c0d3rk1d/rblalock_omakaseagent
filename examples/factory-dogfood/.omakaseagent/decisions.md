@@ -12,3 +12,9 @@
 **Why**: Humans review intent and evidence, not every diff; Omakase principles already define the bar.
 **Revisit if**: Stack or CI changes materially — re-run `omakase learn`.
 
+## 2026-06-12 — Loop ladder adopted
+**Context**: Loopcraft review (`docs/LOOPS-REVIEW.md`) — stacking loops on the Level 4 factory.
+**Decision**: Adopt the L0–L4 loop ladder and standing charters in `.omakaseagent/loops/` (`reference/loops.md`). Unattended runs require an approved charter; one gate per iteration; upshift only via a human-approved decisions.md entry; no orchestration engine — runners are external (BYO).
+**Why**: Takes the human out of the iteration, not the checkpoint. Throughput scales by batching gate review; autonomy is earned via gate history, never assumed.
+**Revisit if**: Charter adoption shows BYO runners are insufficient — then consider `omakase loop` / `omakase status` CLI (see backlog deferrals).
+

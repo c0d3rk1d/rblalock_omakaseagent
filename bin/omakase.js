@@ -489,6 +489,9 @@ function learnProject(options = {}) {
     log(`  checks:    ${result.checks.map((c) => c.cmd).join(', ')}`);
   }
   log(`  scenarios: ${result.scenarios.join(', ')}`);
+  if (result.loops?.length) {
+    log(`  loops:     ${result.loops.join(', ')}`);
+  }
   if (result.projectAgents?.length) {
     log(`  project:   ${result.projectAgents.join(', ')}`);
   }
