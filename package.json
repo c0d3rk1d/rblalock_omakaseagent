@@ -16,6 +16,7 @@
     "verify:scenario-evals": "node scripts/verify-scenario-evals.js",
     "verify:drift": "node scripts/verify-drift.js",
     "skills:install": "node bin/omakase.js skills install",
+    "site": "node scripts/serve-site.js",
     "prepare": "npm run build"
   },
   "files": [
