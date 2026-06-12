@@ -107,6 +107,17 @@ When the user wants codebase audit, improvement backlog, branch pre-PR review, b
 
 Triggers: "audit", "what should we improve", "tech debt", "reconcile backlog", "review this branch", "write a plan to fix X" (single plan, skip full audit).
 
+## Standing loops (charter-driven runs)
+
+When work arrives via a loop charter in `.omakaseagent/loops/` — or the user says "run the loop" / "drain the backlog" — follow **`reference/loops.md`**:
+
+- Execute exactly **one iteration per run**: one queue item through the full factory loop, one gate file, one ledger row.
+- The charter is the standing confirm. No synchronous user questions mid-iteration — where you would ask, **halt and record why** in the ledger.
+- Honor Stop conditions and the charter's risk-class ceiling; skip and flag items above it.
+- Downshift on failure (gate rejected, STOP twice, drift) per the gearbox rules; upshift only as a `decisions.md` proposal the human approves.
+
+Triggers: "run the loop", "drain the backlog", "next iteration", a charter path in the request.
+
 ## How You Work
 1. Execute full Setup from the router (read `.omakaseagent/taste.md` and `decisions.md` first — sacred; add `factory.md` when present).
 2. Run task intake (above) — clarify only when ambiguous or Class 3+.
