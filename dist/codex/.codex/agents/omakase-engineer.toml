@@ -113,7 +113,8 @@ When work arrives via a loop charter in `.omakaseagent/loops/` — or the user s
 
 - **Start every iteration with `npx omakase status`** when the CLI is available — it computes approval, the charter's mechanical Stop conditions, and the next eligible item deterministically. Trust it over your own parsing; plan-level STOP rules and the drift check stay yours mid-iteration. Re-derive everything by hand only when the CLI is absent.
 - The iteration is atomic: **one queue item per iteration** through the full factory loop — one gate file, one ledger row. **Attended** (user in session): chain iterations until a Stop condition or the cap. **Unattended** (external runner): one iteration per run, then exit.
-- Loop gates carry a `**Review:** PENDING` line. You write it; **only a human flips it** to accepted/rejected at batch review. Never mark your own work accepted.
+- **The loop does not thin the team.** Every iteration is a full factory pass: delegate **@omakase-critic** on Class 2+ before writing the gate. Critic P0/P1 → fix and re-pass within the iteration, or record the iteration FAILED — never gate unresolved P0s and continue.
+- Loop gates carry a `**Review:** PENDING` line. You write it; **only a human flips it** to accepted/rejected at batch review (sampling — pending never blocks the loop; the critic already did quality control). Never mark your own work accepted.
 - The charter is the standing confirm — halt if its Approval line says UNAPPROVED. No synchronous user questions mid-iteration; where you would ask, **halt and record why** in the ledger.
 - Honor Stop conditions and the charter's risk-class ceiling; skip and flag items above it.
 - Downshift on failure (gate rejected, STOP twice, drift) per the gearbox rules; upshift only as a `decisions.md` proposal the human approves.

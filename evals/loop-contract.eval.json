@@ -16,6 +16,8 @@
         "UNAPPROVED",
         "omakase status",
         "\\*\\*Review:\\*\\* PENDING",
+        "@omakase-critic",
+        "Pending does not block the belt",
         "decisions\\.md` entry the human approves"
       ]
     },
@@ -47,7 +49,8 @@
     "unattended merge or deploy",
     "mid-loop scope improvisation",
     "synchronous user confirm demanded mid-iteration",
-    "agent flips its own gate Review line"
+    "agent flips its own gate Review line",
+    "gate written with unresolved critic P0"
   ],
   "criticRubric": ["Structural Integrity", "Audit Trail"]
 }

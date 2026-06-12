@@ -64,7 +64,16 @@ L1 is `reference/factory-orchestration.md` unchanged. L2 and L3 are L1 stacked u
 
 **Upshift (leverage).** Proposal-only: after **5 consecutive accepted gates** in a task class with zero critic P0/P1 findings, the agent may propose promoting that class one level up — as a `decisions.md` entry the human approves. Autonomy is earned and recorded, never assumed. The streak is mechanical, not remembered: `omakase status` counts accepted `**Review:**` lines and reports when the threshold is met. Status counts the streak only — before proposing, the **agent** confirms the other two conditions (same task class, zero critic P0/P1 in those gates).
 
-**Gate review protocol (the trust verbs, on disk):** every loop gate carries a `**Review:** PENDING` line the agent writes at gate creation and **never flips itself**. At batch review the human replaces it — `accepted by <name> <date>` or `rejected — <reason>`. A gate with no Review line counts as pending. This is what makes "a clean track record unlocks longer runs, a rejected result reins them in" mechanically true rather than conversational.
+**Two reviews per plate (do not conflate them):**
+
+| Review | Who | When | What it does |
+|--------|-----|------|--------------|
+| **Critic gate** | `@omakase-critic` (team) | **Every iteration**, Class 2+, before the gate file is written | Quality control — rubric pass, P0/P1 hunt; fills the gate's `## Critic` section |
+| **Review line** | Human only | Batch, on your time, sampling allowed | Trust ledger — accept/reject; rejection halts, accepts compound into upshift streaks |
+
+The loop does not thin the team: each iteration is a **full factory pass** per `reference/factory-orchestration.md` — Engineer orchestrates, Critic gates Class 2+ work before the plate reaches the belt. If the critic finds P0/P1 mid-iteration, **fix it within the iteration and re-pass the critic, or record the iteration FAILED** — never write a gate with unresolved P0s and keep looping.
+
+**Gate review protocol (the trust verbs, on disk):** every loop gate carries a `**Review:** PENDING` line the agent writes at gate creation and **never flips itself**. At batch review the human replaces it — `accepted by <name> <date>` or `rejected — <reason>`. A gate with no Review line counts as pending. **Pending does not block the belt** — humans sample; the critic already did quality control. Rejection halts; accepts build the streak. This is what makes "a clean track record unlocks longer runs, a rejected result reins them in" mechanically true rather than conversational.
 
 **Loop law (the Salty Lesson as house rule):** every manual human intervention mid-loop must leave behind a scenario, mechanical check, or memory entry that makes the next intervention unnecessary. An intervention that leaves nothing behind is a bug in the loop, not just in the code.
 
@@ -123,7 +132,7 @@ The iteration is the **atomic unit**: one queue item, one gate, one ledger row.
 
 1. **Run `npx omakase status` first when the CLI is available.** It deterministically evaluates the approval line, the charter's **mechanical** Stop conditions (ledger HALT/EMPTY, iteration cap, double-FAILED, rejected gate reviews, stuck IN PROGRESS items), and the next eligible item — trust its output over your own parsing of the charter and queue (`HALT` → append the ledger row and stop; `NEXT` → that is your item). Plan-level STOP rules and the drift check remain **your** job during the iteration. Without the CLI, derive all of it by hand: read the charter, `factory.md`, `taste.md`, `decisions.md`; Approval line says UNAPPROVED → halt; check Stop conditions **before** picking work.
 2. Pick exactly **one** eligible queue item (status TODO, dependencies DONE, within risk ceiling) — `omakase status` already names it.
-3. Run the factory loop (`reference/factory-orchestration.md`). Scenarios must already exist or be covered by the charter — needing a new scenario mid-loop is a halt-for-human, not a question.
+3. Run the **full** factory loop (`reference/factory-orchestration.md`) — including `@omakase-critic` on Class 2+ before the gate is written. Critic P0/P1 → fix and re-pass within the iteration, or record FAILED; never carry unresolved P0s into a gate. Scenarios must already exist or be covered by the charter — needing a new scenario mid-loop is a halt-for-human, not a question.
 4. Close the iteration — all four writes: gate file (including its `**Review:** PENDING` line — flipping it is human-only), queue status row, plan's **Gate** field, ledger row.
 5. **Attended:** return to step 1 and chain the next iteration. **Unattended:** exit — the runner starts the next fresh run.
 

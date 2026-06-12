@@ -31,7 +31,10 @@ critic, gate, queue status update, ledger row.
 
 ## Checkpoint policy
 
-- Gates reviewed in batch — no synchronous confirm per iteration
+- The critic reviews **every** Class 2+ iteration before its gate is written;
+  your Review flips are the trust ledger, not quality control
+- Gates reviewed in batch — no synchronous confirm per iteration; pending
+  reviews never block the loop (sample what you read)
 - Batch review = flip each gate's **Review:** line to accepted/rejected;
   `omakase status` reads it (rejected halts the loop; agents never flip it)
 - Halt for human immediately when: risk ceiling would be exceeded, drift check
