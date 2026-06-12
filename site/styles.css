@@ -974,8 +974,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 
 /* ---------- the conveyor (kaiten) ---------- */
 
-.course-kaiten .factory-quote em { color: var(--vermillion); }
-
 .kaiten-belt {
   margin-bottom: var(--s-8);
   border: var(--border);
@@ -1027,15 +1025,6 @@ code, pre { font-family: var(--mono); font-variant-ligatures: none; }
 .kt-col p {
   padding: var(--s-4);
   font-size: 0.92rem;
-  color: var(--ink-soft);
-}
-
-.kaiten-ladder {
-  margin-top: var(--s-8);
-  font-family: var(--display);
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
-  text-align: center;
   color: var(--ink-soft);
 }
 
