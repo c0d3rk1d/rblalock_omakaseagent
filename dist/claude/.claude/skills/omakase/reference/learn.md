@@ -55,6 +55,8 @@ Agents follow **`reference/task-intake.md`** (single tasks) and **`reference/fac
 ## Risks / human decision
 ```
 
+Gates produced by a **loop iteration** also carry a `**Review:** PENDING` line (agent-written; only a human flips it to accepted/rejected — `reference/loops.md`).
+
 ## Project agents (Phase G)
 
 `learn` proposes up to **3** namespaced agents under `.omakaseagent/project-agents/` from repo signals (`skill/`, `bin/`, domain dirs). On learn, stubs emit to installed harness `agents/` dirs (e.g. `.cursor/agents/omakase-<pkg>-skill.md`).

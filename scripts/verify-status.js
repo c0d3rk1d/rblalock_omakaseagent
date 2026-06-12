@@ -98,6 +98,20 @@ const cases = [
     expect: (l) => l.halt && l.halt.includes('no Approval line'),
   },
   {
+    name: 'approved line mentioning UNAPPROVED in prose stays approved',
+    dir: () =>
+      fixture(
+        charter({ approval: '**Approval:** Approved by rblalock on 2026-06-12 (generated charters say UNAPPROVED until a human replaces the line).' }),
+        queueIndex(BASE_QUEUE)
+      ),
+    expect: (l) => !l.halt && l.next?.plan === '001',
+  },
+  {
+    name: 'approval value not starting with approved fails safe',
+    dir: () => fixture(charter({ approval: '**Approval:** pending sign-off from team lead' }), queueIndex(BASE_QUEUE)),
+    expect: (l) => l.halt && l.halt.includes('UNAPPROVED'),
+  },
+  {
     name: 'iteration cap halts',
     dir: () =>
       fixture(
@@ -155,6 +169,11 @@ const cases = [
         { 'g1.md': '# Gate: fixture\n\n## Seed\n' }
       ),
     expect: (l) => !l.halt && l.reviews.pending === 1,
+  },
+  {
+    name: 'IN PROGRESS queue row halts (crashed iteration guard)',
+    dir: () => fixture(charter(), queueIndex([{ ...BASE_QUEUE[0], status: 'IN PROGRESS' }, BASE_QUEUE[1], BASE_QUEUE[2]])),
+    expect: (l) => l.halt && l.halt.includes('IN PROGRESS') && !l.next,
   },
   {
     name: 'five accepted gates in a row flags upshift eligibility',

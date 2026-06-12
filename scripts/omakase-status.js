@@ -2,8 +2,9 @@
 /**
  * omakase status — deterministic loop-state check for agents and runners.
  * Reads .omakaseagent/loops/<slug>.md + backlog/README.md and computes what an
- * agent must otherwise re-derive every iteration: approval, Stop conditions,
- * and the next eligible queue item. See skill/reference/loops.md.
+ * agent must otherwise re-derive every iteration: approval, the charter's
+ * mechanical Stop conditions, and the next eligible queue item. Plan-level STOP
+ * rules and drift checks stay agent-side. See skill/reference/loops.md.
  *
  * Exit codes: 0 = work available, 2 = halted / no eligible work, 1 = error.
  */
@@ -21,7 +22,11 @@ function readSafe(filePath) {
 
 function parseCharter(content) {
   const approvalLine = content.split('\n').find((l) => l.includes('**Approval:**')) || null;
-  const approved = !!approvalLine && !approvalLine.includes('UNAPPROVED');
+  // Approval is decided by the value right after the label, so prose that merely
+  // mentions UNAPPROVED (e.g. "generated charters say UNAPPROVED until...") cannot
+  // flip an approved charter. Anything that does not start with "approved" fails safe.
+  const approvalValue = approvalLine ? approvalLine.split('**Approval:**')[1].trim() : '';
+  const approved = /^approved\b/i.test(approvalValue);
 
   const ceilingMatch = content.match(/\*\*Risk class ceiling:\*\*\s*(\d+)/);
   const capMatch = content.match(/Iteration cap:\s*(\d+)/i);
@@ -109,6 +114,8 @@ function evaluate(charter, queue, memDir) {
     else break;
   }
 
+  const inProgress = queue.filter((i) => i.status === 'IN PROGRESS');
+
   let halt = null;
   if (!charter.approvalLine) {
     halt = 'charter has no Approval line — add one; agents halt without it';
@@ -116,6 +123,8 @@ function evaluate(charter, queue, memDir) {
     halt = 'charter UNAPPROVED — human approval required before any run';
   } else if (charter.ceiling === null) {
     halt = 'charter has no risk class ceiling — fix the Scope section';
+  } else if (inProgress.length > 0) {
+    halt = `queue item ${inProgress[0].plan} is IN PROGRESS — crashed or concurrent iteration; human check before looping`;
   } else if (rejected) {
     halt = `gate rejected at review (${rejected.rel}) — downshift; fix and get human re-accept before looping`;
   } else if (last && resultWord(last) === 'HALT') {

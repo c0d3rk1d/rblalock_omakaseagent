@@ -47,7 +47,7 @@ Internal critique pass (rubric + engineering extensions): no P0/P1.
 - Level 4 is preserved — loops move the human to batch gate review, never remove accept/reject; upshift is proposal-only via `decisions.md`.
 - No runner shipped (honors the v1 "no orchestration engine" decision); the runner contract + fixed prompt make any external loop safe to drive.
 - Charter risk ceiling defaults to Class 2; Class 3+ items are skipped and flagged, consistent with `dark-factory.md` risk classes.
-- P2 noted: ledger halt-check in the bash example greps the charter's last line — adequate for an example, brittle as tooling. Resolved by deferral: `omakase status` is a recorded backlog deferral, not built speculatively.
+- P2 noted: ledger halt-check in the bash example greps the charter's last line — adequate for an example, brittle as tooling. Initially resolved by deferral; **superseded same day** — `omakase status` shipped with runner-grade exit codes (see sibling gate `2026-06-12-omakase-status-gate.md`).
 
 E2E dogfood found and fixed (second pass):
 
@@ -58,12 +58,12 @@ E2E dogfood found and fixed (second pass):
 
 ## Memory consulted
 
-- `taste.md` — ruthless simplicity; no "future flexibility" abstractions (no runner, no new CLI commands)
+- `taste.md` — ruthless simplicity; no "future flexibility" abstractions (no runner; `omakase status` was added same day only after the agent-success case was made — sibling gate)
 - `decisions.md` 2026-06-05 "Dark factory bootstrapped" — Level 4 layout extended, not replaced; new entry "Loop ladder adopted" added to dogfood snapshot
 - `dark-factory.md` operating rule ("encode, don't re-review") — became the loop law
 
 ## Risks / human decision
 
 - **Charter defaults** (iteration cap 5, upshift threshold 5 accepted gates, risk ceiling 2) are first-pass numbers — tune via charter edits and `decisions.md`, not code.
-- **Deferred, recorded in dogfood backlog:** `omakase loop` / `omakase status` CLI, automated upshift proposals from gate history, L4 fleet spec.
+- **Deferred, recorded in dogfood backlog:** `omakase loop` (built-in runner), L4 fleet spec. (`omakase status` and gate-history upshift reporting shipped same day — see `2026-06-12-omakase-status-gate.md`.)
 - **Human checkpoint:** Accept the loop ladder + charter contract and the `reference/loops.md` inclusion in the engineer's default context.
